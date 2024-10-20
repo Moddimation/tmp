@@ -1,0 +1,29 @@
+name: Download, Extract, and List Contents of 7z File
+
+on:
+  workflow_dispatch:
+
+jobs:
+  download_extract_list:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Install p7zip to handle .7z files
+      run: sudo apt-get update && sudo apt-get install -y p7zip-full
+
+    - name: Download .7z file
+      run: |
+        wget https://myrient.erista.me/files/Internet%20Archive/the_last_collector/htgdb-gamepacks/N64%20-%20EverDrive%2064%20Game%20Series%20Collections%20Add-On%202023-05-15.7z -O gamepack.7z
+
+    - name: Extract .7z file
+      run: 7z x gamepack.7z -ogamepack_contents
+
+    - name: List extracted contents
+      run: |
+        find gamepack_contents/ > file_list.txt
+
+    - name: Upload file list
+      uses: actions/upload-artifact@v3
+      with:
+        name: file-list
+        path: file_list.txt

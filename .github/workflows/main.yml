@@ -13,7 +13,7 @@ jobs:
 
     - name: Download .7z file
       run: |
-        wget https://myrient.erista.me/files/Internet%20Archive/the_last_collector/htgdb-gamepacks/N64%20-%20EverDrive%2064%20Game%20Series%20Collections%20Add-On%202023-05-15.7z -O gamepack.7z
+        wget https://myrient.erista.me/files/Internet%20Archive/the_last_collector/htgdb-gamepacks/N64%20-%20EverDrive%2064%202023-12-08.7z
 
     - name: Extract .7z file with retry logic
       run: |

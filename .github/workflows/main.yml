@@ -15,14 +15,21 @@ jobs:
       run: |
         wget https://myrient.erista.me/files/Internet%20Archive/the_last_collector/htgdb-gamepacks/N64%20-%20EverDrive%2064%20Game%20Series%20Collections%20Add-On%202023-05-15.7z -O gamepack.7z
 
-    - name: Extract .7z file
-      run: 7z x gamepack.7z -ogamepack_contents
+    - name: Extract .7z file with progress logging (with retry)
+      run: 7z x gamepack.7z -ogamepack_contents -bsp1 -bso1
+      timeout-minutes: 120  # Allow up to 2 hours for extraction
+      continue-on-error: false  # Ensure it fails on error
+      retry:
+        max_attempts: 3  # Retry up to 3 times on failure
+        delay_seconds: 60  # Wait for 60 seconds between retries
 
     - name: List extracted contents
+      if: success()  # Only list contents if extraction succeeded
       run: |
         find gamepack_contents/ > file_list.txt
 
     - name: Upload file list
+      if: success()  # Only upload if previous steps succeeded
       uses: actions/upload-artifact@v3
       with:
         name: file-list

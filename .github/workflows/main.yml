@@ -36,8 +36,8 @@ jobs:
             sudo rm -rf ./* && \
             mv ../tmp/* . \
             find . && \
-            cd .. && \
-            # 7z a "$file_name.7z" "$file_name"
+            cd ..
+ # 7z a "$file_name.7z" "$file_name"
         done
         find .
     - name: Compress

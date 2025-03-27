@@ -24,14 +24,12 @@ jobs:
         cat index.html | grep .zip | sed 's/\" title.*//' | sed 's/.*href=\"//' | while read -r zip_file; do
             echo "$zip_file" && \
             wget -q "$link_prefix/$zip_file" && \
-            file_name=$(basename "$zip_file" .zip) && \
-            mkdir "$file_name" && \
-            7z x "$zip_file" -o"$file_name" && rm "$zip_file" && \
-            rvz_file=$(find "$file_name" -type f -name "*.rvz" | head -n 1) && \
-            if [ -n "$rvz_file" ]; then \
-                flatpak run --command="dolphin-tool" org.DolphinEmu.dolphin-emu extract -i "$rvz_file" -o "$file_name/"; \
-                rm "$rvz_file"; \
-            fi && \
+            file_name=$(basename "{*.zip}" .zip) && \
+            mkdir "*.zip%.zip" && \
+            7z x "*.zip" -o"$file_name" && rm "*.zip" && \
+            rvz_file=$(find . -type f -name "*.rvz") && echo $rvz_file && \
+            flatpak run --command="dolphin-tool" org.DolphinEmu.dolphin-emu extract -i "$rvz_file" -o "$file_name/" && \
+            rm "$rvz_file" && \
             find "$file_name" -type f \( -name "*dbg*" -o -name "*debug*" -o -name "*.map" -o -name "*.rel" -o -name "*.elf" -o -name "*.txt" -o -name "*.ini" \) -exec mv {} tmp/ \; && \
             sudo rm -rf "$file_name"/* && \
             mv tmp/* "$file_name"/ && \

@@ -11,8 +11,8 @@ jobs:
     - name: Prepare
       run: |
         sudo apt-get update && sudo apt-get install -y p7zip-full flatpak
-        flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-        flatpak install flathub org.DolphinEmu.dolphin-emu
+        sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+        sudo flatpak install flathub org.DolphinEmu.dolphin-emu
         sudo updatedb
         locate dolphin-tool
         dolphin-tool --help

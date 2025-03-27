@@ -29,12 +29,13 @@ jobs:
             mkdir "$file_name" && \
             7z x "*.zip" -o"$file_name/" && rm "$filename" && \
             rvz_file=$(find . -type f -name "*.rvz") && \
-            flatpak run --command="dolphin-tool" org.DolphinEmu.dolphin-emu extract -i "$rvz_file" -o "$file_name/" && \
-            rm "$rvz_file" && \
-            ls -lha && \
             echo ENTERING DIRECTORY! && \
             cd "$file_name" && \
+            flatpak run --command="dolphin-tool" org.DolphinEmu.dolphin-emu extract -i "../$rvz_file" -o . && \
+            echo DONE EXTRACT! && \
             ls -lha && \
+            ls ../ -lha && \
+            rm "../$rvz_file" && \
             echo THIS IS ABOUT TO MOVE! && \
             find . -type f -name "*dbg*" -exec mv {} ../tmp/ \; && \
             find . -type f -name "*debug*" -exec mv {} ../tmp/ \; && \
@@ -43,7 +44,8 @@ jobs:
             find . -type f -name "*.elf" -exec mv {} ../tmp/ \; && \
             find . -type f -name "*.txt" -exec mv {} ../tmp/ \; && \
             find . -type f -name "*.ini" -exec mv {} ../tmp/ \; && \
-            echo THIS HAS MOVED! && ls && \
+            echo THIS HAS MOVED! && \
+            ls -lha && \
             sudo rm -rf ./* && \
             cd .. && \
             mv tmp/* "$file_name"/ && \

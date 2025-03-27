@@ -12,6 +12,13 @@ jobs:
       run: |
         sudo apt-get update && sudo apt-get install -y p7zip-full snapd
         sudo snap install dolphin-emu
+        sudo snap install dolphin-emu
+        sudo snap install dolphin-emu
+        sudo snap install dolphin-emu
+        sudo snap install dolphin-emu
+        sudo snap install dolphin-emu
+        sudo snap install dolphin-emu
+        sudo snap install dolphin-emu
         dolphin-tool --help
 
     - name: Downloads & extract

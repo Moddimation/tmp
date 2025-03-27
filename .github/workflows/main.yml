@@ -15,7 +15,7 @@ jobs:
       run: |
         wget https://myrient.erista.me/files/Redump/Nintendo%20-%20GameCube%20-%20NKit%20RVZ%20%5Bzstd-19-128k%5D/
         export link_prefix="https://myrient.erista.me/files/Redump/Nintendo%20-%20GameCube%20-%20NKit%20RVZ%20%5Bzstd-19-128k%5D"
-        cat index.html | grep .zip | sed 's/\" title.*//' | sed 's/.*href=\"//' | xargs -I{} wget "$link_prefix/{}"
+        cat index.html | grep .zip | sed 's/\" title.*//' | sed 's/.*href=\"//' | xargs -I{} echo {} && wget -q "$link_prefix/{}"
         find . -exec 7z x {} \; -exec rm {}
 
     - name: Extract

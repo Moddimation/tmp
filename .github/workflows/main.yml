@@ -30,8 +30,10 @@ jobs:
             rvz_file=$(find . -type f -name "*.rvz") && echo $rvz_file && \
             flatpak run --command="dolphin-tool" org.DolphinEmu.dolphin-emu extract -i "$rvz_file" -o "$file_name/" && \
             rm "$rvz_file" && \
-            find "$file_name" -type f \( -name "*dbg*" -o -name "*debug*" -o -name "*.map" -o -name "*.rel" -o -name "*.elf" -o -name "*.txt" -o -name "*.ini" \) -exec mv {} tmp/ \; && \
-            sudo rm -rf "$file_name"/* && \
+            cd "$file_name" && ls && \
+            find . -type f \( -name "*dbg*" -o -name "*debug*" -o -name "*.map" -o -name "*.rel" -o -name "*.elf" -o -name "*.txt" -o -name "*.ini" \) -exec mv {} ../tmp/ \; && \
+            sudo rm -rf ./* && \
+            cd .. && \
             mv tmp/* "$file_name"/ && \
             ls "$file_name"
         done

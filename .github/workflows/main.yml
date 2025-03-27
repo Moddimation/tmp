@@ -10,10 +10,9 @@ jobs:
     steps:
     - name: Prepare
       run: |
-        sudo apt install software-properties-common
-        sudo add-apt-repository ppa:dolphin-emu/ppa
-        sudo apt-get update && sudo apt-get install -y p7zip-full dolphin-emu
-        dolphin-tools --help
+        sudo apt-get update && sudo apt-get install -y p7zip-full snapd
+        sudo snap install dolphin-emu
+        dolphin-tool --help
 
     - name: Downloads & extract
       run: |

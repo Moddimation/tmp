@@ -11,11 +11,10 @@ jobs:
     - name: Prepare
       run: |
         sudo apt-get update && sudo apt-get install -y p7zip-full
-        echo "deb http://deb.debian.org/debian/ bullseye main contrib non-free" | sudo tee -a /etc/apt/sources.list
-        echo "deb-src http://deb.debian.org/debian/ bullseye main contrib non-free" | sudo tee -a /etc/apt/sources.list
-        sudo apt update
-        sudo apt install dolphin-emu dolphin
-        dolphin-tool --help
+        sudo apt install flatpak
+        sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+        sudo flatpak install flathub org.DolphinEmu.dolphin-emu
+        sudo flatpak run --command="dolphin-tool" org.DolphinEmu.dolphin-emu
 
     - name: Downloads & extract
       run: |

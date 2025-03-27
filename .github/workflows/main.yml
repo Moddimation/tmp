@@ -24,7 +24,7 @@ jobs:
             wget -q "$link_prefix/$zip_file" && \
             file_name="${*%.zip}" && \
             find *.zip && \
-            7z x "$zip_file" && rm "$zip_file" && \
+            7z x *.zip && rm *.zip && \
             rvz_file=$(ls *.rvz 2>/dev/null) && \
             if [ -z "$rvz_file" ]; then echo "No RVZ file found."; exit 1; fi && \
             file_name="${rvz_file%.rvz}" && \

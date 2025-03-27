@@ -41,6 +41,7 @@ jobs:
 
         git clone https://github.com/dolphin-emu/dolphin.git
         cd dolphin
+        git submodule update --init --recursive
         mkdir build && cd build
         cmake .. && make -j4
         sudo make install

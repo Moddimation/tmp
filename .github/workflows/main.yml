@@ -33,6 +33,7 @@ jobs:
             rm *.rvz
             cd "$file_name" && \
             cd - && \
+            echo $file_name
             find . -type f \( -name "*dbg*" -o -name "*debug*" -o -name "*.map" -o -name "*.rel" -o -name "*.elf" -o -name "*.txt" -o -name "*.ini" \) -exec mv {} ../tmp \; && sudo rm -rf ./*
             sudo rm -rf ./* && \
             mv ../tmp/* . \

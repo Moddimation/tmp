@@ -27,7 +27,8 @@ jobs:
             7z x *.zip && rm *.zip && \
             file_name="${*%.rvz}" && \
             ls && \
-            flatpak run --command="dolphin-tool extract -i \"$PWD\*.rvz\" -o \"$PWD\$file_name/\"" org.DolphinEmu.dolphin-emu && \
+            rvz_file=$(ls *.rvz)  
+            flatpak run --command="dolphin-tool" org.DolphinEmu.dolphin-emu extract -i "$PWD/$rvz_file" -o "$PWD/$file_name/"
             cd "$file_name" && \
             find . -type f \( -iname "*.map" -o -iname "*.rel" -o -iname "*.elf" -o -iname "*.txt" \) -exec mv {} . \; && \
             sudo rm -rf ./*/ && \

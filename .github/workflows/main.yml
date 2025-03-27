@@ -28,10 +28,12 @@ jobs:
             file_name="${filename%.zip}" && \
             mkdir "$file_name" && \
             7z x "*.zip" && rm "$filename" && \
-            rvz_file=$(find . -type f -name "*.rvz") && \
+            rvz_file=$(ls *.zip | head -n 1) && \
             echo ENTERING DIRECTORY! && \
             cd "$file_name" && \
-            flatpak run --command="dolphin-tool" org.DolphinEmu.dolphin-emu extract -i "../$rvz_file" -o . && \
+            dir={pwd} && \
+            echo $dir && \
+            flatpak run --command="dolphin-tool" org.DolphinEmu.dolphin-emu extract -i "$dir/../$rvz_file" -o "$dir" && \
             echo DONE EXTRACT! && \
             ls -lha && \
             ls ../ -lha && \

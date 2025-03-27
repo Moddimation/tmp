@@ -9,13 +9,16 @@ jobs:
 
     steps:
     - name: Prepare
-      run: sudo apt-get update && sudo apt-get install -y p7zip-full dolphin-emu
+      run: |
+        sudo apt install software-properties-common
+        sudo add-apt-repository ppa:dolphin-emu/ppa
+        sudo apt-get update && sudo apt-get install -y p7zip-full dolphin-emu
 
     - name: Downloads & extract
       run: |
         wget https://myrient.erista.me/files/Redump/Nintendo%20-%20GameCube%20-%20NKit%20RVZ%20%5Bzstd-19-128k%5D/
         export link_prefix="https://myrient.erista.me/files/Redump/Nintendo%20-%20GameCube%20-%20NKit%20RVZ%20%5Bzstd-19-128k%5D"
-        cat index.html | grep .zip | sed 's/\" title.*//' | sed 's/.*href=\"//' | xargs -I{} sh -c 'echo {}; wget -q "$link_prefix/{}"; 7z x *.zip; rm *.zip'
+        cat index.html | grep .zip | sed 's/\" title.*//' | sed 's/.*href=\"//' | xargs -I{} sh -c 'echo {}; wget -q "$link_prefix/{}"; export file_name=$(ls *.zip); export file_name="${file_name%.zip}"; 7z x "$file_name.zip"; rm *.zip; dolphin-tool extract -i *.rvz -o "$file_name/"; ls'
 
     - name: List extracted contents
       if: success()  # Only list contents if extraction succeeded

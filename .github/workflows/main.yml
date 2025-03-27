@@ -27,11 +27,15 @@ jobs:
             filename=$(ls *.zip | head -n 1) && \
             file_name="${filename%.zip}" && \
             mkdir "$file_name" && \
-            7z x "*.zip" -o"$file_name/" && ls && rm "$filename" && \
+            7z x "*.zip" -o"$file_name/" && rm "$filename" && \
             rvz_file=$(find . -type f -name "*.rvz") && \
             flatpak run --command="dolphin-tool" org.DolphinEmu.dolphin-emu extract -i "$rvz_file" -o "$file_name/" && \
-            rm "$rvz_file" && cd - && ls && echo ENTERING DIRECTORY! && \
-            cd "$file_name" && cd - && ls && echo THIS IS ABOUT TO MOVE! && \
+            rm "$rvz_file" && \
+            ls -lha && \
+            echo ENTERING DIRECTORY! && \
+            cd "$file_name" && \
+            ls -lha && \
+            echo THIS IS ABOUT TO MOVE! && \
             find . -type f -name "*dbg*" -exec mv {} ../tmp/ \; && \
             find . -type f -name "*debug*" -exec mv {} ../tmp/ \; && \
             find . -type f -name "*.map" -exec mv {} ../tmp/ \; && \

@@ -27,18 +27,19 @@ jobs:
             filename=$(ls *.zip | head -n 1) && echo "$filename" && \
             file_name="${filename%.zip}" && echo "$file_name" && \
             mkdir "$file_name" && \
-            7z x "*.zip" -o"$file_name/" && ls && rm "*.zip" -f && ls && \
+            7z x "*.zip" -o"$file_name/" && ls && rm $filename && ls && \
             rvz_file=$(find . -type f -name "*.rvz") && echo $rvz_file && \
             flatpak run --command="dolphin-tool" org.DolphinEmu.dolphin-emu extract -i "$rvz_file" -o "$file_name/" && \
             rm "$rvz_file" && \
-            cd "$file_name" && ls && \
+            cd "$file_name" && ls && echo THIS IS ABOUT TO MOVE! && \
             find . -type f -name "*dbg*" -exec mv {} ../tmp/ \; && \
             find . -type f -name "*debug*" -exec mv {} ../tmp/ \; && \
             find . -type f -name "*.map" -exec mv {} ../tmp/ \; && \
             find . -type f -name "*.rel" -exec mv {} ../tmp/ \; && \
             find . -type f -name "*.elf" -exec mv {} ../tmp/ \; && \
             find . -type f -name "*.txt" -exec mv {} ../tmp/ \; && \
-            find . -type f -name "*.ini" -exec mv {} ../tmp/ \; && ls . && echo HI && ls .. && echo NAY && ls ../tmp && echo dai && find . && \
+            find . -type f -name "*.ini" -exec mv {} ../tmp/ \; && \
+            echo THIS HAS MOVED! && ls && \
             sudo rm -rf ./* && \
             cd .. && \
             mv tmp/* "$file_name"/ && \

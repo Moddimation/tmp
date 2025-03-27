@@ -10,10 +10,39 @@ jobs:
     steps:
     - name: Prepare
       run: |
-        sudo apt-get update && sudo apt-get install -y p7zip-full flatpak
-        sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-        sudo flatpak install flathub org.DolphinEmu.dolphin-emu -y
-        flatpak run org.DolphinEmu.dolphin-emu dolphin-tool --help
+        sudo apt-get update && sudo apt-get install -y p7zip-full
+        sudo apt update
+        sudo apt install -y \
+          build-essential \
+          cmake \
+          git \
+          libalut-dev \
+          libbluetooth-dev \
+          libcurl4-openssl-dev \
+          libevdev-dev \
+          libglew-dev \
+          libopenal-dev \
+          libsdl2-dev \
+          libsfml-dev \
+          libudev-dev \
+          qtbase5-dev \
+          qtchooser \
+          qt5-qmake \
+          qtbase5-dev-tools \
+          libxi-dev \
+          libxrandr-dev \
+          libxinerama-dev \
+          libudev-dev \
+          liblzma-dev \
+          libx264-dev \
+          lib
+
+        git clone https://github.com/dolphin-emu/dolphin.git
+        cd dolphin
+        mkdir build && cd build
+        cmake .. && make -j4
+        sudo make install
+        dolphin-tool --help
 
     - name: Downloads & extract
       run: |

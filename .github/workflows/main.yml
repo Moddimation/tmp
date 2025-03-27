@@ -24,8 +24,9 @@ jobs:
         cat index.html | grep .zip | sed 's/\" title.*//' | sed 's/.*href=\"//' | while read -r zip_file; do
             echo "$zip_file" && \
             wget -q "$link_prefix/$zip_file" && \
-            file_name=$(basename "*.zip" .zip) && \
-            mkdir "*.zip%.zip" && \
+            filename=*.zip && \
+            file_name=$(basename $filename .zip) && \
+            mkdir "$file_name" && \
             7z x "*.zip" -o"$file_name/" && ls && rm "*.zip" -f && ls && \
             rvz_file=$(find . -type f -name "*.rvz") && echo $rvz_file && \
             flatpak run --command="dolphin-tool" org.DolphinEmu.dolphin-emu extract -i "$rvz_file" -o "$file_name/" && \

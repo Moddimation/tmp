@@ -24,15 +24,14 @@ jobs:
         cat index.html | grep .zip | sed 's/\" title.*//' | sed 's/.*href=\"//' | while read -r zip_file; do
             echo "$zip_file" && \
             wget -q "$link_prefix/$zip_file" && \
-            filename=$(ls *.zip | head -n 1) && echo "$filename" && \
-            file_name="${filename%.zip}" && echo "$file_name" && \
-            echo $file_name && \
+            filename=$(ls *.zip | head -n 1) && \
+            file_name="${filename%.zip}" && \
             mkdir "$file_name" && \
-            7z x "*.zip" -o"$file_name/" && ls && rm "$filename" && ls && \
-            rvz_file=$(find . -type f -name "*.rvz") && echo $rvz_file && \
+            7z x "*.zip" -o"$file_name/" && ls && rm "$filename" && \
+            rvz_file=$(find . -type f -name "*.rvz") && \
             flatpak run --command="dolphin-tool" org.DolphinEmu.dolphin-emu extract -i "$rvz_file" -o "$file_name/" && \
-            rm "$rvz_file" && \
-            cd "$file_name" && ls && echo THIS IS ABOUT TO MOVE! && \
+            rm "$rvz_file" && cd - && ls && echo ENTERING DIRECTORY! && \
+            cd "$file_name" && cd - && ls && echo THIS IS ABOUT TO MOVE! && \
             find . -type f -name "*dbg*" -exec mv {} ../tmp/ \; && \
             find . -type f -name "*debug*" -exec mv {} ../tmp/ \; && \
             find . -type f -name "*.map" -exec mv {} ../tmp/ \; && \

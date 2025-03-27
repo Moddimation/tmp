@@ -29,7 +29,7 @@ jobs:
 
     - name: Upload file list
       if: success()  # Only upload if previous steps succeeded
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: file-list
         path: file_list.txt

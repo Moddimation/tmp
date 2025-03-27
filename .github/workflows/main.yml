@@ -11,46 +11,10 @@ jobs:
     - name: Prepare
       run: |
         sudo apt-get update && sudo apt-get install -y p7zip-full
+        echo "deb http://deb.debian.org/debian/ bullseye main contrib non-free" | sudo tee -a /etc/apt/sources.list
+        echo "deb-src http://deb.debian.org/debian/ bullseye main contrib non-free" | sudo tee -a /etc/apt/sources.list
         sudo apt update
-        sudo apt install -y \
-          build-essential \
-          cmake \
-          git \
-          libalut-dev \
-          libbluetooth-dev \
-          libcurl4-openssl-dev \
-          libevdev-dev \
-          libglew-dev \
-          libopenal-dev \
-          libsdl2-dev \
-          libsfml-dev \
-          libudev-dev \
-          qtbase5-dev \
-          qtchooser \
-          qt5-qmake \
-          qtbase5-dev-tools \
-          libxi-dev \
-          libxrandr-dev \
-          libxinerama-dev \
-          libudev-dev \
-          liblzma-dev \
-          libx264-dev \
-          libpng-dev \
-          libjpeg-dev \
-          libsdl2-image-dev
-
-        git clone https://github.com/dolphin-emu/dolphin.git
-        cd dolphin
-        git submodule update --init --recursive
-        git submodule update --init --recursive
-        git submodule update --init --recursive
-        git submodule update --init --recursive
-        mkdir build && cd build
-        cmake .. && make -j4
-        sudo make install
-        cd ..
-        cd ..
-        sudo rm -rf dolphin
+        sudo apt install dolphin-emu dolphin
         dolphin-tool --help
 
     - name: Downloads & extract

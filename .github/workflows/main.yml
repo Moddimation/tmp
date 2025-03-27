@@ -25,11 +25,9 @@ jobs:
             file_name="${*%.zip}" && \
             find *.zip && \
             7z x *.zip && rm *.zip && \
-            rvz_file=$(ls *.rvz 2>/dev/null) && \
-            if [ -z "$rvz_file" ]; then echo "No RVZ file found."; exit 1; fi && \
-            file_name="${rvz_file%.rvz}" && \
+            file_name="${*%.rvz}" && \
             ls && \
-            flatpak run --command="dolphin-tool extract -i \"$rvz_file\" -o \"$file_name/\"" org.DolphinEmu.dolphin-emu && \
+            flatpak run --command="dolphin-tool extract -i \"$PWD\*.rvz\" -o \"$PWD\$file_name/\"" org.DolphinEmu.dolphin-emu && \
             cd "$file_name" && \
             find . -type f \( -iname "*.map" -o -iname "*.rel" -o -iname "*.elf" -o -iname "*.txt" \) -exec mv {} . \; && \
             sudo rm -rf ./*/ && \

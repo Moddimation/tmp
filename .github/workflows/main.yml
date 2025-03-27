@@ -28,7 +28,7 @@ jobs:
             file_name="${filename%.zip}" && \
             mkdir "$file_name" && \
             7z x "$filename" && rm "$filename" && \
-            rvz_file=$(ls *.zip | head -n 1) && \
+            rvz_file=$(ls *.rvz | head -n 1) && \
             echo ENTERING DIRECTORY! && \
             cd "$file_name" && \
             dir="$pwd" && \

@@ -35,7 +35,9 @@ jobs:
           libudev-dev \
           liblzma-dev \
           libx264-dev \
-          lib
+          libpng-dev \
+          libjpeg-dev \
+          libsdl2-image-dev
 
         git clone https://github.com/dolphin-emu/dolphin.git
         cd dolphin

@@ -11,22 +11,21 @@ jobs:
     - name: Install p7zip to handle .7z files
       run: sudo apt-get update && sudo apt-get install -y p7zip-full
 
-    - name: Download .7z file
+    - name: Downloads
       run: |
-        wget https://myrient.erista.me/files/Internet%20Archive/the_last_collector/htgdb-gamepacks/N64%20-%20EverDrive%2064%202023-12-08.7z
+        wget https://myrient.erista.me/files/Redump/Nintendo%20-%20GameCube%20-%20NKit%20RVZ%20%5Bzstd-19-128k%5D/
+        export link_prefix="https://myrient.erista.me/files/Redump/Nintendo%20-%20GameCube%20-%20NKit%20RVZ%20%5Bzstd-19-128k%5D"
+        cat index.html | grep .zip | sed 's/\" title.*//' | sed 's/.*href=\"//' | xargs -I{} wget "$link_prefix/{}"
+        find . -exec 7z x {} \; -exec rm {}
 
-    - name: Extract .7z file with retry logic
+    - name: Extract
       run: |
-        # Retry extraction up to 3 times with 60 seconds delay in case of failure
-        for i in {1..3}; do
-          7z x gamepack.7z -ogamepack_contents -bsp1 -bso1 && break || echo "Attempt $i failed, retrying in 60 seconds..." && sleep 60;
-        done
-      timeout-minutes: 120  # Allow up to 2 hours for extraction
+        find . -exec 7z x {} \; -exec rm {}
 
     - name: List extracted contents
       if: success()  # Only list contents if extraction succeeded
       run: |
-        find gamepack_contents/ > file_list.txt
+        find . > file_list.txt
 
     - name: Upload file list
       if: success()  # Only upload if previous steps succeeded

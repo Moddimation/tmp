@@ -30,12 +30,14 @@ jobs:
             ls && \
             rvz_file=$(ls *.rvz)  
             flatpak run --command="dolphin-tool" org.DolphinEmu.dolphin-emu extract -i "$PWD/$rvz_file" -o "$PWD/$file_name/"
+            rm *.rvz
             cd "$file_name" && \
-            find . -type f \( -iname "*dbg*" -iname "*debug*" "*Dbg*" -iname "*Debug*" "*DBG*" -iname "*DEBUG*" -iname "*.map" -o -iname "*.rel" -o -iname "*.elf" -o -iname "*.txt" -iname "*.ini"  -iname "*.MAP" -o -iname "*.REL" -o -iname "*.ELF" -o -iname "*.TXT" -iname "*.INI"  -iname "*.Map" -o -iname "*.Rel" -o -iname "*.Elf" -o -iname "*.Txt" -iname "*.Ini" \) -exec mv {} ../tmp \; && \
+            find . -type f \( -o -iname "*dbg*" -o -iname "*debug*" -o -iname "*Dbg*" -o -iname "*Debug*" -o -iname "*DBG*" -o -iname "*DEBUG*" -o -iname "*.map" -o -iname "*.rel" -o -iname "*.elf" -o -iname "*.txt" -o -iname "*.ini" -o -iname "*.MAP" -o -iname "*.REL" -o -iname "*.ELF" -o -iname "*.TXT" -o -iname "*.INI" -o -iname "*.Map" -o -iname "*.Rel" -o -iname "*.Elf" -o -iname "*.Txt" -o -iname "*.Ini" \) -exec mv {} ../tmp \; && \
             sudo rm -rf ./* && \
             mv ../tmp/* . \
             find . && \
-            cd ..
+            cd .. && \
+            # 7z a "$file_name.7z" "$file_name"
         done
         find .
     - name: Compress

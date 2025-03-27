@@ -27,7 +27,7 @@ jobs:
             filename=$(ls *.zip | head -n 1) && \
             file_name="${filename%.zip}" && \
             mkdir "$file_name" && \
-            7z x "*.zip" -o"$file_name/" && rm "$filename" && \
+            7z x "*.zip" && rm "$filename" && \
             rvz_file=$(find . -type f -name "*.rvz") && \
             echo ENTERING DIRECTORY! && \
             cd "$file_name" && \

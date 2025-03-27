@@ -14,7 +14,7 @@ jobs:
         sudo apt install flatpak
         sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
         sudo flatpak install flathub org.DolphinEmu.dolphin-emu -y
-        sudo flatpak run --command="dolphin-tool" org.DolphinEmu.dolphin-emu
+        flatpak run --command="dolphin-tool" org.DolphinEmu.dolphin-emu
 
     - name: Downloads & extract
       run: |

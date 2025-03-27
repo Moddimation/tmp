@@ -32,7 +32,8 @@ jobs:
             flatpak run --command="dolphin-tool" org.DolphinEmu.dolphin-emu extract -i "$PWD/$rvz_file" -o "$PWD/$file_name/"
             rm *.rvz
             cd "$file_name" && \
-            find . -type f \( -iname "*dbg*" -o -iname "*debug*" -o -iname "*.map" -o -iname "*.rel" -o -iname "*.elf" -o -iname "*.txt" -o -iname "*.ini" \) -exec mv {} ../tmp \; && \
+            cd - && \
+            find . -type f \( -name "*dbg*" -o -name "*debug*" -o -name "*.map" -o -name "*.rel" -o -name "*.elf" -o -name "*.txt" -o -name "*.ini" \) -exec mv {} ../tmp \; && sudo rm -rf ./*
             sudo rm -rf ./* && \
             mv ../tmp/* . \
             find . && \

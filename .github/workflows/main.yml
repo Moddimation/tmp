@@ -10,12 +10,10 @@ jobs:
     steps:
     - name: Prepare
       run: |
-        sudo apt-get update && sudo apt-get install -y p7zip-full flatpak plocate
+        sudo apt-get update && sudo apt-get install -y p7zip-full flatpak
         sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
         sudo flatpak install flathub org.DolphinEmu.dolphin-emu -y
-        sudo updatedb
-        locate dolphin-tool
-        dolphin-tool --help
+        flatpak run org.DolphinEmu.dolphin-emu dolphin-tool --help
 
     - name: Downloads & extract
       run: |

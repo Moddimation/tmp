@@ -15,37 +15,34 @@ jobs:
         sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
         sudo flatpak install flathub org.DolphinEmu.dolphin-emu -y
 
-    - name: Downloads & extract
+    - name: Downloads & Extracts
       run: |
-        mkdir tmp
+        mkdir -p tmp
         wget https://myrient.erista.me/files/Redump/Nintendo%20-%20GameCube%20-%20NKit%20RVZ%20%5Bzstd-19-128k%5D/
         export link_prefix="https://myrient.erista.me/files/Redump/Nintendo%20-%20GameCube%20-%20NKit%20RVZ%20%5Bzstd-19-128k%5D"
-        cat index.html | grep .zip | sed 's/\" title.*//' | sed 's/.*href=\"//'  | sed 's/.*href=\"//' | while read -r zip_file; do
+        
+        cat index.html | grep .zip | sed 's/\" title.*//' | sed 's/.*href=\"//' | while read -r zip_file; do
             echo "$zip_file" && \
             wget -q "$link_prefix/$zip_file" && \
-            file_name="${*%.zip}" && \
-            find *.zip && \
-            7z x *.zip && rm *.zip && \
-            file_name="${*%.rvz}" && \
-            ls && \
-            rvz_file=$(ls *.rvz)  
-            flatpak run --command="dolphin-tool" org.DolphinEmu.dolphin-emu extract -i "$PWD/$rvz_file" -o "$PWD/$file_name/"
-            rm *.rvz
-            cd "$file_name" && \
-            cd - && ls && echo lmao && ls .. && \
-            echo $file_name && \
-            find . -type f \( -name "*dbg*" -o -name "*debug*" -o -name "*.map" -o -name "*.rel" -o -name "*.elf" -o -name "*.txt" -o -name "*.ini" \) -exec mv {} ../tmp \; && sudo rm -rf ./*
-            sudo rm -rf ./* && \
-            mv ../tmp/* . \
-            find . && \
-            cd ..
+            file_name=$(basename "$zip_file" .zip) && \
+            mkdir "$file_name" && \
+            7z x "$zip_file" -o"$file_name" && rm "$zip_file" && \
+            rvz_file=$(find "$file_name" -type f -name "*.rvz" | head -n 1) && \
+            if [ -n "$rvz_file" ]; then \
+                flatpak run --command="dolphin-tool" org.DolphinEmu.dolphin-emu extract -i "$rvz_file" -o "$file_name/"; \
+                rm "$rvz_file"; \
+            fi && \
+            find "$file_name" -type f \( -name "*dbg*" -o -name "*debug*" -o -name "*.map" -o -name "*.rel" -o -name "*.elf" -o -name "*.txt" -o -name "*.ini" \) -exec mv {} tmp/ \; && \
+            sudo rm -rf "$file_name"/* && \
+            mv tmp/* "$file_name"/ && \
+            ls "$file_name"
         done
-        find .
+
     - name: Compress
       if: success()  # Only list contents if extraction succeeded
       run: |
         7z a BundleGC.7z ./*
-        sudo rm ./*/ -rf
+        sudo rm -rf ./*/
 
     - name: Upload file list
       if: success()  # Only upload if previous steps succeeded

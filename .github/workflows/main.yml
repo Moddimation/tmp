@@ -27,11 +27,11 @@ jobs:
             filename=$(ls *.zip | head -n 1) && \
             file_name="${filename%.zip}" && \
             mkdir "$file_name" && \
-            7z x "*.zip" && rm "$filename" && \
+            7z x "$filename" && rm "$filename" && \
             rvz_file=$(ls *.zip | head -n 1) && \
             echo ENTERING DIRECTORY! && \
             cd "$file_name" && \
-            dir={pwd} && \
+            dir="$pwd" && \
             echo $dir && \
             flatpak run --command="dolphin-tool" org.DolphinEmu.dolphin-emu extract -i "$dir/../$rvz_file" -o "$dir" && \
             echo DONE EXTRACT! && \

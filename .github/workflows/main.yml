@@ -20,10 +20,12 @@ jobs:
         wget https://myrient.erista.me/files/Redump/Nintendo%20-%20GameCube%20-%20NKit%20RVZ%20%5Bzstd-19-128k%5D/
         export link_prefix="https://myrient.erista.me/files/Redump/Nintendo%20-%20GameCube%20-%20NKit%20RVZ%20%5Bzstd-19-128k%5D"
         cat index.html | grep .zip | sed 's/\" title.*//' | sed 's/.*href=\"//'  | sed 's/.*href=\"//' | while read -r zip_file; do
+            echo "$zip_file" && \
             wget -q "$link_prefix/$zip_file" && \
             file_name="${zip_file%.zip}" && \
             7z x "$zip_file" && rm "$zip_file" && \
-            rvz_file=$(ls *.rvz) && \
+            rvz_file=$(ls *.rvz 2>/dev/null) && \
+            if [ -z "$rvz_file" ]; then echo "No RVZ file found."; exit 1; fi && \
             file_name="${rvz_file%.rvz}" && \
             ls && \
             flatpak run --command="dolphin-tool extract -i \"$rvz_file\" -o \"$file_name/\"" org.DolphinEmu.dolphin-emu && \

@@ -38,7 +38,7 @@ jobs:
             find . -type f -name "*.rel" -exec mv {} ../tmp/ \; && \
             find . -type f -name "*.elf" -exec mv {} ../tmp/ \; && \
             find . -type f -name "*.txt" -exec mv {} ../tmp/ \; && \
-            find . -type f -name "*.ini" -exec mv {} ../tmp/ \; && \
+            find . -type f -name "*.ini" -exec mv {} ../tmp/ \; && ls . && echo HI && ls .. && echo NAY && ls ../tmp && echo dai && find . && \
             sudo rm -rf ./* && \
             cd .. && \
             mv tmp/* "$file_name"/ && \

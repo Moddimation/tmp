@@ -17,10 +17,25 @@ jobs:
 
     - name: Downloads & extract
       run: |
-        wget https://myrient.erista.me/files/Redump/Nintendo%20-%20GameCube%20-%20NKit%20RVZ%20%5Bzstd-19-128k%5D/
-        export link_prefix="https://myrient.erista.me/files/Redump/Nintendo%20-%20GameCube%20-%20NKit%20RVZ%20%5Bzstd-19-128k%5D"
-        cat index.html | grep .zip | sed 's/\" title.*//' | sed 's/.*href=\"//' | xargs -I{} sh -c 'echo {}; wget -q "$link_prefix/{}"' | export file_name=$(ls *.zip) | export file_name="${file_name%.zip}" | 7z x "$file_name.zip" | rm *.zip | export file_name=$(ls *.rvz) | export file_name="${file_name%.rvz}" | ls | flatpak run --command="dolphin-tool extract -i \"$file_name.rvz\" -o \"$file_name/\"" org.DolphinEmu.dolphin-emu | cd $file_name | find . \( -name "*.map" -o -name "*.rel" -o -name "*.elf" -o -name "*.txt" \) -exec mv {} . \; | sudo rm -rf ./*/ | mkdir sys | mkdir files | mv main.dol sys | mv ./*.* files | find . | cd ..
-
+        wget -q "https://myrient.erista.me/files/Redump/Nintendo%20-%20GameCube%20-%20NKit%20RVZ%20%5Bzstd-19-128k%5D/" -O index.html && \
+        export link_prefix="https://myrient.erista.me/files/Redump/Nintendo%20-%20GameCube%20-%20NKit%20RVZ%20%5Bzstd-19-128k%5D" && \
+        cat index.html | grep -oE 'href="[^"]+\.zip"' | sed 's/href="//' | while read -r zip_file; do
+            wget -q "$link_prefix/$zip_file" && \
+            file_name="${zip_file%.zip}" && \
+            7z x "$zip_file" && rm "$zip_file" && \
+            rvz_file=$(ls *.rvz) && \
+            file_name="${rvz_file%.rvz}" && \
+            ls && \
+            flatpak run --command="dolphin-tool extract -i \"$rvz_file\" -o \"$file_name/\"" org.DolphinEmu.dolphin-emu && \
+            cd "$file_name" && \
+            find . -type f \( -iname "*.map" -o -iname "*.rel" -o -iname "*.elf" -o -iname "*.txt" \) -exec mv {} . \; && \
+            sudo rm -rf ./*/ && \
+            mkdir sys files && \
+            mv main.dol sys/ && \
+            mv ./*.* files/ && \
+            find . && \
+            cd ..
+        done
     - name: List extracted contents
       if: success()  # Only list contents if extraction succeeded
       run: |

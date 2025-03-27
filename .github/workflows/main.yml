@@ -26,7 +26,7 @@ jobs:
             wget -q "$link_prefix/$zip_file" && \
             file_name=$(basename "{*.zip}" .zip) && \
             mkdir "*.zip%.zip" && \
-            7z x "*.zip" -o"$file_name" && rm "*.zip" && \
+            7z x "*.zip" -o"$file_name" && ls && rm "*.zip" && \
             rvz_file=$(find . -type f -name "*.rvz") && echo $rvz_file && \
             flatpak run --command="dolphin-tool" org.DolphinEmu.dolphin-emu extract -i "$rvz_file" -o "$file_name/" && \
             rm "$rvz_file" && \

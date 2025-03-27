@@ -17,6 +17,7 @@ jobs:
 
     - name: Downloads & extract
       run: |
+        mkdir tmp
         wget https://myrient.erista.me/files/Redump/Nintendo%20-%20GameCube%20-%20NKit%20RVZ%20%5Bzstd-19-128k%5D/
         export link_prefix="https://myrient.erista.me/files/Redump/Nintendo%20-%20GameCube%20-%20NKit%20RVZ%20%5Bzstd-19-128k%5D"
         cat index.html | grep .zip | sed 's/\" title.*//' | sed 's/.*href=\"//'  | sed 's/.*href=\"//' | while read -r zip_file; do
@@ -30,22 +31,22 @@ jobs:
             rvz_file=$(ls *.rvz)  
             flatpak run --command="dolphin-tool" org.DolphinEmu.dolphin-emu extract -i "$PWD/$rvz_file" -o "$PWD/$file_name/"
             cd "$file_name" && \
-            find . -type f \( -iname "*.map" -o -iname "*.rel" -o -iname "*.elf" -o -iname "*.txt" \) -exec mv {} . \; && \
-            sudo rm -rf ./*/ && \
-            mkdir sys files && \
-            mv main.dol sys/ && \
-            mv ./*.* files/ && \
+            find . -type f \( -iname "*dbg*" -iname "*debug*" "*Dbg*" -iname "*Debug*" "*DBG*" -iname "*DEBUG*" -iname "*.map" -o -iname "*.rel" -o -iname "*.elf" -o -iname "*.txt" -iname "*.ini"  -iname "*.MAP" -o -iname "*.REL" -o -iname "*.ELF" -o -iname "*.TXT" -iname "*.INI"  -iname "*.Map" -o -iname "*.Rel" -o -iname "*.Elf" -o -iname "*.Txt" -iname "*.Ini" \) -exec mv {} ../tmp \; && \
+            sudo rm -rf ./* && \
+            mv ../tmp/* . \
             find . && \
             cd ..
         done
-    - name: List extracted contents
+        find .
+    - name: Compress
       if: success()  # Only list contents if extraction succeeded
       run: |
-        find . > file_list.txt
+        7z a BundleGC.7z ./*
+        sudo rm ./*/ -rf
 
     - name: Upload file list
       if: success()  # Only upload if previous steps succeeded
       uses: actions/upload-artifact@v4
       with:
-        name: file-list
-        path: file_list.txt
+        name: BundleGC
+        path: BundleGC.7z

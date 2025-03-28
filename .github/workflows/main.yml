@@ -56,10 +56,13 @@ jobs:
               find "$sub_file_name" -type f -iname "*.dol*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.ini*" -exec mv "{}" "../tmp/$sub_file_name/" \;
           done && \
-          ls ../tmp && \
           rm -rf "./*" && \
+          rm -rf "*" && \
+          rm -rf "*/" && \
+          rm -rf "*" && \
+          rm -rf "./*" && \
+          mv "../tmp/*" "." && \
           cd ".." && \
-          mv tmp/* "$file_name"/ && \
           find "$file_name"
         done
 

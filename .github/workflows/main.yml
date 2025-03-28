@@ -15,7 +15,7 @@ jobs:
         chmod +x ./Dolphin*
         ./Dolphin* --appimage-extract
         find . -name "dolphin-tool"
-        chmod +x squashfs-root/shared/bin/dolphin-tool
+        chmod +x squashfs-root/bin/dolphin-tool
         rm Dolphin*
 
     - name: Downloads & Extracts
@@ -32,31 +32,32 @@ jobs:
           mkdir "$file_name" && \
           7z x "$filename" && rm "$filename" && \
           rvz_file=$(ls *.rvz | head -n 1) && \
-          squashfs-root/shared/bin/dolphin-tool extract -i "$rvz_file" -o "$file_name/" && \
+          squashfs-root/bin/dolphin-tool extract -i "$rvz_file" -o "$file_name/" && \
           rm "$rvz_file" && \
           cd "$file_name" && \
           ls -lhaR && \
-          find . -type f -iname "*dbg*" -exec mv "{}" "../tmp/" \; && \
-          find . -type f -iname "*debug*" -exec mv "{}" "../tmp/" \; && \
-          find . -type f -iname "*.map*" -exec mv "{}" "../tmp/" \; && \
-          find . -type f -iname "*.rel*" -exec mv "{}" "../tmp/" \; && \
-          find . -type f -iname "*.elf*" -exec mv "{}" "../tmp/" \; && \
-          find . -type f -iname "*.txt*" -exec mv "{}" "../tmp/" \; && \
-          find . -type f -iname "*.dol*" -exec mv "{}" "../tmp/" \; && \
-          find . -type f -iname "*.ini*" -exec mv "{}" "../tmp/" \; && \
+          find . -type f -iname "*dbg*" -exec bash -c 'mv "$0" "../tmp/$(basename "$0")"' {} \; && \
+          find . -type f -iname "*debug*" -exec bash -c 'mv "$0" "../tmp/$(basename "$0")"' {} \; && \
+          find . -type f -iname "*.map*" -exec bash -c 'mv "$0" "../tmp/$(basename "$0")"' {} \; && \
+          find . -type f -iname "*.rel*" -exec bash -c 'mv "$0" "../tmp/$(basename "$0")"' {} \; && \
+          find . -type f -iname "*.elf*" -exec bash -c 'mv "$0" "../tmp/$(basename "$0")"' {} \; && \
+          find . -type f -iname "*.txt*" -exec bash -c 'mv "$0" "../tmp/$(basename "$0")"' {} \; && \
+          find . -type f -iname "*.dol*" -exec bash -c 'mv "$0" "../tmp/$(basename "$0")"' {} \; && \
+          find . -type f -iname "*.ini*" -exec bash -c 'mv "$0" "../tmp/$(basename "$0")"' {} \; && \
           find . -type f -iname "*.tgc*" | while read -r tgc_file; do
               sub_file_name="${tgc_file%.tgc}" && \
+              mkdir "../tmp/$sub_file_name" && \
               mkdir "$sub_file_name" && \
               ../squashfs-root/bin/dolphin-tool extract -i "$tgc_file" -o "$sub_file_name" && \
               rm "$tgc_file" && \
-              find "$sub_file_name" -type f -iname "*dbg*" -exec mv "{}" "../tmp/" \; && \
-              find "$sub_file_name" -type f -iname "*debug*" -exec mv "{}" "../tmp/" \; && \
-              find "$sub_file_name" -type f -iname "*.map*" -exec mv "{}" "../tmp/" \; && \
-              find "$sub_file_name" -type f -iname "*.rel*" -exec mv "{}" "../tmp/" \; && \
-              find "$sub_file_name" -type f -iname "*.elf*" -exec mv "{}" "../tmp/" \; && \
-              find "$sub_file_name" -type f -iname "*.txt*" -exec mv "{}" "../tmp/" \; && \
-              find "$sub_file_name" -type f -iname "*.dol*" -exec mv "{}" "../tmp/" \; && \
-              find "$sub_file_name" -type f -iname "*.ini*" -exec mv "{}" "../tmp/" \;
+              find "$sub_file_name" -type f -iname "*dbg*" -exec bash -c 'mv "$0" "../tmp/$sub_file_name/$(basename "$0")"' {} \; && \
+              find "$sub_file_name" -type f -iname "*debug*" -exec bash -c 'mv "$0" "../tmp/$sub_file_name/$(basename "$0")"' {} \; && \
+              find "$sub_file_name" -type f -iname "*.map*" -exec bash -c 'mv "$0" "../tmp/$sub_file_name/$(basename "$0")"' {} \; && \
+              find "$sub_file_name" -type f -iname "*.rel*" -exec bash -c 'mv "$0" "../tmp/$sub_file_name/$(basename "$0")"' {} \; && \
+              find "$sub_file_name" -type f -iname "*.elf*" -exec bash -c 'mv "$0" "../tmp/$sub_file_name/$(basename "$0")"' {} \; && \
+              find "$sub_file_name" -type f -iname "*.txt*" -exec bash -c 'mv "$0" "../tmp/$sub_file_name/$(basename "$0")"' {} \; && \
+              find "$sub_file_name" -type f -iname "*.dol*" -exec bash -c 'mv "$0" "../tmp/$sub_file_name/$(basename "$0")"' {} \; && \
+              find "$sub_file_name" -type f -iname "*.ini*" -exec bash -c 'mv "$0" "../tmp/$sub_file_name/$(basename "$0")"' {} \;
           done && \
           ls ../tmp && \
           sudo rm -rf "./*" && \
@@ -76,4 +77,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: BundleGC
-        path: BundleGC.7z
+        path: BundleGC.7z 

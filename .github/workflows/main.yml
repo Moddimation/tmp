@@ -133,7 +133,7 @@ jobs:
               if [ -z "$(ls -A "../tmp/$sub_file_name")" ]; then rmdir "../tmp/$sub_file_name"; else echo "  < Finished '$file_name/$sub_file_name', found:"; ls $sub_file_name -m; fi
           done && \
 
-          # grep -rEl 'mwcc|metrotrk|metrowerks|mtk|msl_c' . | xargs -I{} mv "{}" "../tmp/" && \
+          grep -rE 'mwcc|metrotrk|metrowerks|mtk|msl_c' . -a #| xargs -I{} mv "{}" "../tmp/" && \
 
           echo " << Finished '$file_name', ignored types:" && \
           find . -type f | awk -F. '{if (NF>1) print $NF}' | sort -u | paste -sd "," - && \

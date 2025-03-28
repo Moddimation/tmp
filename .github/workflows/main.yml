@@ -33,32 +33,31 @@ jobs:
           flatpak run --command="dolphin-tool" --filesystem=host org.DolphinEmu.dolphin-emu extract -i "$rvz_file" -o "$file_name/" && \
           rm "$rvz_file" && \
           cd "$file_name" && \
-          ls -lhaR && \
-          find . -type f -iname "*dbg*" -exec bash -c 'mv "$0" "../tmp/$(basename "$0")"' {} \; && \
-          find . -type f -iname "*debug*" -exec bash -c 'mv "$0" "../tmp/$(basename "$0")"' {} \; && \
-          find . -type f -iname "*.map*" -exec bash -c 'mv "$0" "../tmp/$(basename "$0")"' {} \; && \
-          find . -type f -iname "*.rel*" -exec bash -c 'mv "$0" "../tmp/$(basename "$0")"' {} \; && \
-          find . -type f -iname "*.elf*" -exec bash -c 'mv "$0" "../tmp/$(basename "$0")"' {} \; && \
-          find . -type f -iname "*.txt*" -exec bash -c 'mv "$0" "../tmp/$(basename "$0")"' {} \; && \
-          find . -type f -iname "*.dol*" -exec bash -c 'mv "$0" "../tmp/$(basename "$0")"' {} \; && \
-          find . -type f -iname "*.ini*" -exec bash -c 'mv "$0" "../tmp/$(basename "$0")"' {} \; && \
+          find . -type f -iname "*dbg*" -exec mv "{}" "../tmp/" \; && \
+          find . -type f -iname "*debug*" -exec mv "{}" "../tmp/" \; && \
+          find . -type f -iname "*.map*" -exec mv "{}" "../tmp/" \; && \
+          find . -type f -iname "*.rel*" -exec mv "{}" "../tmp/" \; && \
+          find . -type f -iname "*.elf*" -exec mv "{}" "../tmp/" \; && \
+          find . -type f -iname "*.txt*" -exec mv "{}" "../tmp/" \; && \
+          find . -type f -iname "*.dol*" -exec mv "{}" "../tmp/" \; && \
+          find . -type f -iname "*.ini*" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.tgc*" | while read -r tgc_file; do
               sub_file_name="${tgc_file%.tgc}" && \
               mkdir "../tmp/$sub_file_name" && \
               mkdir "$sub_file_name" && \
               flatpak run --command="dolphin-tool" --filesystem=host org.DolphinEmu.dolphin-emu extract  -i "$tgc_file" -o "$sub_file_name" && \
               rm "$tgc_file" && \
-              find "$sub_file_name" -type f -iname "*dbg*" -exec bash -c 'mv "$0" "../tmp/$sub_file_name/$(basename "$0")"' {} \; && \
-              find "$sub_file_name" -type f -iname "*debug*" -exec bash -c 'mv "$0" "../tmp/$sub_file_name/$(basename "$0")"' {} \; && \
-              find "$sub_file_name" -type f -iname "*.map*" -exec bash -c 'mv "$0" "../tmp/$sub_file_name/$(basename "$0")"' {} \; && \
-              find "$sub_file_name" -type f -iname "*.rel*" -exec bash -c 'mv "$0" "../tmp/$sub_file_name/$(basename "$0")"' {} \; && \
-              find "$sub_file_name" -type f -iname "*.elf*" -exec bash -c 'mv "$0" "../tmp/$sub_file_name/$(basename "$0")"' {} \; && \
-              find "$sub_file_name" -type f -iname "*.txt*" -exec bash -c 'mv "$0" "../tmp/$sub_file_name/$(basename "$0")"' {} \; && \
-              find "$sub_file_name" -type f -iname "*.dol*" -exec bash -c 'mv "$0" "../tmp/$sub_file_name/$(basename "$0")"' {} \; && \
-              find "$sub_file_name" -type f -iname "*.ini*" -exec bash -c 'mv "$0" "../tmp/$sub_file_name/$(basename "$0")"' {} \;
+              find "$sub_file_name" -type f -iname "*dbg*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
+              find "$sub_file_name" -type f -iname "*debug*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
+              find "$sub_file_name" -type f -iname "*.map*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
+              find "$sub_file_name" -type f -iname "*.rel*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
+              find "$sub_file_name" -type f -iname "*.elf*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
+              find "$sub_file_name" -type f -iname "*.txt*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
+              find "$sub_file_name" -type f -iname "*.dol*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
+              find "$sub_file_name" -type f -iname "*.ini*" -exec mv "{}" "../tmp/$sub_file_name/" \;
           done && \
           ls ../tmp && \
-          sudo rm -rf "./*" && \
+          rm -rf "./*" && \
           cd ".." && \
           mv tmp/* "$file_name"/ && \
           find "$file_name"

@@ -30,28 +30,26 @@ jobs:
             7z x "$filename" && rm "$filename" && \
             rvz_file=$(ls *.rvz | head -n 1) && \
             echo ENTERING DIRECTORY! && \
-            cd "$GITHUB_WORKFLOW/$file_name" && \
-            dir=$GITHUB_WORKFLOW && \
-            echo $dir && \
-            ls "$dir" -lha && \
-            ls "$dir/$file_name" -lha && \
-            flatpak run --command="dolphin-tool" org.DolphinEmu.dolphin-emu extract -i "$dir/$rvz_file" -o "$dir/$file_name/" && \
+            cd "$file_name" && \
+            ls . -lha && \
+            flatpak run --command="dolphin-tool" org.DolphinEmu.dolphin-emu extract -i "../$rvz_file" && \
             echo DONE EXTRACT! && \
             ls -lha && \
-            ls ../ -lha && \
+            ls "../" -lha && \
             rm "../$rvz_file" && \
             echo THIS IS ABOUT TO MOVE! && \
-            find . -type f -name "*dbg*" -exec mv {} ../tmp/ \; && \
-            find . -type f -name "*debug*" -exec mv {} ../tmp/ \; && \
-            find . -type f -name "*.map" -exec mv {} ../tmp/ \; && \
-            find . -type f -name "*.rel" -exec mv {} ../tmp/ \; && \
-            find . -type f -name "*.elf" -exec mv {} ../tmp/ \; && \
-            find . -type f -name "*.txt" -exec mv {} ../tmp/ \; && \
-            find . -type f -name "*.ini" -exec mv {} ../tmp/ \; && \
+            find . -type f -iname "*dbg*" -exec mv "{}" "../tmp/" \; && \
+            find . -type f -iname "*debug*" -exec mv "{}" "../tmp/" \; && \
+            find . -type f -iname "*.map" -exec mv "{}" "../tmp/" \; && \
+            find . -type f -iname "*.rel" -exec mv "{}" "../tmp/" \; && \
+            find . -type f -iname "*.elf" -exec mv "{}" "../tmp/" \; && \
+            find . -type f -iname "*.txt" -exec mv "{}" "../tmp/" \; && \
+            find . -type f -iname "*.dol" -exec mv "{}" "../tmp/" \; && \
+            find . -type f -iname "*.ini" -exec mv "{}" "../tmp/" \; && \
             echo THIS HAS MOVED! && \
             ls -lha && \
-            sudo rm -rf ./* && \
-            cd .. && \
+            sudo rm -rf "./*" && \
+            cd ".." && \
             mv tmp/* "$file_name"/ && \
             ls "$file_name"
         done

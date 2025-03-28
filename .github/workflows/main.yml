@@ -73,6 +73,7 @@ jobs:
           find . -type f -iname "*.rsym*" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.lua*" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.rso*" -exec mv "{}" "../tmp/" \; && \
+          find . -type f -iname "*.cfg*" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.csv*" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.gci*" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.sav*" -exec mv "{}" "../tmp/" \; && \
@@ -110,6 +111,7 @@ jobs:
               find "$sub_file_name" -type f -iname "*.gci*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.sav*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.bat" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
+              find "$sub_file_name" -type f -iname "*.cfg*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.sh" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.s" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.c" -exec mv "{}" "../tmp/$sub_file_name/" \; && \

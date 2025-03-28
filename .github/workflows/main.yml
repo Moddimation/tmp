@@ -135,7 +135,7 @@ jobs:
           mv ../tmp/* . && \
           rm ../tmp/* -f && \
           rm *lang* *locale* *CONTENT* -f && \
-          grep -El 'main|_start|.text|0x|#!/bin|%|200.*_.*' *.txt | xargs rm && \
+          grep -El 'main|_start|.text|0x|#!/bin|%|200.*_.*' *.txt *.Txt *.TXT *.map *.Map *.MAP | xargs rm && \
           cd .. && \
           echo "    Found:" && \
           ls "$file_name" -m && \

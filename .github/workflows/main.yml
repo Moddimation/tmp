@@ -141,8 +141,8 @@ jobs:
           cd .. && \
           echo "    Found:" && \
           ls "$file_name" -m && \
-          rmdir "$file_name"
         done
+        find . -type d -empty -delete
 
     - name: Compress
       if: success()  # Only list contents if extraction succeeded

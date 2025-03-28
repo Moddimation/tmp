@@ -133,14 +133,11 @@ jobs:
               if [ -z "$(ls -A "../tmp/$sub_file_name")" ]; then rmdir "../tmp/$sub_file_name"; else echo "  < Finished '$file_name/$sub_file_name', found:"; ls $sub_file_name -m; fi
           done && \
 
-          grep -rEl '.text|.bss|.data' . | xargs -I{} mv "{}" "../tmp" && \
+          grep -rEl 'mwcc|metrotrk|metrowerks|mtk' . | xargs -I{} mv "{}" "../tmp/" && \
 
           echo " << Finished '$file_name', ignored types:" && \
           find . -type f | awk -F. '{if (NF>1) print $NF}' | sort -u | paste -sd "," - && \
 
-          rm -rf ./* && \
-
-          find ../tmp && \
           if [ -z "$(ls -A ../tmp/)" ]; then 
             echo " !  No code data found, continue";
             rm -rf ../tmp/*;
@@ -148,9 +145,10 @@ jobs:
             rm -rf "$file_name";
             continue;
           fi && \
-          find ../tmp && \
 
-          mv "../tmp/*" "." && \
+          rm -rf ./* && \
+          mv "../tmp/*" "./" && \
+          ls ../tmp/ && \
           rm -rf "../tmp/*" -f && \
           rm -f *lang* *locale* *CONTENT* && \
           

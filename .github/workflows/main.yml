@@ -140,9 +140,12 @@ jobs:
                     
           rm -rf ./* && \
                     
-          if [ -z "$(ls -A .)" ]; then 
+          if [ -z "$(ls .)" ]; then 
             echo " !  No code data found, continue"; 
-            continue; 
+            rm -rf ../tmp/*;
+            cd ..;
+            rm -rf "$file_name"
+            continue;
           fi && \
           
           mv ../tmp/* . && \
@@ -154,7 +157,6 @@ jobs:
           cd .. && \
           echo "    Found:" && \
           ls "$file_name" -m && \
-          find .
         done
         find . -type d -empty -delete
 

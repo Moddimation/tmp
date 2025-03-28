@@ -33,6 +33,7 @@ jobs:
         
     - name: Downloads & Extracts
       run: |
+        set -e
         echo " # Starting, download index.html ..."
         mkdir -p tmp
         wget -q https://myrient.erista.me/files/Redump/Nintendo%20-%20GameCube%20-%20NKit%20RVZ%20%5Bzstd-19-128k%5D/
@@ -63,7 +64,6 @@ jobs:
           echo " # Filter data ..." && \
           rm -rf ../tmp && \
           mkdir -p ../tmp && \
-          find . -type f -iname "*dbg*" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*debug*" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.map*" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.rel*" -exec mv "{}" "../tmp/" \; && \
@@ -85,22 +85,21 @@ jobs:
           find . -type f -iname "*.sh" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.xml*" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.s" -exec mv "{}" "../tmp/" \; && \
+          find . -type f -iname "*.a" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.c" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.h" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.cpp" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.hpp" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.o" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.*log*" -exec mv "{}" "../tmp/" \; && \
-          find . -type f \( -iname "*.tgc*" -o -iname "*.gcm*" -o -iname "*.iso*" \) | while read -r tgc_file; do
-              echo " > Found sub-archive: '$tgc_file'" && \
-              sub_file_name="${tgc_file%.tgc}" && \
+          find . -type f | while read -r possible_archive_file; do
+              sub_file_name=$(basename "$possible_archive_file" | sed 's/\.[^.]*$//') && \
               mkdir "../tmp/$sub_file_name" && \
               mkdir "$sub_file_name" && \
-              echo "  # Extracting sub game ..." && \
-              flatpak run --command="dolphin-tool" --filesystem=host org.DolphinEmu.dolphin-emu extract -i "$tgc_file" -o "$sub_file_name" -q && \
-              rm "$tgc_file" && \
-              echo "  # Filter sub data ..." && \
-              find "$sub_file_name" -type f -iname "*dbg*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
+              flatpak run --command="dolphin-tool" --filesystem=host org.DolphinEmu.dolphin-emu extract -i "$possible_archive_file" -o "$sub_file_name" -q && \
+              rm "$possible_archive_file" && \
+              if [ -z "$(ls -A "$sub_file_name")" ]; then rm -rf "$sub_file_name"; rm -rf "../tmp/$sub_file_name"; continue; fi && \
+              echo "  > Found sub archive, processing: '$sub_file_name'" && \
               find "$sub_file_name" -type f -iname "*debug*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.map*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.rel*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
@@ -121,6 +120,7 @@ jobs:
               find "$sub_file_name" -type f -iname "*.sh" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.s" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.c" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
+              find "$sub_file_name" -type f -iname "*.a" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.cpp" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.h" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.hpp" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
@@ -128,16 +128,26 @@ jobs:
               find "$sub_file_name" -type f -iname "*.xml*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.*log*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.ini*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
-              echo "  < Finished '$file_name/$sub_file_name', found:" && \
-              ls $sub_file_name -m
+              grep -rEl '_start|.text|.bss|.data|#include' "$sub_file_name" | xargs -I{} mv {} "../tmp/$sub_file_name" && \grep -El '_start|.text|.bss|.data|0x|#!/bin|%|dvd|debug|build|dbg|.*.o|.*.a|.*.c|.*.h' *.map *.txt *.csv *.ini *.xml *.cfg 2>/dev/null | xargs rm -f && \
+              grep -El '_start|.text|.bss|.data|0x|#!/bin|%|dvd|debug|build|dbg|.*.o|.*.a|.*.c|.*.h' *.map *.txt *.csv *.ini *.xml *.cfg 2>/dev/null | xargs rm -f && \
+              rm -rf "$sub_file_name" && \
+              if [ -z "$(ls -A "../tmp/$sub_file_name")" ]; then rmdir "../tmp/$sub_file_name"; else echo "  < Finished '$file_name/$sub_file_name', found:"; ls $sub_file_name -m; fi
           done && \
+          
+          grep -rEl '_start|.text|.bss|.data|#include' . | xargs -I{} mv {} ../tmp && \
+          
           echo " << Finished '$file_name', ignored types:" && \
           find . -type f | awk -F. '{if (NF>1) print $NF}' | sort -u | paste -sd "," - && \
+          
           rm -rf ./* && \
-          mv ../tmp/* . && \
+          
+          if [ -z "$(ls -A "$sub_file_name")" ]; then echo " << No code data found, continue"; continue; else mv ../tmp/* . && \
+          
           rm ../tmp/* -f && \
           rm *lang* *locale* *CONTENT* -f && \
-          grep -El 'main|_start|.text|0x|#!/bin|%|200.*_.*|dvd|debug|build|dbg|.*.o|.*.a' *.map *.txt *.csv *.ini *.xml *.cfg 2>/dev/null | xargs rm -f && \
+          
+          grep -El '_start|.text|.bss|.data|0x|#!/bin|%|dvd|debug|build|dbg|.*.o|.*.a|.*.c|.*.h' *.map *.txt *.csv *.ini *.xml *.cfg 2>/dev/null | xargs rm -f && \
+          
           cd .. && \
           echo "    Found:" && \
           ls "$file_name" -m

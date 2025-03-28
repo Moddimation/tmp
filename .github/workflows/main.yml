@@ -68,11 +68,11 @@ jobs:
           find . -type f -iname "*.o" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.*log*" -exec mv "{}" "../tmp/" \; && \
           find . -type f \( -iname "*.tgc*" -o -iname "*.gcm*" -o -iname "*.iso*" \) | while read -r tgc_file; do
-              echo "Found sub-archive: $tgc_file"
+              echo "Found sub-archive: $tgc_file" && \
               sub_file_name="${tgc_file%.tgc}" && \
               mkdir "../tmp/$sub_file_name" && \
               mkdir "$sub_file_name" && \
-              echo Extracting sub game ... &
+              echo Extracting sub game ... && \
               flatpak run --command="dolphin-tool" --filesystem=host org.DolphinEmu.dolphin-emu extract  -i "$tgc_file" -o "$sub_file_name" -q >/dev/null && \
               rm "$tgc_file" && \
               echo Filter sub data ... && \
@@ -98,9 +98,9 @@ jobs:
               find "$sub_file_name" -type f -iname "*.o" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.xml*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.*log*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
-              find "$sub_file_name" -type f -iname "*.ini*" -exec mv "{}" "../tmp/$sub_file_name/" \;
+              find "$sub_file_name" -type f -iname "*.ini*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               echo Finished $file_name/$sub_file_name, found: && \
-              ls $sub_file_name && \
+              ls $sub_file_name
           done && \
           rm -rf ./* && \
           mv ../tmp/* . && \

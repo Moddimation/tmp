@@ -13,6 +13,7 @@ jobs:
   download_extract_list:
     runs-on: ubuntu-latest
         
+    steps:
     - name: Setup env
       run: |
         export $(dbus-launch)
@@ -22,7 +23,6 @@ jobs:
         chmod 700 $XDG_RUNTIME_DIR
         echo "XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR" >> $GITHUB_ENV
 
-    steps:
     - name: Prepare
       run: |
         sudo apt-get update && sudo apt-get install -y p7zip-full

@@ -16,6 +16,7 @@ jobs:
         ./Dolphin* --appimage-extract
         find . -name "dolphin-tool"
         chmod +x squashfs-root/bin/dolphin-tool
+        rm Dolphin*
 
     - name: Downloads & Extracts
       run: |
@@ -49,11 +50,10 @@ jobs:
             find . -type f -iname "*.dol" -exec mv "{}" "../tmp/" \; && \
             find . -type f -iname "*.ini" -exec mv "{}" "../tmp/" \; && \
             echo THIS HAS MOVED! && \
-            ls -lha && \
             sudo rm -rf "./*" && \
             cd ".." && \
             mv tmp/* "$file_name"/ && \
-            ls "$file_name"
+            find "$file_name"
         done
 
     - name: Compress

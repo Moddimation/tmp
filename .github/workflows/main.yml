@@ -146,6 +146,7 @@ jobs:
             continue;
           fi && \
 
+          ls ../tmp/ && \
           rm -rf ./* && \
           ls ../tmp/ && \
           mv "../tmp/*" "./" && \

@@ -60,7 +60,6 @@ jobs:
           flatpak run --command="dolphin-tool" --filesystem=host org.DolphinEmu.dolphin-emu extract -i "$rvz_file" -o "$file_name/" -q && \
           rm "$rvz_file" && \
           cd "$file_name" && \
-          ls && \
           echo " # Filter data ..." && \
           rm -rf ../tmp && \
           mkdir -p ../tmp && \
@@ -94,8 +93,8 @@ jobs:
           find . -type f -iname "*.*log*" -exec mv "{}" "../tmp/" \; && \
           find . -type f | while read -r possible_archive_file; do
               sub_file_name=$(basename "$possible_archive_file" | sed 's/\.[^.]*$//') && \
-              mkdir "../tmp/$sub_file_name" && \
-              mkdir "$sub_file_name" && \
+              mkdir "../tmp/$sub_file_name" -p && \
+              mkdir "$sub_file_name" -p && \
               flatpak run --command="dolphin-tool" --filesystem=host org.DolphinEmu.dolphin-emu extract -i "$possible_archive_file" -o "$sub_file_name" -q > nul && \
               rm "$possible_archive_file" && \
               if [ -z "$(ls -A "$sub_file_name/*")" ]; then rm -rf "$sub_file_name"; rm -rf "../tmp/$sub_file_name"; continue; fi && \
@@ -141,7 +140,7 @@ jobs:
                     
           rm -rf ./* && \
                     
-          if [ -z "$(ls -A "$sub_file_name")" ]; then 
+          if [ -z "$(ls -A .)" ]; then 
             echo " << No code data found, continue"; 
             continue; 
           fi && \
@@ -154,7 +153,8 @@ jobs:
           
           cd .. && \
           echo "    Found:" && \
-          ls "$file_name" -m
+          ls "$file_name" -m && \
+          find .
         done
         find . -type d -empty -delete
 

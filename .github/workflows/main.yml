@@ -140,13 +140,13 @@ jobs:
                     
           rm -rf ./* && \
                     
-          if [ -z "$(ls -A "$sub_file_name")" ]; then echo " << No code data found, continue"; continue; else mv ../tmp/* . && \
+          if [ -z "$(ls -A "$sub_file_name")" ]; then echo " << No code data found, continue"; continue; && \
+          mv ../tmp/* . && \
                     
           rm -rf ../tmp/* -f && \
           rm -f *lang* *locale* *CONTENT* && \
                     
           grep -El '_start|.text|.bss|.data|0x|#!/bin|%|dvd|debug|build|dbg|.*.o|.*.a|.*.c|.*.h' *.map *.txt *.csv *.ini *.xml *.cfg 2>/dev/null | xargs rm -f && \
-          fi
 
           cd .. && \
           echo "    Found:" && \

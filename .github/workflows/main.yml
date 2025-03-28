@@ -91,7 +91,7 @@ jobs:
           find . -type f -iname "*.hpp" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.o" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.*log*" -exec mv "{}" "../tmp/" \; && \
-          find . -type f | while read -r possible_archive_file; do
+          find . -type f \( -iname *.iso -or -iname *.gcm -or -iname *.tgc \) | while read -r possible_archive_file; do
               sub_file_name=$(basename "$possible_archive_file" | sed 's/\.[^.]*$//') && \
               mkdir "../tmp/$sub_file_name" -p && \
               mkdir "$sub_file_name" -p && \
@@ -141,7 +141,7 @@ jobs:
           rm -rf ./* && \
                     
           if [ -z "$(ls -A .)" ]; then 
-            echo " << No code data found, continue"; 
+            echo " !  No code data found, continue"; 
             continue; 
           fi && \
           
@@ -149,7 +149,7 @@ jobs:
           rm -rf ../tmp/* -f && \
           rm -f *lang* *locale* *CONTENT* && \
           
-          grep -El '_start|.text|.bss|.data|0x|#!/bin|%|dvd|debug|build|dbg|.*.o|.*.a|.*.c|.*.h' *.map *.txt *.csv *.ini *.xml *.cfg 2>/dev/null | xargs rm -f && \
+          grep -El '_start|.text|.bss|.data|0x|#!/bin|%|dvd|debug|release|build|dbg|.*.o|.*.a|.*.c|.*.h|.*.rel' *.map *.txt *.csv *.ini *.xml *.cfg 2>/dev/null | xargs rm -f && \
           
           cd .. && \
           echo "    Found:" && \

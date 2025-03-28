@@ -148,11 +148,11 @@ jobs:
 
           rm -rf ./* && \
           cd ../tmp && \
-          
+
           rm -f *lang* *locale* *CONTENT* && \
           grep -El '_start|.text|.bss|.data|0x|#!/bin|%|dvd|debug|release|build|dbg|.*.o|.*.a|.*.c|.*.h|.*.rel' *.map *.txt *.csv *.ini *.xml *.cfg 2>/dev/null | xargs rm -f && \
 
-          ls | xargs -I{} mv "{}" "../$file_name" && \ 
+          ls | xargs -I{} mv "{}" "../$file_name" && \
           rm -rf "./*" && \
 
           cd .. && \

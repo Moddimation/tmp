@@ -1,7 +1,13 @@
-name: Download, Extract, and List Contents of 7z File
+name: Extract code and references from GameCube games.
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - "**"  # Runs on every commit on any branch
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   download_extract_list:

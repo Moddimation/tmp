@@ -156,7 +156,7 @@ jobs:
           
           cd .. && \
           echo "    Found:" && \
-          ls "$file_name" -m && \
+          ls "$file_name" -m
         done
         find . -type d -empty -delete
 

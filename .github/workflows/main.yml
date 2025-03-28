@@ -41,6 +41,13 @@ jobs:
           find . -type f -iname "*.txt*" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.dol*" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.ini*" -exec mv "{}" "../tmp/" \; && \
+          find . -type f -iname "*.sym*" -exec mv "{}" "../tmp/" \; && \
+          find . -type f -iname "*.rsym*" -exec mv "{}" "../tmp/" \; && \
+          find . -type f -iname "*.lua*" -exec mv "{}" "../tmp/" \; && \
+          find . -type f -iname "*.rso*" -exec mv "{}" "../tmp/" \; && \
+          find . -type f -iname "*.csv*" -exec mv "{}" "../tmp/" \; && \
+          find . -type f -iname "*.xml*" -exec mv "{}" "../tmp/" \; && \
+          find . -type f -iname "*.*log*" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.tgc*" | while read -r tgc_file; do
               sub_file_name="${tgc_file%.tgc}" && \
               mkdir "../tmp/$sub_file_name" && \
@@ -54,6 +61,13 @@ jobs:
               find "$sub_file_name" -type f -iname "*.elf*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.txt*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.dol*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
+              find "$sub_file_name" -type f -iname "*.sym*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
+              find "$sub_file_name" -type f -iname "*.rsym*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
+              find "$sub_file_name" -type f -iname "*.lua*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
+              find "$sub_file_name" -type f -iname "*.rso*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
+              find "$sub_file_name" -type f -iname "*.csv*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
+              find "$sub_file_name" -type f -iname "*.xml*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
+              find "$sub_file_name" -type f -iname "*.*log*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.ini*" -exec mv "{}" "../tmp/$sub_file_name/" \;
           done && \
           rm -rf ./* && \

@@ -148,10 +148,8 @@ jobs:
             continue;
           fi && \
 
-          mv "../tmp/*" . && \
-          echo test REMOVEME && \
-          rm -rf "../tmp/*" -f && \ 
-          echo "TESTTT" && \
+          mv "../tmp/*" "." && \
+          rm -rf "../tmp/*" -f && \
           rm -f *lang* *locale* *CONTENT* && \
           
 

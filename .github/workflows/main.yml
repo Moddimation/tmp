@@ -43,7 +43,7 @@ jobs:
             find . -type f -iname "*.txt" -exec mv "{}" "../tmp/" \; && \
             find . -type f -iname "*.dol" -exec mv "{}" "../tmp/" \; && \
             find . -type f -iname "*.ini" -exec mv "{}" "../tmp/" \; && \
-            ls ..\tmp && \
+            ls ../tmp && \
             sudo rm -rf "./*" && \
             cd ".." && \
             mv tmp/* "$file_name"/ && \

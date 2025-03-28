@@ -57,10 +57,10 @@ jobs:
           rm "$filename" && \
           rvz_file=$(ls *.rvz | head -n 1) && \
           echo " # Extracting game ..." && \
-          ls && echo $rvz_file && \
           flatpak run --command="dolphin-tool" --filesystem=host org.DolphinEmu.dolphin-emu extract -i "$rvz_file" -o "$file_name/" -q && \
           rm "$rvz_file" && \
           cd "$file_name" && \
+          ls && \
           echo " # Filter data ..." && \
           rm -rf ../tmp && \
           mkdir -p ../tmp && \
@@ -96,9 +96,9 @@ jobs:
               sub_file_name=$(basename "$possible_archive_file" | sed 's/\.[^.]*$//') && \
               mkdir "../tmp/$sub_file_name" && \
               mkdir "$sub_file_name" && \
-              flatpak run --command="dolphin-tool" --filesystem=host org.DolphinEmu.dolphin-emu extract -i "$possible_archive_file" -o "$sub_file_name" -q && \
+              flatpak run --command="dolphin-tool" --filesystem=host org.DolphinEmu.dolphin-emu extract -i "$possible_archive_file" -o "$sub_file_name" -q > nul && \
               rm "$possible_archive_file" && \
-              if [ -z "$(ls -A "$sub_file_name")" ]; then rm -rf "$sub_file_name"; rm -rf "../tmp/$sub_file_name"; continue; fi && \
+              if [ -z "$(ls -A "$sub_file_name/*")" ]; then rm -rf "$sub_file_name"; rm -rf "../tmp/$sub_file_name"; continue; fi && \
               echo "  > Found sub archive, processing: '$sub_file_name'" && \
               find "$sub_file_name" -type f -iname "*debug*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.map*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \

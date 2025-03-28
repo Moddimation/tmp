@@ -10,7 +10,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  download_extract_list:
+  Get_GC_CODE_DATA:
     runs-on: ubuntu-latest
         
     steps:
@@ -129,10 +129,10 @@ jobs:
               find "$sub_file_name" -type f -iname "*.xml*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.*log*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.ini*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
-              grep -lrE 'mwcc|metrotrk|metrowerks|msl_c' . | xargs -I{} mv "{}" "../tmp/$sub_file_name/" && \
+              grep -lrEs 'mwcc|metrotrk|metrowerks|msl_c' . | xargs -I{} mv "{}" "../tmp/$sub_file_name/" && \
               cd "../tmp/$sub_file_name" && \
-              grep -Evl '_start|.text|.bss|.data|0x|#!/bin|%|dvd|debug|release|build|dbg|.*.o|.*.a|.*.c|.*.h|.*.rel|text section layout' *.map *.txt *.csv *.ini *.xml *.cfg | xargs -I{} rm -f {} 2>/dev/null && \
-              find . -type f \( -iname *.h4m -or -iname *.sni -or -iname .gsf -or -iname *.zsd -or -iname *.thp -or -iname *.mpc -or -iname *.bmd -or -iname *.fpk \) -exec rm {} \; && \
+              grep -Evls '_start|.text|.bss|.data|0x|#!/bin|%|dvd|debug|release|build|dbg|.*.o|.*.a|.*.c|.*.h|.*.rel|text section layout' *.map *.txt *.csv *.ini *.xml *.cfg | xargs -I{} rm -f {} 2>/dev/null && \
+              find . -type f \( -iname *.h4m -or -iname *.sni -or -iname .gsf -or -iname *.zsd -or -iname *.thp -or -iname *.mpc -or -iname *.bmd -or -iname *.fpk -or -iname *.viv -or -iname *.ngc \) -exec rm {} \; && \
               cd "../$file_name" && \
               rm -rf "$sub_file_name" && \
               if [ -z "$(ls -A "../tmp/$sub_file_name")" ]; then
@@ -148,7 +148,7 @@ jobs:
               ls ../tmp/$sub_file_name -m
           done && \
 
-          grep -lrEi '__start|mwcc|metrotrk|metrowerks|msl_c|runtime' . | xargs -I{} mv "{}" "../tmp/" && \
+          grep -lrEis '__start|mwcc|metrotrk|metrowerks|msl_c|runtime' . | xargs -I{} mv "{}" "../tmp/" && \
 
           echo " << Finished '$file_name'" && \
           echo "    Ignored:" && \
@@ -166,8 +166,8 @@ jobs:
           cd ../tmp && \
 
           rm -f *lang* *locale* *CONTENT* && \
-          grep -Evl '_start|.text|.bss|.data|0x|#!/bin|%|dvd|debug|release|build|dbg|.*.o|.*.a|.*.c|.*.h|.*.rel|text section layout' *.map *.txt *.csv *.ini *.xml *.cfg | xargs -I{} rm -f {} 2>/dev/null && \
-          find . -type f \( -iname *.h4m -or -iname *.sni -or -iname .gsf -or -iname *.zsd -or -iname *.thp -or -iname *.mpc -or -iname *.bmd -or -iname *.fpk \) -exec rm {} \; && \
+          grep -Evls '_start|.text|.bss|.data|0x|#!/bin|%|dvd|debug|release|build|dbg|.*.o|.*.a|.*.c|.*.h|.*.rel|text section layout' *.map *.txt *.csv *.ini *.xml *.cfg | xargs -I{} rm -f {} 2>/dev/null && \
+          find . -type f \( -iname *.h4m -or -iname *.sni -or -iname .gsf -or -iname *.zsd -or -iname *.thp -or -iname *.mpc -or -iname *.bmd -or -iname *.fpk -or -iname *.viv -or -iname *.ngc \) -exec rm {} \; && \
 
           ls | xargs -I{} mv "{}" "../$file_name" && \
           rm -rf "./*" && \

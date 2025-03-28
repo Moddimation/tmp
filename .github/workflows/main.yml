@@ -79,6 +79,7 @@ jobs:
           find . -type f -iname "*.csv*" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.gci*" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.sav*" -exec mv "{}" "../tmp/" \; && \
+          find . -type f -iname "*.div" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.bat" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.dlf" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.sh" -exec mv "{}" "../tmp/" \; && \
@@ -129,10 +130,10 @@ jobs:
               find "$sub_file_name" -type f -iname "*.xml*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.*log*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.ini*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
-              grep -lrEs 'mwcc|metrotrk|metrowerks|msl_c' . | xargs -I{} mv "{}" "../tmp/$sub_file_name/" && \
+              grep -lrEs 'mwcc|metrotrk|metrowerks|msl_c|.*.rel|text section layout' . | xargs -I{} mv "{}" "../tmp/$sub_file_name/" && \
               cd "../tmp/$sub_file_name" && \
-              grep -Evls '_start|.text|.bss|.data|0x|#!/bin|%|dvd|debug|release|build|dbg|.*.o|.*.a|.*.c|.*.h|.*.rel|text section layout' *.map *.txt *.csv *.ini *.xml *.cfg | xargs -I{} rm -f {} 2>/dev/null && \
-              find . -type f \( -iname "*.h4m" -or -iname "*.sni" -or -iname "*.gsf" -or -iname "*.zsd" -or -iname "*.thp" -or -iname "*.mpc" -or -iname "*.bmd" -or -iname "*.fpk" -or -iname "*.viv" -or -iname "*.ngc" \) -exec rm {} \; && \
+              grep -Evls '__start|.text|.bss|.data|0x|#!/bin|%|debug|release|build|.*.o|.*.a|.*.c|.*.h|.*.rel|text section layout' *.map *.txt *.csv *.ini *.xml *.cfg | xargs -I{} rm -f {} 2>/dev/null && \
+              find . -type f \( -iname "*.h4m" -or -iname "*.sni" -or -iname "*.gsf" -or -iname "*.zsd" -or -iname "*.thp" -or -iname "*.mpc" -or -iname "*.bmd" -or -iname "*.fpk" -or -iname "*.viv" -or -iname "*.ngc" -or -iname "*.div" -or -iname "*.vid" -or -iname "*.vp* -or -iname "*.spt"" \) -exec rm {} \; && \
               cd "../$file_name" && \
               rm -rf "$sub_file_name" && \
               if [ -z "$(ls -A "../tmp/$sub_file_name")" ]; then
@@ -148,7 +149,7 @@ jobs:
               ls ../tmp/$sub_file_name -m
           done && \
 
-          grep -lrEis '__start|mwcc|metrotrk|metrowerks|msl_c|runtime' . | xargs -I{} mv "{}" "../tmp/" && \
+          grep -lrEis '__start|mwcc|metrotrk|metrowerks|msl_c|runtime|.*.rel|text section layout' . | xargs -I{} mv "{}" "../tmp/" && \
 
           echo " << Finished '$file_name'" && \
           echo "    Ignored:" && \
@@ -166,8 +167,8 @@ jobs:
           cd ../tmp && \
 
           rm -f *lang* *locale* *CONTENT* && \
-          grep -Evls '_start|.text|.bss|.data|0x|#!/bin|%|dvd|debug|release|build|dbg|.*.o|.*.a|.*.c|.*.h|.*.rel|text section layout' *.map *.txt *.csv *.ini *.xml *.cfg | xargs -I{} rm -f {} 2>/dev/null && \
-          find . -type f \( -iname "*.h4m" -or -iname "*.sni" -or -iname "*.gsf" -or -iname "*.zsd" -or -iname "*.thp" -or -iname "*.mpc" -or -iname "*.bmd" -or -iname "*.fpk" -or -iname "*.viv" -or -iname "*.ngc" \) -exec rm {} \; && \
+          grep -Evls '__start|.text|.bss|.data|0x|#!/bin|%|debug|release|build|.*.o|.*.a|.*.c|.*.h|.*.rel|text section layout' *.map *.txt *.csv *.ini *.xml *.cfg | xargs -I{} rm -f {} 2>/dev/null && \
+          find . -type f \( -iname "*.h4m" -or -iname "*.sni" -or -iname "*.gsf" -or -iname "*.zsd" -or -iname "*.thp" -or -iname "*.mpc" -or -iname "*.bmd" -or -iname "*.fpk" -or -iname "*.viv" -or -iname "*.ngc" -or -iname "*.div" -or -iname "*.vid" -or -iname "*.vp* -or -iname "*.spt \) -exec rm {} \; && \
 
           ls | xargs -I{} mv "{}" "../$file_name" && \
           rm -rf "./*" && \

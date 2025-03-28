@@ -63,7 +63,6 @@ jobs:
           echo " # Filter data ..." && \
           rm -rf ../tmp && \
           mkdir -p ../tmp && \
-          find . && \
           find . -type f -iname "*debug*" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.map*" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.rel*" -exec mv "{}" "../tmp/" \; && \
@@ -134,15 +133,15 @@ jobs:
               if [ -z "$(ls -A "../tmp/$sub_file_name")" ]; then rmdir "../tmp/$sub_file_name"; else echo "  < Finished '$file_name/$sub_file_name', found:"; ls $sub_file_name -m; fi
           done && \
 
-          find ../tmp && \
-
-          grep -rEl '_start|.text|.bss|.data|#include' . | xargs -I{} mv {} ../tmp && \
+          grep -rEl '_start|.text|.bss|.data|#include' . | xargs -I{} mv "{}" "../tmp" && \
 
           echo " << Finished '$file_name', ignored types:" && \
           find . -type f | awk -F. '{if (NF>1) print $NF}' | sort -u | paste -sd "," - && \
 
+          find ../tmp && \
           rm -rf ./* && \
 
+          find ../tmp && \
           if [ -z "$(ls -A ../tmp/)" ]; then 
             echo " !  No code data found, continue";
             rm -rf ../tmp/*;

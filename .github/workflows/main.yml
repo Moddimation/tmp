@@ -16,7 +16,6 @@ jobs:
         ./Dolphin* --appimage-extract
         find . -name "dolphin-tool"
         chmod +x squashfs-root/bin/dolphin-tool
-        squashfs-root/bin/dolphin-tool
 
     - name: Downloads & Extracts
       run: |
@@ -35,7 +34,7 @@ jobs:
             echo ENTERING DIRECTORY! && \
             cd "$file_name" && \
             ls . -lha && \
-            flatpak run --command="dolphin-tool" org.DolphinEmu.dolphin-emu extract -i "../$rvz_file" && \
+            ../squashfs-root/bin/dolphin-tool extract -i "../$rvz_file" -o "." && \
             echo DONE EXTRACT! && \
             ls -lha && \
             ls "../" -lha && \

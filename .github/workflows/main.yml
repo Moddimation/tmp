@@ -138,7 +138,6 @@ jobs:
           echo " << Finished '$file_name', ignored types:" && \
           find . -type f | awk -F. '{if (NF>1) print $NF}' | sort -u | paste -sd "," - && \
 
-          find ../tmp && \
           rm -rf ./* && \
 
           find ../tmp && \
@@ -149,6 +148,7 @@ jobs:
             rm -rf "$file_name";
             continue;
           fi && \
+          find ../tmp && \
 
           mv "../tmp/*" "." && \
           rm -rf "../tmp/*" -f && \

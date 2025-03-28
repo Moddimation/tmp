@@ -15,7 +15,8 @@ jobs:
         chmod +x ./Dolphin*
         ./Dolphin* --appimage-extract
         find . -name "dolphin-tool"
-        cp squashfs-root/bin/dolphin-tool
+        chmod +x squashfs-root/bin/dolphin-tool
+        squashfs-root/bin/dolphin-tool
 
     - name: Downloads & Extracts
       run: |

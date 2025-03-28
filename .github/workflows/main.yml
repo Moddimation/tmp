@@ -23,13 +23,13 @@ jobs:
         
     - name: Downloads & Extracts
       run: |
-        echo Starting, download index.html ...
+        echo " # Starting, download index.html ..."
         mkdir -p tmp
         wget -q https://myrient.erista.me/files/Redump/Nintendo%20-%20GameCube%20-%20NKit%20RVZ%20%5Bzstd-19-128k%5D/
         export link_prefix="https://myrient.erista.me/files/Redump/Nintendo%20-%20GameCube%20-%20NKit%20RVZ%20%5Bzstd-19-128k%5D"
-        echo OK, now index for filenames, download and process everything ...
+        echo " # OK, now index for filenames, download and process everything ..."
         cat index.html | grep .zip | sed 's/\" title.*//' | sed 's/.*href=\"//' | while read -r zip_file; do
-          echo "Downloading '$(echo "$zip_file" | sed -E '
+          echo " >> Downloading '$(echo "$zip_file" | sed -E '
             s/%20/ /g;  s/%21/!/g;  s/%22/"/g;  s/%23/#/g;  s/%24/\$/g;
             s/%25/%/g;  s/%26/\&/g;  s/%27/'\''/g;  s/%28/(/g;  s/%29/)/g;
             s/%2A/*/g;  s/%2B/+/g;  s/%2C/,/g;  s/%2D/-/g;  s/%2E/./g;
@@ -42,15 +42,15 @@ jobs:
           filename=$(ls *.zip | head -n 1) && \
           file_name="${filename%.zip}" && \
           mkdir "$file_name" && \
-          echo Extracting download ... && \
+          echo " # Extracting download ..." && \
           7z x "$filename" -y -bso0 -bsp0 -bse0 && \
           rm "$filename" && \
           rvz_file=$(ls *.rvz | head -n 1) && \
-          echo Extracting game ... && \
+          echo " # Extracting game ..." && \
           flatpak run --command="dolphin-tool" --filesystem=host org.DolphinEmu.dolphin-emu extract -i "$rvz_file" -o "$file_name/" -q && \
           rm "$rvz_file" && \
           cd "$file_name" && \
-          echo Filter data ... && \
+          echo " # Filter data ..." && \
           find . -type f -iname "*dbg*" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*debug*" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.map*" -exec mv "{}" "../tmp/" \; && \
@@ -75,14 +75,14 @@ jobs:
           find . -type f -iname "*.o" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.*log*" -exec mv "{}" "../tmp/" \; && \
           find . -type f \( -iname "*.tgc*" -o -iname "*.gcm*" -o -iname "*.iso*" \) | while read -r tgc_file; do
-              echo "Found sub-archive: '$tgc_file'" && \
+              echo " > Found sub-archive: '$tgc_file'" && \
               sub_file_name="${tgc_file%.tgc}" && \
               mkdir "../tmp/$sub_file_name" && \
               mkdir "$sub_file_name" && \
-              echo Extracting sub game ... && \
+              echo " # Extracting sub game ..." && \
               flatpak run --command="dolphin-tool" --filesystem=host org.DolphinEmu.dolphin-emu extract -i "$tgc_file" -o "$sub_file_name" -q && \
               rm "$tgc_file" && \
-              echo Filter sub data ... && \
+              echo " # Filter sub data ..." && \
               find "$sub_file_name" -type f -iname "*dbg*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*debug*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.map*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
@@ -106,15 +106,17 @@ jobs:
               find "$sub_file_name" -type f -iname "*.xml*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.*log*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.ini*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
-              echo "Finished '$file_name/$sub_file_name', found:" && \
+              echo " # Finished '$file_name/$sub_file_name', found:" && \
               ls $sub_file_name -m
           done && \
+          echo " # Finished '$file_name', ignored types:" && \
+          find . -type f | awk -F. '{if (NF>1) print $NF}' | sort -u | paste -sd "," -
           rm -rf ./* && \
           mv ../tmp/* . && \
           rm ../tmp/* -f && \
           rm *lang* *locale* -f && \
           cd .. && \
-          echo "Finished '$file_name', found:" && \
+          echo " # found:" && \
           ls "$file_name" -m
         done
 

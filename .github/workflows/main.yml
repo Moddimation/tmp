@@ -140,7 +140,7 @@ jobs:
                     
           rm -rf ./* && \
                     
-          if [ -z "$(ls .)" ]; then 
+          if [ -z "$(ls -A ../tmp/)" ]; then 
             echo " !  No code data found, continue"; 
             rm -rf ../tmp/*;
             cd ..;

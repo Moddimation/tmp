@@ -79,10 +79,10 @@ jobs:
               sub_file_name="${tgc_file%.tgc}" && \
               mkdir "../tmp/$sub_file_name" && \
               mkdir "$sub_file_name" && \
-              echo " # Extracting sub game ..." && \
+              echo "  # Extracting sub game ..." && \
               flatpak run --command="dolphin-tool" --filesystem=host org.DolphinEmu.dolphin-emu extract -i "$tgc_file" -o "$sub_file_name" -q && \
               rm "$tgc_file" && \
-              echo " # Filter sub data ..." && \
+              echo "  # Filter sub data ..." && \
               find "$sub_file_name" -type f -iname "*dbg*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*debug*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.map*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
@@ -106,17 +106,17 @@ jobs:
               find "$sub_file_name" -type f -iname "*.xml*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.*log*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.ini*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
-              echo " # Finished '$file_name/$sub_file_name', found:" && \
+              echo "  < Finished '$file_name/$sub_file_name', found:" && \
               ls $sub_file_name -m
           done && \
-          echo " # Finished '$file_name', ignored types:" && \
+          echo " << Finished '$file_name', ignored types:" && \
           find . -type f | awk -F. '{if (NF>1) print $NF}' | sort -u | paste -sd "," -
           rm -rf ./* && \
           mv ../tmp/* . && \
           rm ../tmp/* -f && \
           rm *lang* *locale* -f && \
           cd .. && \
-          echo " # found:" && \
+          echo "    Found:" && \
           ls "$file_name" -m
         done
 

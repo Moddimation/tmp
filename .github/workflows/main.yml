@@ -35,11 +35,12 @@ jobs:
           cd "$file_name" && \
           ../squashfs-root/bin/dolphin-tool extract -i "../$rvz_file" -o "." && \
           rm "../$rvz_file" && \
+          find . && \
           find . -print -type f -iname "*dbg*" -exec mv "{}" "../tmp/" \; && \
           find . -print -type f -iname "*debug*" -exec mv "{}" "../tmp/" \; && \
           find . -print -type f -iname "*.map*" -exec mv "{}" "../tmp/" \; && \
           find . -print -type f -iname "*.rel*" -exec mv "{}" "../tmp/" \; && \
-          find . -print -type f -name "*.elf*" -exec mv "{}" "../tmp/" \; && \
+          find . -print -type f -iname "*.elf*" -exec mv "{}" "../tmp/" \; && \
           find . -print -type f -iname "*.txt*" -exec mv "{}" "../tmp/" \; && \
           find . -print -type f -iname "*.dol*" -exec mv "{}" "../tmp/" \; && \
           find . -print -type f -iname "*.ini*" -exec mv "{}" "../tmp/" \; && \

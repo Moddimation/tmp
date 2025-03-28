@@ -132,7 +132,7 @@ jobs:
               grep -lrEs 'mwcc|metrotrk|metrowerks|msl_c' . | xargs -I{} mv "{}" "../tmp/$sub_file_name/" && \
               cd "../tmp/$sub_file_name" && \
               grep -Evls '_start|.text|.bss|.data|0x|#!/bin|%|dvd|debug|release|build|dbg|.*.o|.*.a|.*.c|.*.h|.*.rel|text section layout' *.map *.txt *.csv *.ini *.xml *.cfg | xargs -I{} rm -f {} 2>/dev/null && \
-              find . -type f \( -iname *.h4m -or -iname *.sni -or -iname .gsf -or -iname *.zsd -or -iname *.thp -or -iname *.mpc -or -iname *.bmd -or -iname *.fpk -or -iname *.viv -or -iname *.ngc \) -exec rm {} \; && \
+              find . -type f \( -iname "*.h4m" -or -iname "*.sni" -or -iname "*.gsf" -or -iname "*.zsd" -or -iname "*.thp" -or -iname "*.mpc" -or -iname "*.bmd" -or -iname "*.fpk" -or -iname "*.viv" -or -iname "*.ngc" \) -exec rm {} \; && \
               cd "../$file_name" && \
               rm -rf "$sub_file_name" && \
               if [ -z "$(ls -A "../tmp/$sub_file_name")" ]; then
@@ -167,7 +167,7 @@ jobs:
 
           rm -f *lang* *locale* *CONTENT* && \
           grep -Evls '_start|.text|.bss|.data|0x|#!/bin|%|dvd|debug|release|build|dbg|.*.o|.*.a|.*.c|.*.h|.*.rel|text section layout' *.map *.txt *.csv *.ini *.xml *.cfg | xargs -I{} rm -f {} 2>/dev/null && \
-          find . -type f \( -iname *.h4m -or -iname *.sni -or -iname .gsf -or -iname *.zsd -or -iname *.thp -or -iname *.mpc -or -iname *.bmd -or -iname *.fpk -or -iname *.viv -or -iname *.ngc \) -exec rm {} \; && \
+          find . -type f \( -iname "*.h4m" -or -iname "*.sni" -or -iname "*.gsf" -or -iname "*.zsd" -or -iname "*.thp" -or -iname "*.mpc" -or -iname "*.bmd" -or -iname "*.fpk" -or -iname "*.viv" -or -iname "*.ngc" \) -exec rm {} \; && \
 
           ls | xargs -I{} mv "{}" "../$file_name" && \
           rm -rf "./*" && \

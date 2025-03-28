@@ -29,6 +29,8 @@ jobs:
             mkdir "$file_name" && \
             7z x "$filename" && rm "$filename" && \
             rvz_file=$(ls *.rvz | head -n 1) && \
+            echo $file_name && \
+            echo $GITHUB_WORKSPACE && \
             echo ENTERING DIRECTORY! && \
             cd "$file_name" && \
             dir="${pwd}" && \

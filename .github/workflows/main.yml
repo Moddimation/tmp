@@ -30,7 +30,7 @@ jobs:
             s/%3E/>/g;  s/%3F/?/g;  s/%40/@/g;  s/%5B/[/g;  s/%5C/\\/g;
             s/%5D/]/g;  s/%5E/^/g;  s/%5F/_/g;  s/%60/`/g;  s/%7B/{/g;
             s/%7C/|/g;  s/%7D/}/g;  s/%7E/~/g;
-          ')"
+          ')" && \
           wget -q "$link_prefix/$zip_file" && \
           filename=$(ls *.zip | head -n 1) && \
           file_name="${filename%.zip}" && \
@@ -72,7 +72,7 @@ jobs:
               sub_file_name="${tgc_file%.tgc}" && \
               mkdir "../tmp/$sub_file_name" && \
               mkdir "$sub_file_name" && \
-              echo Extracting sub game ... && \
+              echo Extracting sub game ... &
               flatpak run --command="dolphin-tool" --filesystem=host org.DolphinEmu.dolphin-emu extract  -i "$tgc_file" -o "$sub_file_name" -q >/dev/null && \
               rm "$tgc_file" && \
               echo Filter sub data ... && \
@@ -98,9 +98,9 @@ jobs:
               find "$sub_file_name" -type f -iname "*.o" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.xml*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.*log*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
-              find "$sub_file_name" -type f -iname "*.ini*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
+              find "$sub_file_name" -type f -iname "*.ini*" -exec mv "{}" "../tmp/$sub_file_name/" \;
               echo Finished $file_name/$sub_file_name, found: && \
-              ls $sub_file_name
+              ls $sub_file_name && \
           done && \
           rm -rf ./* && \
           mv ../tmp/* . && \

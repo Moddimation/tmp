@@ -46,7 +46,15 @@ jobs:
           find . -type f -iname "*.lua*" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.rso*" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.csv*" -exec mv "{}" "../tmp/" \; && \
+          find . -type f -iname "*.gci*" -exec mv "{}" "../tmp/" \; && \
+          find . -type f -iname "*.sav*" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.xml*" -exec mv "{}" "../tmp/" \; && \
+          find . -type f -iname "*.s" -exec mv "{}" "../tmp/" \; && \
+          find . -type f -iname "*.c" -exec mv "{}" "../tmp/" \; && \
+          find . -type f -iname "*.h" -exec mv "{}" "../tmp/" \; && \
+          find . -type f -iname "*.cpp" -exec mv "{}" "../tmp/" \; && \
+          find . -type f -iname "*.hpp" -exec mv "{}" "../tmp/" \; && \
+          find . -type f -iname "*.o" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.*log*" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.tgc*" | while read -r tgc_file; do
               sub_file_name="${tgc_file%.tgc}" && \
@@ -66,6 +74,14 @@ jobs:
               find "$sub_file_name" -type f -iname "*.lua*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.rso*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.csv*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
+              find "$sub_file_name" -type f -iname "*.gci*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
+              find "$sub_file_name" -type f -iname "*.sav*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
+              find "$sub_file_name" -type f -iname "*.s" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
+              find "$sub_file_name" -type f -iname "*.c" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
+              find "$sub_file_name" -type f -iname "*.cpp" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
+              find "$sub_file_name" -type f -iname "*.h" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
+              find "$sub_file_name" -type f -iname "*.hpp" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
+              find "$sub_file_name" -type f -iname "*.o" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.xml*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.*log*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.ini*" -exec mv "{}" "../tmp/$sub_file_name/" \;

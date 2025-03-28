@@ -144,7 +144,7 @@ jobs:
             echo " !  No code data found, continue"; 
             rm -rf ../tmp/*;
             cd ..;
-            rm -rf "$file_name"
+            rm -rf "$file_name";
             continue;
           fi && \
           

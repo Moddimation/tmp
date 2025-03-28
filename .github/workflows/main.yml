@@ -78,6 +78,7 @@ jobs:
           find . -type f -iname "*.gci*" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.sav*" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.bat" -exec mv "{}" "../tmp/" \; && \
+          find . -type f -iname "*.dlf" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.sh" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.xml*" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.s" -exec mv "{}" "../tmp/" \; && \
@@ -108,6 +109,7 @@ jobs:
               find "$sub_file_name" -type f -iname "*.lua*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.rso*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.csv*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
+              find "$sub_file_name" -type f -iname "*.dlf" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.gci*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.sav*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.bat" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
@@ -130,7 +132,8 @@ jobs:
           rm -rf ./* && \
           mv ../tmp/* . && \
           rm ../tmp/* -f && \
-          rm *lang* *locale* -f && \
+          rm *lang* *locale* *CONTENT* -f && \
+          grep -El 'main|_start|.text|0x|#!/bin|%|200.*_.*' *.txt | xargs rm && \
           cd .. && \
           echo "    Found:" && \
           ls "$file_name" -m

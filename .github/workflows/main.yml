@@ -139,7 +139,6 @@ jobs:
           find . -type f | awk -F. '{if (NF>1) print $NF}' | sort -u | paste -sd "," - && \
 
           rm -rf ./* && \
-          echo test REMOVEME && \
 
           if [ -z "$(ls -A ../tmp/)" ]; then 
             echo " !  No code data found, continue";
@@ -154,8 +153,12 @@ jobs:
           mv ../tmp/* . && \
           rm -rf ../tmp/* -f && \ 
           rm -f *lang* *locale* *CONTENT* && \
+          
+          echo test REMOVEME && \
 
           grep -El '_start|.text|.bss|.data|0x|#!/bin|%|dvd|debug|release|build|dbg|.*.o|.*.a|.*.c|.*.h|.*.rel' *.map *.txt *.csv *.ini *.xml *.cfg 2>/dev/null | xargs rm -f && \
+
+          echo yodeli hee hee && \
 
           cd .. && \
           echo "    Found:" && \

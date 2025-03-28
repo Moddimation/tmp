@@ -31,8 +31,10 @@ jobs:
             rvz_file=$(ls *.rvz | head -n 1) && \
             echo ENTERING DIRECTORY! && \
             cd "$file_name" && \
-            dir="$pwd" && \
+            dir="${pwd}" && \
             echo $dir && \
+            ls "$dir" && \
+            ls "../$dir" && \
             flatpak run --command="dolphin-tool" org.DolphinEmu.dolphin-emu extract -i "$dir/../$rvz_file" -o "$dir" && \
             echo DONE EXTRACT! && \
             ls -lha && \

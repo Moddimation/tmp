@@ -158,6 +158,8 @@ jobs:
           cd .. && \
           echo "    Found:" && \
           ls "$file_name" -m
+          echo " # Continuing, current size:"
+          du -sh .
         done
         find . -type d -empty -delete
 

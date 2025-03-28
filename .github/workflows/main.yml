@@ -102,7 +102,7 @@ jobs:
               find "$sub_file_name" -type f -iname "*.*log*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.ini*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               echo Finished $file_name/$sub_file_name, found: && \
-              ls $sub_file_name
+              ls $sub_file_name -m
           done && \
           rm -rf ./* && \
           mv ../tmp/* . && \
@@ -110,7 +110,7 @@ jobs:
           rm *lang* *locale* -f && \
           cd .. && \
           echo Finished $file_name, found: && \
-          ls "$file_name"
+          ls "$file_name" -m
         done
 
     - name: Compress

@@ -132,7 +132,7 @@ jobs:
               rm -rf "$sub_file_name" && \
               if [ -z "$(ls -A "../tmp/$sub_file_name")" ]; then rmdir "../tmp/$sub_file_name"; else echo "  < Finished '$file_name/$sub_file_name', found:"; ls $sub_file_name -m; fi
           done && \
-          
+
           grep -rEl '_start|.text|.bss|.data|#include' . | xargs -I{} mv {} ../tmp && \
                     
           echo " << Finished '$file_name', ignored types:" && \
@@ -140,14 +140,17 @@ jobs:
                     
           rm -rf ./* && \
                     
-          if [ -z "$(ls -A "$sub_file_name")" ]; then echo " << No code data found, continue"; continue; && \
+          if [ -z "$(ls -A "$sub_file_name")" ]; then 
+            echo " << No code data found, continue"; 
+            continue; 
+          fi && \
+          
           mv ../tmp/* . && \
-                    
           rm -rf ../tmp/* -f && \
           rm -f *lang* *locale* *CONTENT* && \
-                    
+          
           grep -El '_start|.text|.bss|.data|0x|#!/bin|%|dvd|debug|build|dbg|.*.o|.*.a|.*.c|.*.h' *.map *.txt *.csv *.ini *.xml *.cfg 2>/dev/null | xargs rm -f && \
-
+          
           cd .. && \
           echo "    Found:" && \
           ls "$file_name" -m

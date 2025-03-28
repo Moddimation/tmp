@@ -11,9 +11,9 @@ jobs:
     - name: Prepare
       run: |
         sudo apt-get update && sudo apt-get install -y p7zip-full
-        wget  	http://archive.ubuntu.com/ubuntu/pool/universe/d/dolphin-emu/dolphin-emu_2407+dfsg-1_amd64.deb
-        sudo dpkg -i dolphin*
-        sudo apt-get install -f
+        sudo add-apt-repository universe
+        sudo apt update
+        sudo apt install dolphin-emu
         
     - name: Downloads & Extracts
       run: |

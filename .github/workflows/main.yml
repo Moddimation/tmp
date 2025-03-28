@@ -22,17 +22,28 @@ jobs:
         export link_prefix="https://myrient.erista.me/files/Redump/Nintendo%20-%20GameCube%20-%20NKit%20RVZ%20%5Bzstd-19-128k%5D"
         
         cat index.html | grep .zip | sed 's/\" title.*//' | sed 's/.*href=\"//' | while read -r zip_file; do
-          echo "$zip_file" && \
+          echo "Downloading $(echo "$zip_file" | sed -E '
+            s/%20/ /g;  s/%21/!/g;  s/%22/"/g;  s/%23/#/g;  s/%24/\$/g;
+            s/%25/%/g;  s/%26/\&/g;  s/%27/'\''/g;  s/%28/(/g;  s/%29/)/g;
+            s/%2A/*/g;  s/%2B/+/g;  s/%2C/,/g;  s/%2D/-/g;  s/%2E/./g;
+            s/%2F/\//g; s/%3A/:/g;  s/%3B/;/g;  s/%3C/</g;  s/%3D/=/g;
+            s/%3E/>/g;  s/%3F/?/g;  s/%40/@/g;  s/%5B/[/g;  s/%5C/\\/g;
+            s/%5D/]/g;  s/%5E/^/g;  s/%5F/_/g;  s/%60/`/g;  s/%7B/{/g;
+            s/%7C/|/g;  s/%7D/}/g;  s/%7E/~/g;
+          ')"
           wget -q "$link_prefix/$zip_file" && \
           filename=$(ls *.zip | head -n 1) && \
           file_name="${filename%.zip}" && \
           mkdir "$file_name" && \
+          echo Extracting download ... && \
           7z x "$filename" && rm "$filename" > nul && \
           rvz_file=$(ls *.rvz | head -n 1) && \
+          echo Extracting game ... && \
           flatpak override --user --filesystem=xdg-run/dconf --filesystem=/run/user/1000/dconf org.DolphinEmu.dolphin-emu && \
           flatpak run --command="dolphin-tool" --filesystem=host org.DolphinEmu.dolphin-emu extract -i "$rvz_file" -o "$file_name/" -q >/dev/null && \
           rm "$rvz_file" && \
           cd "$file_name" && \
+          echo Filter data ... && \
           find . -type f -iname "*dbg*" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*debug*" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.map*" -exec mv "{}" "../tmp/" \; && \
@@ -56,12 +67,15 @@ jobs:
           find . -type f -iname "*.hpp" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.o" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.*log*" -exec mv "{}" "../tmp/" \; && \
-          find . -type f -iname "*.tgc*" | while read -r tgc_file; do
+          find . -type f \( -iname "*.tgc*" -o -iname "*.gcm*" -o -iname "*.iso*" \) | while read -r tgc_file; do
+              echo "Found sub-archive: $tgc_file"
               sub_file_name="${tgc_file%.tgc}" && \
               mkdir "../tmp/$sub_file_name" && \
               mkdir "$sub_file_name" && \
+              echo Extracting sub game ... &
               flatpak run --command="dolphin-tool" --filesystem=host org.DolphinEmu.dolphin-emu extract  -i "$tgc_file" -o "$sub_file_name" -q >/dev/null && \
               rm "$tgc_file" && \
+              echo Filter sub data ... && \
               find "$sub_file_name" -type f -iname "*dbg*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*debug*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.map*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
@@ -85,12 +99,16 @@ jobs:
               find "$sub_file_name" -type f -iname "*.xml*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.*log*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.ini*" -exec mv "{}" "../tmp/$sub_file_name/" \;
+              echo Finished $file_name/$sub_file_name, found: && \
+              ls $sub_file_name && \
           done && \
           rm -rf ./* && \
           mv ../tmp/* . && \
           rm ../tmp/* -f && \
+          rm *lang* *locale* -f && \
           cd .. && \
-          find "$file_name"
+          echo Finished $file_name, found: && \
+          ls "$file_name"
         done
 
     - name: Compress

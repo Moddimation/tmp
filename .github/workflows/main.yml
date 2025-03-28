@@ -17,10 +17,11 @@ jobs:
         
     - name: Downloads & Extracts
       run: |
+        echo Starting, download index.html ...
         mkdir -p tmp
-        wget https://myrient.erista.me/files/Redump/Nintendo%20-%20GameCube%20-%20NKit%20RVZ%20%5Bzstd-19-128k%5D/
+        wget -q https://myrient.erista.me/files/Redump/Nintendo%20-%20GameCube%20-%20NKit%20RVZ%20%5Bzstd-19-128k%5D/
         export link_prefix="https://myrient.erista.me/files/Redump/Nintendo%20-%20GameCube%20-%20NKit%20RVZ%20%5Bzstd-19-128k%5D"
-        
+        echo OK, now index for filenames, download and process everything ...
         cat index.html | grep .zip | sed 's/\" title.*//' | sed 's/.*href=\"//' | while read -r zip_file; do
           echo "Downloading $(echo "$zip_file" | sed -E '
             s/%20/ /g;  s/%21/!/g;  s/%22/"/g;  s/%23/#/g;  s/%24/\$/g;

@@ -29,15 +29,13 @@ jobs:
             mkdir "$file_name" && \
             7z x "$filename" && rm "$filename" && \
             rvz_file=$(ls *.rvz | head -n 1) && \
-            echo $file_name && \
-            echo $GITHUB_WORKSPACE && \
             echo ENTERING DIRECTORY! && \
-            cd "$file_name" && \
-            dir="${pwd}" && \
+            cd "$GITHUB_WORKFLOW/$file_name" && \
+            dir=$GITHUB_WORKFLOW && \
             echo $dir && \
-            ls "$dir" && \
-            ls "../$dir" && \
-            flatpak run --command="dolphin-tool" org.DolphinEmu.dolphin-emu extract -i "$dir/../$rvz_file" -o "$dir" && \
+            ls "$dir" -lha && \
+            ls "$dir/$file_name" -lha && \
+            flatpak run --command="dolphin-tool" org.DolphinEmu.dolphin-emu extract -i "$dir/$rvz_file" -o "$dir/$file_name/" && \
             echo DONE EXTRACT! && \
             ls -lha && \
             ls ../ -lha && \

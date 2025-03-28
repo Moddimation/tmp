@@ -132,7 +132,7 @@ jobs:
               ls $sub_file_name -m
           done && \
           echo " << Finished '$file_name', ignored types:" && \
-          find . -type f | awk -F. '{if (NF>1) print $NF}' | sort -u | paste -sd "," -
+          find . -type f | awk -F. '{if (NF>1) print $NF}' | sort -u | paste -sd "," - && \
           rm -rf ./* && \
           mv ../tmp/* . && \
           rm ../tmp/* -f && \

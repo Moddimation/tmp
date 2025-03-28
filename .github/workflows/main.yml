@@ -96,12 +96,11 @@ jobs:
     - name: Compress
       if: success()  # Only list contents if extraction succeeded
       run: |
-        7z a BundleGC.7z ./*
+        7z a -v4900M BundleGC.7z ./*
         sudo rm -rf ./*/
 
     - name: Upload file list
-      if: success()  # Only upload if previous steps succeeded
       uses: actions/upload-artifact@v4
       with:
         name: BundleGC
-        path: BundleGC.7z 
+        path: BundleGC.7z.*

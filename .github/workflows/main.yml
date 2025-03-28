@@ -61,6 +61,8 @@ jobs:
           rm "$rvz_file" && \
           cd "$file_name" && \
           echo " # Filter data ..." && \
+          rm -rf ../tmp; && \
+          mkdir -p ../tmp && \
           find . -type f -iname "*dbg*" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*debug*" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.map*" -exec mv "{}" "../tmp/" \; && \

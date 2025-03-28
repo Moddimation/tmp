@@ -12,6 +12,15 @@ concurrency:
 jobs:
   download_extract_list:
     runs-on: ubuntu-latest
+        
+    - name: Setup env
+      run: |
+        export $(dbus-launch)
+        echo "DBUS_SESSION_BUS_ADDRESS=$DBUS_SESSION_BUS_ADDRESS" >> $GITHUB_ENV
+        export XDG_RUNTIME_DIR=/tmp/runtime-user
+        mkdir -p $XDG_RUNTIME_DIR
+        chmod 700 $XDG_RUNTIME_DIR
+        echo "XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR" >> $GITHUB_ENV
 
     steps:
     - name: Prepare
@@ -20,6 +29,7 @@ jobs:
         sudo apt install flatpak
         sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
         sudo flatpak install flathub org.DolphinEmu.dolphin-emu -y
+        flatpak-spawn --host webbrowser-app
         
     - name: Downloads & Extracts
       run: |

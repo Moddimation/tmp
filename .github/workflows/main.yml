@@ -27,10 +27,10 @@ jobs:
           filename=$(ls *.zip | head -n 1) && \
           file_name="${filename%.zip}" && \
           mkdir "$file_name" && \
-          7z x "$filename" && rm "$filename" && >/dev/null 2>&1 \
+          7z x "$filename" && rm "$filename" > nul && \
           rvz_file=$(ls *.rvz | head -n 1) && \
           flatpak override --user --filesystem=xdg-run/dconf --filesystem=/run/user/1000/dconf org.DolphinEmu.dolphin-emu && \
-          flatpak run --command="dolphin-tool" --filesystem=host org.DolphinEmu.dolphin-emu extract -i "$rvz_file" -o "$file_name/" >/dev/null && \
+          flatpak run --command="dolphin-tool" --filesystem=host org.DolphinEmu.dolphin-emu extract -i "$rvz_file" -o "$file_name/" -q >/dev/null && \
           rm "$rvz_file" && \
           cd "$file_name" && \
           find . -type f -iname "*dbg*" -exec mv "{}" "../tmp/" \; && \
@@ -60,7 +60,7 @@ jobs:
               sub_file_name="${tgc_file%.tgc}" && \
               mkdir "../tmp/$sub_file_name" && \
               mkdir "$sub_file_name" && \
-              flatpak run --command="dolphin-tool" --filesystem=host org.DolphinEmu.dolphin-emu extract  -i "$tgc_file" -o "$sub_file_name" >/dev/null && \
+              flatpak run --command="dolphin-tool" --filesystem=host org.DolphinEmu.dolphin-emu extract  -i "$tgc_file" -o "$sub_file_name" -q >/dev/null && \
               rm "$tgc_file" && \
               find "$sub_file_name" -type f -iname "*dbg*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*debug*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \

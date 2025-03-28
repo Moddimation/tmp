@@ -70,6 +70,7 @@ jobs:
           find . -type f -iname "*.dol*" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.ini*" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.sym*" -exec mv "{}" "../tmp/" \; && \
+          find . -type f -iname "main.*" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.rsym*" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.lua*" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.rso*" -exec mv "{}" "../tmp/" \; && \
@@ -106,6 +107,7 @@ jobs:
               find "$sub_file_name" -type f -iname "*.dol*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.sym*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.rsym*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
+              find "$sub_file_name" -type f -iname "main.*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.lua*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.rso*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.csv*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
@@ -136,7 +138,8 @@ jobs:
           grep -El 'main|_start|.text|0x|#!/bin|%|200.*_.*' *.txt | xargs rm && \
           cd .. && \
           echo "    Found:" && \
-          ls "$file_name" -m
+          ls "$file_name" -m && \
+          rmdir "$file_name"
         done
 
     - name: Compress

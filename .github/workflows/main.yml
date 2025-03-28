@@ -29,8 +29,7 @@ jobs:
         sudo apt install flatpak
         sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
         sudo flatpak install flathub org.DolphinEmu.dolphin-emu -y
-        # flatpak-spawn --host webbrowser-app
-        
+
     - name: Downloads & Extracts
       run: |
         set -e
@@ -135,19 +134,20 @@ jobs:
           done && \
           
           grep -rEl '_start|.text|.bss|.data|#include' . | xargs -I{} mv {} ../tmp && \
-          
+                    
           echo " << Finished '$file_name', ignored types:" && \
           find . -type f | awk -F. '{if (NF>1) print $NF}' | sort -u | paste -sd "," - && \
-          
+                    
           rm -rf ./* && \
-          
+                    
           if [ -z "$(ls -A "$sub_file_name")" ]; then echo " << No code data found, continue"; continue; else mv ../tmp/* . && \
-          
-          rm ../tmp/* -f && \
-          rm *lang* *locale* *CONTENT* -f && \
-          
+                    
+          rm -rf ../tmp/* -f && \
+          rm -f *lang* *locale* *CONTENT* && \
+                    
           grep -El '_start|.text|.bss|.data|0x|#!/bin|%|dvd|debug|build|dbg|.*.o|.*.a|.*.c|.*.h' *.map *.txt *.csv *.ini *.xml *.cfg 2>/dev/null | xargs rm -f && \
-          
+          fi
+
           cd .. && \
           echo "    Found:" && \
           ls "$file_name" -m

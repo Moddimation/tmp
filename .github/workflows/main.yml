@@ -148,7 +148,7 @@ jobs:
               ls ../tmp/$sub_file_name -m
           done && \
 
-          grep -lrE 'mwcc|metrotrk|metrowerks|msl_c' . | xargs -I{} mv "{}" "../tmp/" && \
+          grep -lrEi '__start|mwcc|metrotrk|metrowerks|msl_c|runtime' . | xargs -I{} mv "{}" "../tmp/" && \
 
           echo " << Finished '$file_name'" && \
           echo "    Ignored:" && \

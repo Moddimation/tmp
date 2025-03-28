@@ -140,7 +140,7 @@ jobs:
           grep -El 'main|_start|.text|0x|#!/bin|%|200.*_.*' *.map 2>/dev/null | xargs rm -f && \
           cd .. && \
           echo "    Found:" && \
-          ls "$file_name" -m && \
+          ls "$file_name" -m
         done
         find . -type d -empty -delete
 

@@ -142,12 +142,14 @@ jobs:
           echo test REMOVEME && \
 
           if [ -z "$(ls -A ../tmp/)" ]; then 
-            echo " !  No code data found, continue"; 
+            echo " !  No code data found, continue";
             rm -rf ../tmp/*;
             cd ..;
             rm -rf "$file_name";
             continue;
           fi && \
+
+          echo "TESTTT" && \
 
           mv ../tmp/* . && \
           rm -rf ../tmp/* -f && \ 

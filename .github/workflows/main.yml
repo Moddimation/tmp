@@ -150,7 +150,8 @@ jobs:
           cd ../tmp && \
 
           rm -f *lang* *locale* *CONTENT* && \
-          grep -El '_start|.text|.bss|.data|0x|#!/bin|%|dvd|debug|release|build|dbg|.*.o|.*.a|.*.c|.*.h|.*.rel' *.map *.txt *.csv *.ini *.xml *.cfg 2>/dev/null | xargs rm -f && \
+          grep -EL '_start|.text|.bss|.data|0x|#!/bin|%|dvd|debug|release|build|dbg|.*.o|.*.a|.*.c|.*.h|.*.rel|text section layout' *.map *.txt *.csv *.ini *.xml *.cfg 2>/dev/null | xargs rm -f && \
+          find . -type f \( -iname *.h4m -or -iname *.sni -or -iname .gsf -or -iname *.zsd -or -iname *.thp -or -iname *.mpc -or -iname *.bmd -or -iname *.fpk \) -exec rm {} \; && \
 
           ls | xargs -I{} mv "{}" "../$file_name" && \
           rm -rf "./*" && \

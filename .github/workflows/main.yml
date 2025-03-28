@@ -32,7 +32,7 @@ jobs:
           mkdir "$file_name" && \
           7z x "$filename" && rm "$filename" && \
           rvz_file=$(ls *.rvz | head -n 1) && \
-          ../squashfs-root/shared/bin/dolphin-tool extract -i "$rvz_file" -o "$file_name/" && \
+          squashfs-root/shared/bin/dolphin-tool extract -i "$rvz_file" -o "$file_name/" && \
           rm "$rvz_file" && \
           cd "$file_name" && \
           find . && \

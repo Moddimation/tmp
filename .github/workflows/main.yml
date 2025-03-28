@@ -147,8 +147,8 @@ jobs:
           fi && \
 
           rm -rf ./* && \
-          mv "../tmp/*" "./" && \
           ls ../tmp/ && \
+          mv "../tmp/*" "./" && \
           rm -rf "../tmp/*" -f && \
           rm -f *lang* *locale* *CONTENT* && \
           

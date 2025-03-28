@@ -57,6 +57,7 @@ jobs:
           rm "$filename" && \
           rvz_file=$(ls *.rvz | head -n 1) && \
           echo " # Extracting game ..." && \
+          ls && echo $rvz_file && \
           flatpak run --command="dolphin-tool" --filesystem=host org.DolphinEmu.dolphin-emu extract -i "$rvz_file" -o "$file_name/" -q && \
           rm "$rvz_file" && \
           cd "$file_name" && \

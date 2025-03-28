@@ -11,10 +11,11 @@ jobs:
     - name: Prepare
       run: |
         sudo apt-get update && sudo apt-get install -y p7zip-full
-        wget https://github.com/pkgforge-dev/Dolphin-emu-AppImage/releases/download/2503-111/Dolphin_Emulator-2503-111-anylinux.squashfs-x86_64.AppImage
+        wget -q https://github.com/pkgforge-dev/Dolphin-emu-AppImage/releases/download/2503-111/Dolphin_Emulator-2503-111-anylinux.squashfs-x86_64.AppImage
         chmod +x ./Dolphin*
         ./Dolphin* --appimage-extract
         find . -name "dolphin-tool"
+        cp squashfs-root/bin/dolphin-tool
 
     - name: Downloads & Extracts
       run: |

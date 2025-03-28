@@ -41,8 +41,7 @@ jobs:
           rm "$filename" && \
           rvz_file=$(ls *.rvz | head -n 1) && \
           echo Extracting game ... && \
-          flatpak override --user --filesystem=xdg-run/dconf --filesystem=/run/user/1000/dconf org.DolphinEmu.dolphin-emu && \
-          flatpak run --command="dolphin-tool" --filesystem=host org.DolphinEmu.dolphin-emu extract -i "$rvz_file" -o "$file_name/" -q >/dev/null && \
+          GSETTINGS_BACKEND=memory flatpak run --command="dolphin-tool" --filesystem=host org.DolphinEmu.dolphin-emu extract -i "$rvz_file" -o "$file_name/" -q && \
           rm "$rvz_file" && \
           cd "$file_name" && \
           echo Filter data ... && \
@@ -75,7 +74,7 @@ jobs:
               mkdir "../tmp/$sub_file_name" && \
               mkdir "$sub_file_name" && \
               echo Extracting sub game ... && \
-              flatpak run --command="dolphin-tool" --filesystem=host org.DolphinEmu.dolphin-emu extract  -i "$tgc_file" -o "$sub_file_name" -q >/dev/null && \
+              GSETTINGS_BACKEND=memory flatpak run --command="dolphin-tool" --filesystem=host org.DolphinEmu.dolphin-emu extract -i "$tgc_file" -o "$sub_file_name" -q && \
               rm "$tgc_file" && \
               echo Filter sub data ... && \
               find "$sub_file_name" -type f -iname "*dbg*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \

@@ -33,6 +33,11 @@ jobs:
     - name: Downloads & Extracts
       run: |
         set -e
+
+        alias filterDelete='find . -type f \( -iname "*.h4m" -or -iname "*.sni" -or -iname "*.gsf" -or -iname "*.zsd" -or -iname "*.thp" -or -iname "*.mpc" -or -iname "*.bmd" -or -iname "*.fpk" -or -iname "*.viv" -or -iname "*.ngc" -or -iname "*.div" -or -iname "*.vid" -or -iname "*.vp*" -or -iname "*.sp" -or -iname "*.str" -or -iname "*.mus" -or -iname "*.flo" -or -iname "*.exa" -or -iname "*.ssd" -or -iname "*.sbf" -or -iname "*.spe" -or -iname "*.dat" -or -iname "*.sdt" -or -iname "*.lmp" -or -iname "*.feb" -or -iname "*.feb" -or -iname "*.bin" -or -iname "*.dat" -or -iname "*.obj" -or -iname "*.lfb" -or -iname "*.med" -or -iname "*.samp"  -or -iname ".bnk" -or -iname "*.dsp"\) -exec rm {} +'
+        alias filterTextFiles='grep -Evls '__start|msl_c|MetroTRK|jsystem|#!/bin|\b[a-zA-Z]{3,}\.(o|a|c|h|rel)\b|text section layout' *.map *.txt *.csv *.ini *.xml *.cfg | xargs -I{} rm -f {} 2>/dev/null'
+        alias filterFind='grep -lrEis 'metrotrk|metrowerks|msl_c|text section layout' . | xargs -I{} mv "{}"'
+        
         echo " # Starting, download index.html ..."
         mkdir -p tmp
         wget -q https://myrient.erista.me/files/Redump/Nintendo%20-%20GameCube%20-%20NKit%20RVZ%20%5Bzstd-19-128k%5D/
@@ -78,11 +83,13 @@ jobs:
           find . -type f -iname "*.cfg*" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.csv*" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.gci*" -exec mv "{}" "../tmp/" \; && \
+          find . -type f -iname "*.tdf" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.sav*" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.div" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.bat" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.dlf" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.sh" -exec mv "{}" "../tmp/" \; && \
+          find . -type f -iname "*.inf" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.xml*" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.s" -exec mv "{}" "../tmp/" \; && \
           find . -type f -iname "*.a" -exec mv "{}" "../tmp/" \; && \
@@ -94,13 +101,18 @@ jobs:
           find . -type f -iname "*.*log*" -exec mv "{}" "../tmp/" \; && \
           find . -type f \( -iname *.iso -or -iname *.gcm -or -iname *.tgc \) | while read -r possible_archive_file; do
               sub_file_name=$(basename "$possible_archive_file" | sed 's/\.[^.]*$//') && \
-              echo " > Found sub-game: '$sub_file_name'" && \
+              echo "  > Found sub-game: '$file_name/$sub_file_name'" && \
               mkdir "../tmp/$sub_file_name" -p && \
               mkdir "$sub_file_name" -p && \
               echo "  # Extracting sub..." && \
               flatpak run --command="dolphin-tool" --filesystem=host org.DolphinEmu.dolphin-emu extract -i "$possible_archive_file" -o "$sub_file_name" -q > nul && \
               rm "$possible_archive_file" && \
-              if [ -z "$(ls -A "$sub_file_name/*")" ]; then rm -rf "$sub_file_name"; rm -rf "../tmp/$sub_file_name"; continue; fi && \
+              if [ -z "$(ls -A "$sub_file_name/")" ]; then
+                echo "  ! No data found, continue";
+                rm -rf "$sub_file_name";
+                rm -rf "../tmp/$sub_file_name";
+                continue; 
+              fi && \
               echo "  # Run filter..." && \
               find "$sub_file_name" -type f -iname "*debug*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.map*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
@@ -117,6 +129,8 @@ jobs:
               find "$sub_file_name" -type f -iname "*.dlf" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.gci*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.sav*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
+              find "$sub_file_name" -type f -iname "*.tdf" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
+              find "$sub_file_name" -type f -iname "*.inf" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.bat" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.cfg*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.sh" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
@@ -130,10 +144,10 @@ jobs:
               find "$sub_file_name" -type f -iname "*.xml*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.*log*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
               find "$sub_file_name" -type f -iname "*.ini*" -exec mv "{}" "../tmp/$sub_file_name/" \; && \
-              grep -lrEs 'mwcc|metrotrk|metrowerks|msl_c|.*.rel|text section layout' . | xargs -I{} mv "{}" "../tmp/$sub_file_name/" && \
+              filrerFind "../tmp/$sub_file_name/" && \
               cd "../tmp/$sub_file_name" && \
-              grep -Evls '__start|.text|.bss|.data|0x|#!/bin|%|debug|release|build|.*.o|.*.a|.*.c|.*.h|.*.rel|text section layout' *.map *.txt *.csv *.ini *.xml *.cfg | xargs -I{} rm -f {} 2>/dev/null && \
-              find . -type f \( -iname "*.h4m" -or -iname "*.sni" -or -iname "*.gsf" -or -iname "*.zsd" -or -iname "*.thp" -or -iname "*.mpc" -or -iname "*.bmd" -or -iname "*.fpk" -or -iname "*.viv" -or -iname "*.ngc" -or -iname "*.div" -or -iname "*.vid" -or -iname "*.vp*" -or -iname "*.sp" -or -iname "*.str" -or -iname "*.mus" -or -iname "*.flo" -or -iname "*.exa" -or -iname "*.ssd" -or -iname "*.sbf" -or -iname "*.spe" -or -iname "*.dat"\) -exec rm {} \; && \
+              filterTextFiles && \
+              filterDelete && \
               cd "../$file_name" && \
               rm -rf "$sub_file_name" && \
               if [ -z "$(ls -A "../tmp/$sub_file_name")" ]; then
@@ -149,7 +163,7 @@ jobs:
               ls ../tmp/$sub_file_name -m
           done && \
 
-          grep -lrEis '__start|mwcc|metrotrk|metrowerks|msl_c|runtime|.*.rel|text section layout' . | xargs -I{} mv "{}" "../tmp/" && \
+          filterFind "../tmp/" && \
 
           echo " << Finished '$file_name'" && \
           echo "    Ignored:" && \
@@ -167,9 +181,8 @@ jobs:
           cd ../tmp && \
 
           rm -f *lang* *locale* *CONTENT* && \
-          grep -Evls '__start|.text|.bss|.data|0x|#!/bin|%|debug|release|build|.*.o|.*.a|.*.c|.*.h|.*.rel|text section layout' *.map *.txt *.csv *.ini *.xml *.cfg | xargs -I{} rm -f {} 2>/dev/null && \
-          find . -type f \( -iname "*.h4m" -or -iname "*.sni" -or -iname "*.gsf" -or -iname "*.zsd" -or -iname "*.thp" -or -iname "*.mpc" -or -iname "*.bmd" -or -iname "*.fpk" -or -iname "*.viv" -or -iname "*.ngc" -or -iname "*.div" -or -iname "*.vid" -or -iname "*.vp*" -or -iname "*.sp" -or -iname "*.str" -or -iname "*.mus" -or -iname "*.flo" -or -iname "*.exa" -or -iname "*.ssd" -or -iname "*.sbf" -or -iname "*.spe" -or -iname "*.dat" \) -exec rm {} \; && \
-
+          filterTextFiles && \
+          filterDelete && \
           ls | xargs -I{} mv "{}" "../$file_name" && \
           rm -rf "./*" && \
 

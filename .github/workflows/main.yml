@@ -171,7 +171,7 @@ jobs:
                echo " ! No code data found.";
                echo "   Continuing, all size: $(du -sh . | awk '{print $1}')";
                cd ..;
-               rm -rf "$file_name";
+               rm -rf "$file_name/";
                continue;
             fi;
             find "." -empty -delete;

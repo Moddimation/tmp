@@ -104,25 +104,25 @@ jobs:
             echo "  # Scan for sub archives ..."
             rm -rf tmp
             mkdir -p tmp
-            cd "$file_name" && filterDelete "../tmp" 2>/dev/null || true && cd ..
+            cd "$file_name"
+            filterDelete "../tmp" 2>/dev/null || true
             for i in 1 2 3; do
               echo "   # Scan iteration $i";
-              ls;
-              find "$file_name" -empty -delete;
-              find "$file_name" -type f ! \( -ipath "*mission*" -o -ipath "*room*" \) | while read -r possible_archive_file; do
+              find "." -empty -delete;
+              find "" -type f ! \( -ipath "*mission*" -o -ipath "*room*" \) | while read -r possible_archive_file; do
                 sub_file_name="$(basename "$possible_archive_file" | sed 's/\.[^.]*$//')"
                 echo "   - Trying '$possible_archive_file' ..."
-                mkdir "$file_name/files/$sub_file_name.d" -p
-                dolphinTool extract -i "$possible_archive_file" -o "$file_name/files/$sub_file_name.d" 2>/dev/null || true
-                dec_file="tmp/CURRENT_POSSIBLE_ARCHIVE"
-                extracted_dir="$file_name/files/$sub_file_name.d"
+                mkdir "./files/$sub_file_name.d" -p
+                dolphinTool extract -i "$possible_archive_file" -o "files/$sub_file_name.d" 2>/dev/null || true
+                dec_file="../tmp/CURRENT_POSSIBLE_ARCHIVE"
+                extracted_dir="./files/$sub_file_name.d"
                 rm -f "$dec_file" 2>/dev/null || true
-                orthrus ncompress yay0 -d "$possible_archive_file" "$dec_file" > /dev/null 2>&1 || true
-                orthrus ncompress yaz0 -d "$possible_archive_file" "$dec_file" > /dev/null 2>&1 || true
-                orthrus panda3d bam -d "$possible_archive_file" "$dec_file" > /dev/null 2>&1 || true && \
-                orthrus panda3d multifile -d "$possible_archive_file" "$dec_file" > /dev/null 2>&1 || true && \
-                orthrus jsystem rarc -d "$possible_archive_file" "$dec_file" > /dev/null 2>&1 || true && \
-                orthrus godot pck -d "$possible_archive_file" "$dec_file" > /dev/null 2>&1 || true && \
+                ../orthrus ncompress yay0 -d "$possible_archive_file" "$dec_file" > /dev/null 2>&1 || true
+                ../orthrus ncompress yaz0 -d "$possible_archive_file" "$dec_file" > /dev/null 2>&1 || true
+                ../orthrus panda3d bam -d "$possible_archive_file" "$dec_file" > /dev/null 2>&1 || true && \
+                ../orthrus panda3d multifile -d "$possible_archive_file" "$dec_file" > /dev/null 2>&1 || true && \
+                ../orthrus jsystem rarc -d "$possible_archive_file" "$dec_file" > /dev/null 2>&1 || true && \
+                ../orthrus godot pck -d "$possible_archive_file" "$dec_file" > /dev/null 2>&1 || true && \
                 cp -f "$dec_file" "$possible_archive_file" 2>/dev/null || true && \
                # dtk rarc extract "$possible_archive_file" -o "$extracted_dir" > /dev/null 2>&1 || true && \
                # dtk u8 extract "$possible_archive_file" -o "$extracted_dir" > /dev/null 2>&1 || true && \
@@ -140,7 +140,6 @@ jobs:
                 echo "   # Extracted sub-archive: $possible_archive_file" # && \
               done;
             done && \
-            cd "$file_name" && \
             pathMainD="$(find . -type d -name "main.d")" && \
             if ! [ -z "$pathMainD" ]; then
                if [ -z "$(cmp "$pathMainD/sys/main.dol" "./sys/main.dol")" ]; then

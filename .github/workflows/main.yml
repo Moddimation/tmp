@@ -65,13 +65,13 @@ jobs:
             }
             export link="https://myrient.erista.me/files/Redump/Nintendo%20-%20GameCube%20-%20NKit%20RVZ%20%5Bzstd-19-128k%5D"
 
-            #reset
+            reset
 
             folderNum="$(cat gameList | wc -l)"
             echo "# Number of games: $folderNum"
 
             # Set the time limit (in seconds, 5 hours = 18000 seconds)
-            time_limit=18000
+            time_limit=100
             start_time=$(date +%s)  # Get the current time in seconds
 
             while (true); do

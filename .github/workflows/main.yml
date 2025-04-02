@@ -160,13 +160,17 @@ jobs:
                fi
             fi;
             echo "  # Cutting files ...";
+            ls files
             filterDelete || true;
+            ls files
             filterExt || true;
+            ls files
             filterTextFiles || true;
+            ls files
             cd "../tmp/";
             echo " # Post-Processing ...";
             filterFind;
-            found=$(find "../$file_name/" -type f | awk -F. '{if (NF>1) print $NF}' | sort -u | paste -sd "," - );
+            found=$(find "../$file_name/" -type f | sort -u | paste -sd "," - );
             size=$(du -sh "../$file_name/" | awk '{print $1}')
             find "../$file_name/" -empty -delete;
             if rmdir "../$file_name/" 2>/dev/null; then

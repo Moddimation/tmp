@@ -104,8 +104,7 @@ jobs:
             rm "$filename"
             rvz_file=$(ls *.rvz | head -n 1)
             echo " # Extracting game ..."
-            flatpak run --command="dolphin-tool" --filesystem=host org.DolphinEmu.dolphin-emu extract -i "$rvz_file" -o "$file_name/" # -q 2>/dev/null || true
-            ls "$file_name/"
+            flatpak run --command="dolphin-tool" --filesystem=host org.DolphinEmu.dolphin-emu extract -i "$rvz_file" -o "$file_name/" -q 2>/dev/null || true
             rm "$rvz_file"
             echo " # Run filter ..."
             echo "  # Scan for sub archives ..."
@@ -164,7 +163,7 @@ jobs:
             cd "../tmp/";
             echo " # Post-Processing ...";
             filterFind;
-            found=$(find "../$file_name/" -type f | awk -F. '{if (NF>1) print $NF}' | sort -u | paste -sd "," - );
+            found=$(find "../$file_name/" -type f | sort -u | paste -sd "," - );
             size=$(du -sh "$file_name/" | awk '{print $1}')
             find "../$file_name/" -empty -delete;
             if rmdir "../$file_name/" 2>/dev/null; then

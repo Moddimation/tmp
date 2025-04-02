@@ -160,13 +160,9 @@ jobs:
                fi
             fi;
             echo "  # Cutting files ...";
-            ls files
             filterDelete || true;
-            ls files
             filterExt || true;
-            ls files
             filterTextFiles || true;
-            ls files
             cd "../tmp/";
             echo " # Post-Processing ...";
             filterFind;

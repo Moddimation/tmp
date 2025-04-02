@@ -67,8 +67,8 @@ jobs:
               break  # Exit the loop if time limit is exceeded
             fi
 
-            zip_file=$(cat gameLinks | head -n 1)
-            sed -i '1d' gameLinks
+            zip_file=$(cat gameList | head -n 1 2>/dev/null)
+            sed -i '1d' gameList
             if [[ "$zip_file" == *"Action"*"Replay"* ]]; then
               continue;
             fi

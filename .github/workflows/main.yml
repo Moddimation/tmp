@@ -48,7 +48,7 @@ jobs:
             echo "# OK, now index for filenames, download and process everything ..."
             folderNum="$(find . -mindepth 1 -maxdepth 1 -type d | wc -l)"
             echo "# Current number of games: $folderNum"
-            cat index.html | grep .zip | sed 's/" title.*//' | sed 's/.*href="//' | xargs -I {} echo {} >> gameLinks
+            cat index.html | grep .zip | sed 's/" title.*//' | sed 's/.*href="//' | xargs -I {} echo {} >> gameList
             rm index.html
 
       - name: Downloads & Extracts
@@ -56,10 +56,8 @@ jobs:
           # Set the time limit (in seconds, 5 hours = 18000 seconds)
           time_limit=300
           start_time=$(date +%s)  # Get the current time in seconds
-          
-          num_runs=10  # Number of iterations
 
-          for i in $(seq 1 $num_runs); do
+          while (true); do
             # Get the current time in seconds
             current_time=$(date +%s)
             elapsed_time=$((current_time - start_time))  # Calculate elapsed time
@@ -74,7 +72,6 @@ jobs:
             if [[ "$zip_file" == *"Action"*"Replay"* ]]; then
               continue;
             fi
-            echo ">> Fetching next game ..."
             wget -q "$link/$zip_file" & PID=$!
             filename=$(ls *.zip 2>/dev/null | head -n 1)
             if [ -z "$filename" ]; then
@@ -83,6 +80,11 @@ jobs:
               done;
               file_name="${filename%.zip}"
             fi
+            if grep -q "$file_name" gameList; then
+              echo " - Skipping $file_name"
+              continue;
+            fi
+            echo ">> Fetching next game ..."
             if ! [ -d "$file_name" ]; then
               echo "   Name: $file_name"
               wait $!

@@ -71,7 +71,7 @@ jobs:
             echo "# Number of games: $folderNum"
 
             # Set the time limit (in seconds, 5 hours = 18000 seconds)
-            time_limit=100
+            time_limit=18000
             start_time=$(date +%s)  # Get the current time in seconds
 
             while (true); do

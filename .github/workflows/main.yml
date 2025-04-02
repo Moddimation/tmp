@@ -80,7 +80,7 @@ jobs:
             if [[ "$zip_file" == *"Action"*"Replay"* ]]; then
               continue;
             fi
-            wget -q "$link/$zip_file" & PID=$!
+            wget -q "$link/$zip_file"
             filename=$(ls *.zip 2>/dev/null | head -n 1)
             if [ -z "$filename" ]; then
               while [ -z "$filename" ]; do
@@ -88,21 +88,9 @@ jobs:
               done;
               file_name="${filename%.zip}"
             fi
-            if grep -q "$file_name" gameList; then
-              echo " - Skipping $file_name"
-              continue;
-            fi
             echo ">> Fetching next game ..."
-            if ! [ -d "$file_name" ]; then
-              echo "   Name: $file_name"
-              wait $!
-            else
-              echo "<< Found existing folder!";
-              pkill wget 1>&- 2>&-;
-              rm "$filename";
-              echo "   Continuing, size: $(du -sh "$file_name" | awk '{print $1}') / $(du -sh . | awk '{print $1}')";
-              continue;
-            fi
+            echo "   Name: $file_name"
+            wait $!
             mkdir "$file_name"
             echo " # Extracting download ..."
             7z x "$filename" -y -bso0 -bsp0 -bse0

@@ -57,8 +57,8 @@ jobs:
             echo "# Getting index ..."
             wget -q "$link/"
             echo "# OK, now index for filenames, download and process everything ..."
-            folderNum="$(find . -mindepth 1 -maxdepth 1 -type d | wc -l)"
-            echo "# Current number of games: $folderNum"
+            folderNum="$(cat gameList | wc -l)"
+            echo "# Number of games: $folderNum"
             cat index.html | grep .zip | sed 's/" title.*//' | sed 's/.*href="//' | xargs -I {} echo {} >> gameList
             rm index.html
             # Set the time limit (in seconds, 5 hours = 18000 seconds)

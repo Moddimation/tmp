@@ -26,6 +26,7 @@ jobs:
           7z x orthrus-linux-x86_64.zip
           rm orthrus-linux-x86_64.zip -f
           chmod +x orthrus
+          echo " " > gameList
 
      # - name: Install dependencies
       #  run: |

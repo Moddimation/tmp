@@ -45,7 +45,6 @@ jobs:
 
     - name: Downloads & Extracts
       run: |
-        set -e
         rm -f "./gamelist"
         echo "# Getting index ..."
         wget -q "$link/"

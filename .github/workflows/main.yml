@@ -148,9 +148,9 @@ jobs:
                fi
             fi;
             echo "  # Cutting files ...";
-            filterDelete "../tmp/" 2>/dev/null;
-            filterExt "../tmp/" 2>/dev/null;
-            filterTextFiles "../tmp/" 2>/dev/null;
+            #filterDelete "../tmp/" 2>/dev/null;
+            #filterExt "../tmp/" 2>/dev/null;
+            #filterTextFiles "../tmp/" 2>/dev/null;
             cd "../tmp/";
             echo " # Post-Processing ...";
             filterFind "../$file_name/files/" > /dev/null 2>&1 || true;

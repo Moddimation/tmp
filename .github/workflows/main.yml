@@ -54,6 +54,7 @@ jobs:
               find "." -type f \( -iname "*.csv" -o -iname "*.txt" -o -iname "*.log" -o -iname "*.cfg" -o -iname "*.xml" -o -iname "*.ini" -o -iname "*.inf" -o -iname "*.map" \)  -exec grep -ELis "__start|msl_c|MetroTRK|jsystem|([a-z_.-]|[A-Z_.-]){6,}\.(cpp|hpp|a|o|c|h)[^a-zA-Z]$|section layout|\.text|.rodata|.bss|.sbss" "{}" \; | xargs -I "{}" mv "{}" "../tmp/" 2>/dev/null
             }
             reset() {
+              rm -f gameList
               touch gameList
               echo "# Getting index ..."
               wget -q "$link/"
@@ -64,13 +65,13 @@ jobs:
             }
             export link="https://myrient.erista.me/files/Redump/Nintendo%20-%20GameCube%20-%20NKit%20RVZ%20%5Bzstd-19-128k%5D"
 
-            reset
+            #reset
 
             folderNum="$(cat gameList | wc -l)"
             echo "# Number of games: $folderNum"
 
             # Set the time limit (in seconds, 5 hours = 18000 seconds)
-            time_limit=300
+            time_limit=18000
             start_time=$(date +%s)  # Get the current time in seconds
 
             while (true); do

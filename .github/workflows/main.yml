@@ -27,12 +27,12 @@ jobs:
           rm orthrus-linux-x86_64.zip -f
           chmod +x orthrus
 
-      - name: Install dependencies
-        run: |
-          sudo apt-get update && sudo apt-get install -y p7zip-full
-          sudo apt install flatpak
-          sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-          sudo flatpak install flathub org.DolphinEmu.dolphin-emu -y
+     # - name: Install dependencies
+      #  run: |
+       #   sudo apt-get update && sudo apt-get install -y p7zip-full
+        #  sudo apt install flatpak
+         # sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+          #sudo flatpak install flathub org.DolphinEmu.dolphin-emu -y
 
       - name: Prepare aliases
         run: |

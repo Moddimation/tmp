@@ -100,13 +100,13 @@ jobs:
             rvz_file=$(ls *.rvz | head -n 1)
             echo " # Extracting game ..."
             dolphinTool extract -i "$rvz_file" -o "$file_name/" -q 2>/dev/null || true
-            ls
+            ls "$file_name/"
             rm "$rvz_file"
             echo " # Run filter ..."
             echo "  # Scan for sub archives ..."
             rm -rf tmp
             mkdir -p tmp
-            cd "$file_name"
+            cd "$file_name/"
             filterDelete || true
             for i in 1 2 3; do
               echo "   # Scan iteration $i";

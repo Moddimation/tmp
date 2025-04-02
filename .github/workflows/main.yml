@@ -45,7 +45,7 @@ jobs:
               find "." -type f \( -iname "*.tpl" -o -iname "*.lsb" -o -iname "*.mhp" -o -iname "*.drs" -o -iname "*.evd" -o -iname "*.fnt" -o -iname "*.rby" -o -iname "*.emd" -o -iname "*.rdt" -o -iname "*.tim" -o -iname "*.adx" -o -iname "*.gma" -o -iname "*.vtx" -o -iname "*.*gfx*" -o -iname "*.gcp" -o -iname "*.lfh" -o -iname "*.lfa" -o -iname "*.lfg" -o -iname "*.bnk" -o -iname "*.dtm" -o -iname "*anim*" -o -iname "*.tga" -o -iname "*.shf" -o -iname "*.shg" -o -iname "*.gct" -o -iname "*.ngc" -o -iname "*.gsf" -o -iname "*.spt" -o -iname "*.loc" -o -iname "*.gdf" -o -iname "*.tex" -o -iname "*.bmd" -o -iname "*.*pcm*" -o -iname "*.mid" -o -iname "*.dsp" -o -iname "vssver.scc" -o -iname "*.gct" -or -iname "*.gfn" -or -iname "*.bnr" -or -iname "*.h4m" -or -iname "*.sni" -or -iname "*.gsf" -or -iname "*.zsd" -or -iname "*.thp" -or -iname "*.mpc" -or -iname "*.bmd" -or -iname "*.fpk" -or -iname "*.viv" -or -iname "*.ngc" -or -iname "*.div" -or -iname "*.vid" -or -iname "*.vp*" -or -iname "*.sp" -or -iname "*.str" -or -iname "*.mus" -or -iname "*.flo" -or -iname "*.exa" -or -iname "*.ssd" -or -iname "*.sbf" -or -iname "*.spe" -or -iname "*.dat" -or -iname "*.sdt" -or -iname "*.lmp" -or -iname "*.feb" -or -iname "*.bin" -or -iname "*.dat" -or -iname "*.obj" -or -iname "*.lfb" -or -iname "*.med" -or -iname "*.samp"  -or -iname ".bnk" -or -iname "*.dsp" -or -iname "*.gsh" -or -iname "*.fsh" -or -iname "*.vsh" -or -iname "*.big" -or -iname *.abg -or -iname "*.bad" -or -iname "*.add" -o -iname "*.adb" -o -iname "*.fs" \) | xargs -I "{}" mv "{}" "../tmp/" 2>/dev/null
             }
             filterFind() {
-              find "." -type f -exec grep -ELis "0x[0-9a-fA-F]{8,}|ppceabi|metrotrk|metrowerks|msl_c|section layout|3DPanel|.text|.data|.rodata|.sbss|.bss|([a-z_$@.-]|[A-Z_$@.-]){5,}\.(cpp|hpp|a|o|c|h)[^a-zA-Z]$" "{}" \; | xargs -I "{}" mv "{}" "../$file_name/files/" > /dev/null 2>&1
+              find "." -type f -exec grep -Elis "0x[0-9a-fA-F]{8,}|ppceabi|metrotrk|metrowerks|msl_c|section layout|3DPanel|.text|.data|.rodata|.sbss|.bss|([a-z_$@.-]|[A-Z_$@.-]){5,}\.(cpp|hpp|a|o|c|h)[^a-zA-Z]$" "{}" \; | xargs -I "{}" mv "{}" "../$file_name/files/" > /dev/null 2>&1
             }
             filterExt() {
               find "." -type f ! \( -iname "*.dmp" -o -iname "*.fld*" -o -iname "*.run" -o -iname "*.xls*" -o -iname "*.bpr*" -o -iname "*.ddf*" -o -iname "*.mdl*" -o -iname "*.img*" -o -iname "*.map*" -o -iname "*.rel*" -o -iname "*.elf*" -o -iname "*.exe*" -o -iname "*.txt*" -o -iname "*.dol*" -o -iname "*.*sym*" -o -iname "*.lua*" -o -iname "*.rso*" -o -iname "*.csv*" -o -iname "*.dlf*" -o -iname "*.sh" -o -iname "*.sav*" -o -iname "*.tdf*" -o -iname "*.inf*" -o -iname "*.bat*" -o -iname "*readme*" -o -iname "*.doc*" -o -iname "*.cfg*" -o -iname "*.s" -o -iname "*.s.*" -o -iname "*.c" -o -iname "*.c.*" -o -iname "*.h" -o -iname "*.h.*" -o -iname "*.cpp" -o -iname "*.hpp" -o -iname "*.o" -o -iname "*.o.*" -o -iname "*.a" -o -iname "*.a.*" -o -iname "*.flb*" -o -iname "*.xml*" -o -iname "*.so" -o -iname "*.dll*" -o -iname "*.*log*" -o -iname "*.ini*" -o -iname "*.pdf*" -o -iname "*.yml*" -o -iname "*.yaml*" -o -iname "*.json*" -or -iname "*.py" -or -iname "*.exe*" -o -iname "*makefile*" -o -iname "*cmake*" -o -iname "*.sln*" -o -iname "*vsproj*" -o -iname "*.mak" -o -iname "*.mk" \) | xargs -I "{}" mv "{}" "../tmp/" 2>/dev/null
@@ -60,10 +60,12 @@ jobs:
               echo "# OK, now index for filenames, download and process everything ..."
               grep -oP '(?<=href=")[^"]*\.zip' index.html >> gameList
               rm index.html
+              exit 0
             }
             export link="https://myrient.erista.me/files/Redump/Nintendo%20-%20GameCube%20-%20NKit%20RVZ%20%5Bzstd-19-128k%5D"
 
             reset
+
             folderNum="$(cat gameList | wc -l)"
             echo "# Number of games: $folderNum"
 
@@ -163,8 +165,8 @@ jobs:
             cd "../tmp/";
             echo " # Post-Processing ...";
             filterFind;
-            found=$(find "../$file_name/" -type f | sort -u | paste -sd "," - );
-            size=$(du -sh "$file_name/" | awk '{print $1}')
+            found=$(find "../$file_name/" -type f | awk -F. '{if (NF>1) print $NF}' | sort -u | paste -sd "," - );
+            size=$(du -sh "../$file_name/" | awk '{print $1}')
             find "../$file_name/" -empty -delete;
             if rmdir "../$file_name/" 2>/dev/null; then
                echo " ! No code data found.";

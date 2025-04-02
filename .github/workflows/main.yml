@@ -75,16 +75,15 @@ jobs:
               echo "Time limit reached. Skipping iteration $i and moving to the next step."
               break  # Exit the loop if time limit is exceeded
             fi
-            zip_file=$(head -n 1 gameList 2>/dev/null)
+            zip_file=$(head -n 1 gameList)
             sed -i '1d' gameList
             if [[ "$zip_file" == *"Action"*"Replay"* ]]; then
               continue;
             fi
+            echo ">> Downloading $zip_file ..."
             wget -q "$link/$zip_file"
             filename=$(ls *.zip 2>/dev/null | head -n 1) 2>/dev/null
             file_name="${filename%.zip}"
-            echo ">> Fetching next game ..."
-            echo "   Name: $file_name"
             mkdir "$file_name"
             echo " # Extracting download ..."
             7z x "$filename" -y -bso0 -bsp0 -bse0
@@ -98,7 +97,7 @@ jobs:
             rm -rf tmp
             mkdir -p tmp
             cd "$file_name"
-            ls sys
+            ls
             filterDelete || true
             for i in 1 2 3; do
               echo "   # Scan iteration $i";
@@ -141,12 +140,12 @@ jobs:
                    rm -rf "$pathMainD"
                fi
             fi;
-            ls sys
+            ls
             echo "  # Cutting files ...";
             filterDelete || true;
             filterExt || true;
             filterTextFiles || true;
-            ls sys
+            ls
             cd "../tmp/";
             echo " # Post-Processing ...";
             filterFind;

@@ -27,13 +27,13 @@ jobs:
           mkdir -p $XDG_RUNTIME_DIR
           chmod 700 $XDG_RUNTIME_DIR
           echo "XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR" >> $GITHUB_ENV
+
+      - name: Install dependencies
+        run: |
           wget https://github.com/Moddimation/OP_GC_EXE_ALL_SCRIPT/raw/ae428a20d8b19cc1d9ee053b1670fabe23aba12b/orthrus-linux-x86_64.zip
           7z x orthrus-linux-x86_64.zip
           rm orthrus-linux-x86_64.zip -f
           chmod +x orthrus
-
-      - name: Install dependencies
-        run: |
           sudo apt-get update && sudo apt-get install -y p7zip-full
           sudo apt install flatpak
           sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
@@ -104,7 +104,7 @@ jobs:
             rm "$filename"
             rvz_file=$(ls *.rvz | head -n 1)
             echo " # Extracting game ..."
-            flatpak run --command="dolphin-tool" --filesystem host org.DolphinEmu.dolphin-emu extract -i "$rvz_file" -o "$file_name/" # -q 2>/dev/null || true
+            flatpak run --command="dolphin-tool" --filesystem=host org.DolphinEmu.dolphin-emu extract -i "$rvz_file" -o "$file_name/" # -q 2>/dev/null || true
             ls "$file_name/"
             rm "$rvz_file"
             echo " # Run filter ..."
@@ -125,7 +125,7 @@ jobs:
                 dec_file="../tmp/CURRENT_POSSIBLE_ARCHIVE"
                 extracted_dir="./files/$sub_file_name.d/"
                 mkdir "$extracted_dir" -p
-                flatpak run --command="dolphin-tool" --filesystem host org.DolphinEmu.dolphin-emu extract -i "$possible_archive_file" -o "$extracted_dir" 2>/dev/null || true
+                flatpak run --command="dolphin-tool" --filesystem=host org.DolphinEmu.dolphin-emu extract -i "$possible_archive_file" -o "$extracted_dir" 2>/dev/null || true
                 rm -f "$dec_file" 2>/dev/null || true
                 ../orthrus ncompress yay0 -d "$possible_archive_file" "$dec_file" > /dev/null 2>&1 || true
                 ../orthrus ncompress yaz0 -d "$possible_archive_file" "$dec_file" > /dev/null 2>&1 || true

@@ -148,7 +148,7 @@ jobs:
                fi
             fi;
             echo "  # Cutting files ...";
-            #filterDelete "../tmp/" 2>/dev/null;
+            filterDelete "../tmp/" 2>/dev/null;
             #filterExt "../tmp/" 2>/dev/null;
             #filterTextFiles "../tmp/" 2>/dev/null;
             cd "../tmp/";
@@ -169,7 +169,7 @@ jobs:
             echo "   Ignored:";
             echo "$ignored";
             echo "   Found:";
-            find "$file_name" -type f;
+            find "./$file_name" -type f;
             echo " # Continuing, size: $(du -sh "$file_name" | awk '{print $1}') / $(du -sh . | awk '{print $1}')"
             done
       - name: Compress

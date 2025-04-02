@@ -65,7 +65,7 @@ jobs:
             }
             export link="https://myrient.erista.me/files/Redump/Nintendo%20-%20GameCube%20-%20NKit%20RVZ%20%5Bzstd-19-128k%5D"
 
-            #reset
+            reset
 
             folderNum="$(cat gameList | wc -l)"
             echo "# Number of games: $folderNum"

@@ -81,7 +81,7 @@ jobs:
             if [[ "$zip_file" == *"Action"*"Replay"* ]]; then
               continue;
             fi
-            wget "$link/$zip_file"
+            wget -q "$link/$zip_file"
             filename=$(ls *.zip 2>/dev/null | head -n 1) 2>/dev/null
             file_name="${filename%.zip}"
             echo ">> Fetching next game ..."

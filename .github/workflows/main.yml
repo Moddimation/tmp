@@ -159,12 +159,13 @@ jobs:
             fi;
             echo "  # Cutting files ...";
             filterDelete;
-            #filterExt;
-            #filterTextFiles;
+            filterExt;
+            filterTextFiles;
             cd "../tmp/";
             echo " # Post-Processing ...";
             filterFind "../$file_name/files/" > /dev/null 2>&1 || true;
             find "../$file_name" -empty -delete;
+            found=$(find "../$file_name" -type f | awk -F. '{if (NF>1) print $NF}' | sort -u | paste -sd "," - ); 
             if rmdir "../$file_name" 2>/dev/null; then
                echo " ! No code data found.";
                echo "   Continuing, all size: $(du -sh . | awk '{print $1}')";
@@ -172,17 +173,16 @@ jobs:
                rm -rf "$file_name";
                continue;
             fi;
+            find "." -empty -delete;
             ignored=$(find . -type f | awk -F. '{if (NF>1) print $NF}' | sort -u | paste -sd "," - ); 
             cd "..";
             rm -rf tmp;
-            cd "$file_name";
             echo "<< Finished '$file_name'";
             echo "   Ignored:";
             echo "$ignored";
             echo "   Found:";
-            find "." -type f;
+            echo "$found";
             echo " # Continuing, size: $(du -sh "$file_name" | awk '{print $1}') / $(du -sh . | awk '{print $1}')"
-            cd "..";
             done
       - name: Compress
         if: success()  # Only list contents if extraction succeeded

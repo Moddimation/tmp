@@ -97,7 +97,7 @@ jobs:
           
             wget -q "$link/$zip_file"
             filename=$(ls *.zip 2>/dev/null | head -n 1) 2>/dev/null
-            file_name="${filename%.zip}"
+            file_name="./${filename%.zip}"
             mkdir "$file_name"
             echo " # Extracting download ..."
             7z x "$filename" -y -bso0 -bsp0 -bse0

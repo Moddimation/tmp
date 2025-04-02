@@ -109,7 +109,7 @@ jobs:
             for i in 1 2 3; do
               echo "   # Scan iteration $i";
               find "." -empty -delete;
-              find "" -type f ! \( -ipath "*mission*" -o -ipath "*room*" \) | while read -r possible_archive_file; do
+              find "." -type f ! \( -ipath "*mission*" -o -ipath "*room*" \) | while read -r possible_archive_file; do
                 sub_file_name="$(basename "$possible_archive_file" | sed 's/\.[^.]*$//')"
                 echo "   - Trying '$possible_archive_file' ..."
                 mkdir "./files/$sub_file_name.d" -p
@@ -171,8 +171,6 @@ jobs:
             echo "   Found:" && \
             find "$file_name" -type f && \
             echo " # Continuing, size: $(du -sh "$file_name" | awk '{print $1}') / $(du -sh . | awk '{print $1}')"
-            find . -type d -empty -delete
-            echo "# Done! Successfully got code data from every GameCube game."
             done
       - name: Compress
         if: success()  # Only list contents if extraction succeeded

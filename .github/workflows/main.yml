@@ -34,7 +34,7 @@ jobs:
           sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
           sudo flatpak install flathub org.DolphinEmu.dolphin-emu -y
 
-      - name: Prepare aliases
+      - name: Downloads & Extracts
         run: |
           alias filterDelete='find . -type f \( -iname "*.tpl" -o -iname "*.lsb" -o -iname "*.mhp" -o -iname "*.drs" \) | xargs -I "{}" mv "{}"'
           alias filterFind='find . -type f -exec grep -ELis "0x[0-9a-fA-F]{8,}|ppceabi|metrotrk|metrowerks|msl_c|section layout" "{}" \; | xargs -I "{}" rm -f "{}" 2>/dev/null || true'
@@ -43,8 +43,6 @@ jobs:
           alias dolphinTool='flatpak run --command="dolphin-tool" --filesystem host org.DolphinEmu.dolphin-emu'
           export link="https://myrient.erista.me/files/Redump/Nintendo%20-%20GameCube%20-%20NKit%20RVZ%20%5Bzstd-19-128k%5D"
 
-      - name: Downloads & Extracts
-        run: |
           rm -f "./gamelist"
           echo "# Getting index ..."
           wget -q "$link/"

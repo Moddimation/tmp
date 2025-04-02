@@ -119,57 +119,57 @@ jobs:
                 rm -f "$dec_file" 2>/dev/null || true
                 ../orthrus ncompress yay0 -d "$possible_archive_file" "$dec_file" > /dev/null 2>&1 || true
                 ../orthrus ncompress yaz0 -d "$possible_archive_file" "$dec_file" > /dev/null 2>&1 || true
-                ../orthrus panda3d bam -d "$possible_archive_file" "$dec_file" > /dev/null 2>&1 || true && \
-                ../orthrus panda3d multifile -d "$possible_archive_file" "$dec_file" > /dev/null 2>&1 || true && \
-                ../orthrus jsystem rarc -d "$possible_archive_file" "$dec_file" > /dev/null 2>&1 || true && \
-                ../orthrus godot pck -d "$possible_archive_file" "$dec_file" > /dev/null 2>&1 || true && \
-                cp -f "$dec_file" "$possible_archive_file" 2>/dev/null || true && \
-               # dtk rarc extract "$possible_archive_file" -o "$extracted_dir" > /dev/null 2>&1 || true && \
-               # dtk u8 extract "$possible_archive_file" -o "$extracted_dir" > /dev/null 2>&1 || true && \
-               # dtk wad extract "$possible_archive_file" -o "$extracted_dir" > /dev/null 2>&1 || true && \
-                tar -xf "$possibble_archive_file" -C "$extracted_dir" > /dev/null 2>&1 || true && \
-                7z x "$possible_archive_file" -o"$extracted_dir" > /dev/null 2>&1 || true && \
+                ../orthrus panda3d bam -d "$possible_archive_file" "$dec_file" > /dev/null 2>&1 || true;
+                ../orthrus panda3d multifile -d "$possible_archive_file" "$dec_file" > /dev/null 2>&1 || true;
+                ../orthrus jsystem rarc -d "$possible_archive_file" "$dec_file" > /dev/null 2>&1 || true;
+                ../orthrus godot pck -d "$possible_archive_file" "$dec_file" > /dev/null 2>&1 || true;
+                cp -f "$dec_file" "$possible_archive_file" 2>/dev/null || true;
+               # dtk rarc extract "$possible_archive_file" -o "$extracted_dir" > /dev/null 2>&1 || true;
+               # dtk u8 extract "$possible_archive_file" -o "$extracted_dir" > /dev/null 2>&1 || true;
+               # dtk wad extract "$possible_archive_file" -o "$extracted_dir" > /dev/null 2>&1 || true;
+                tar -xf "$possibble_archive_file" -C "$extracted_dir" > /dev/null 2>&1 || true;
+                7z x "$possible_archive_file" -o"$extracted_dir" > /dev/null 2>&1 || true;
                 if [ -z "$(ls -A "$extracted_dir")" ]; then
                     # echo "   ! No data found, continue";
                     rmdir "$extracted_dir";
                     mv "filename.szs" "${filename%.szs}" > /dev/null 2>&1;
                     continue;
-                fi && \
-                ls "$extracted_dir" && \
-                rm "$possible_archive_file" && \
-                echo "   # Extracted sub-archive: $possible_archive_file" # && \
+                fi;
+                ls "$extracted_dir";
+                rm "$possible_archive_file";
+                echo "   # Extracted sub-archive: $possible_archive_file" #;
               done;
-            done && \
-            pathMainD="$(find . -type d -name "main.d")" && \
+            done;
+            pathMainD="$(find . -type d -name "main.d")";
             if ! [ -z "$pathMainD" ]; then
                if [ -z "$(cmp "$pathMainD/sys/main.dol" "./sys/main.dol")" ]; then
                    cp -rf "$pathMainD/*" ".";
                    rm -rf "$pathMainD"
                fi
-            fi && \
-            echo "  # Cutting files ..." && \
-            filterDelete "../tmp/" 2>/dev/null && \
-            filterExt "../tmp/" 2>/dev/null && \
-            filterTextFiles "../tmp/" 2>/dev/null && \
-            cd "../tmp/" && \
-            echo " # Post-Processing ..." && \
-            filterFind "../$file_name/files/" > /dev/null 2>&1 || true && \
-            find "../$file_name" -empty -delete && \
+            fi;
+            echo "  # Cutting files ...";
+            filterDelete "../tmp/" 2>/dev/null;
+            filterExt "../tmp/" 2>/dev/null;
+            filterTextFiles "../tmp/" 2>/dev/null;
+            cd "../tmp/";
+            echo " # Post-Processing ...";
+            filterFind "../$file_name/files/" > /dev/null 2>&1 || true;
+            find "../$file_name" -empty -delete;
             if rmdir "../$file_name" 2>/dev/null; then
                echo " ! No code data found.";
                echo "   Continuing, all size: $(du -sh . | awk '{print $1}')";
                cd ..;
                rm -rf "$file_name";
                continue;
-            fi && \
-            ignored=$(find . -type f | awk -F. '{if (NF>1) print $NF}' | sort -u | paste -sd "," - ) && \ 
-            cd ".." && \
-            rm -rf tmp && \
-            echo "<< Finished '$file_name'" && \
-            echo "   Ignored:" && \
-            echo "$ignored" && \
-            echo "   Found:" && \
-            find "$file_name" -type f && \
+            fi;
+            ignored=$(find . -type f | awk -F. '{if (NF>1) print $NF}' | sort -u | paste -sd "," - ); 
+            cd "..";
+            rm -rf tmp;
+            echo "<< Finished '$file_name'";
+            echo "   Ignored:";
+            echo "$ignored";
+            echo "   Found:";
+            find "$file_name" -type f;
             echo " # Continuing, size: $(du -sh "$file_name" | awk '{print $1}') / $(du -sh . | awk '{print $1}')"
             done
       - name: Compress

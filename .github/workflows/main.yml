@@ -26,7 +26,6 @@ jobs:
           7z x orthrus-linux-x86_64.zip
           rm orthrus-linux-x86_64.zip -f
           chmod +x orthrus
-          echo " " > gameList
 
      # - name: Install dependencies
       #  run: |
@@ -37,6 +36,7 @@ jobs:
 
       - name: Downloads & Extracts
         run: |
+            echo " " > gameList
             filterDelete() {
               find . -type f \( -iname "*.tpl" -o -iname "*.lsb" -o -iname "*.mhp" -o -iname "*.drs" -o -iname "*.evd" -o -iname "*.fnt" -o -iname "*.rby" -o -iname "*.emd" -o -iname "*.rdt" -o -iname "*.tim" -o -iname "*.adx" -o -iname "*.gma" -o -iname "*.vtx" -o -iname "*.*gfx*" -o -iname "*.gcp" -o -iname "*.lfh" -o -iname "*.lfa" -o -iname "*.lfg" -o -iname "*.bnk" -o -iname "*.dtm" -o -iname "*anim*" -o -iname "*.tga" -o -iname "*.shf" -o -iname "*.shg" -o -iname "*.gct" -o -iname "*.ngc" -o -iname "*.gsf" -o -iname "*.spt" -o -iname "*.loc" -o -iname "*.gdf" -o -iname "*.tex" -o -iname "*.bmd" -o -iname "*.*pcm*" -o -iname "*.mid" -o -iname "*.dsp" -o -iname "vssver.scc" -o -iname "*.gct" -or -iname "*.gfn" -or -iname "*.bnr" -or -iname "*.h4m" -or -iname "*.sni" -or -iname "*.gsf" -or -iname "*.zsd" -or -iname "*.thp" -or -iname "*.mpc" -or -iname "*.bmd" -or -iname "*.fpk" -or -iname "*.viv" -or -iname "*.ngc" -or -iname "*.div" -or -iname "*.vid" -or -iname "*.vp*" -or -iname "*.sp" -or -iname "*.str" -or -iname "*.mus" -or -iname "*.flo" -or -iname "*.exa" -or -iname "*.ssd" -or -iname "*.sbf" -or -iname "*.spe" -or -iname "*.dat" -or -iname "*.sdt" -or -iname "*.lmp" -or -iname "*.feb" -or -iname "*.bin" -or -iname "*.dat" -or -iname "*.obj" -or -iname "*.lfb" -or -iname "*.med" -or -iname "*.samp"  -or -iname ".bnk" -or -iname "*.dsp" -or -iname "*.gsh" -or -iname "*.fsh" -or -iname "*.vsh" -or -iname "*.big" -or -iname *.abg -or -iname "*.bad" -or -iname "*.add" -o -iname "*.adb" -o -iname "*.fs" \) | xargs -I "{}" mv "{}" "../tmp/" 2>/dev/null
             }
@@ -75,14 +75,18 @@ jobs:
               echo "Time limit reached. Skipping iteration $i and moving to the next step."
               break  # Exit the loop if time limit is exceeded
             fi
-
+            echo "test 1"
             zip_file=$(cat gameList | head -n 1 2>/dev/null)
             sed -i '1d' gameList
+            echo "test 2"
             if [[ "$zip_file" == *"Action"*"Replay"* ]]; then
               continue;
             fi
+            echo "test 3"
             wget -q "$link/$zip_file"
+            echo "test 4"
             filename=$(ls *.zip 2>/dev/null | head -n 1) 2>/dev/null
+            echo "test 5"
             file_name="${filename%.zip}"
             echo ">> Fetching next game ..."
             echo "   Name: $file_name"

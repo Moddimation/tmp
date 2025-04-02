@@ -53,7 +53,6 @@ jobs:
             filterTextFiles() {
               find "." -type f \( -iname "*.csv" -o -iname "*.txt" -o -iname "*.log" -o -iname "*.cfg" -o -iname "*.xml" -o -iname "*.ini" -o -iname "*.inf" -o -iname "*.map" \)  -exec grep -ELis "__start|msl_c|MetroTRK|jsystem|([a-z_.-]|[A-Z_.-]){6,}\.(cpp|hpp|a|o|c|h)[^a-zA-Z]$|section layout|\.text|.rodata|.bss|.sbss" "{}" \; | xargs -I "{}" mv "{}" "../tmp/" 2>/dev/null
             }
-            alias dolphinTool='flatpak run --command="dolphin-tool" --filesystem host org.DolphinEmu.dolphin-emu'
             reset() {
               touch gameList
               echo "# Getting index ..."
@@ -105,7 +104,7 @@ jobs:
             rm "$filename"
             rvz_file=$(ls *.rvz | head -n 1)
             echo " # Extracting game ..."
-            dolphinTool extract -i "$rvz_file" -o "$file_name/" # -q 2>/dev/null || true
+            flatpak run --command="dolphin-tool" --filesystem host org.DolphinEmu.dolphin-emu extract -i "$rvz_file" -o "$file_name/" # -q 2>/dev/null || true
             ls "$file_name/"
             rm "$rvz_file"
             echo " # Run filter ..."
@@ -126,7 +125,7 @@ jobs:
                 dec_file="../tmp/CURRENT_POSSIBLE_ARCHIVE"
                 extracted_dir="./files/$sub_file_name.d/"
                 mkdir "$extracted_dir" -p
-                dolphinTool extract -i "$possible_archive_file" -o "$extracted_dir" 2>/dev/null || true
+                flatpak run --command="dolphin-tool" --filesystem host org.DolphinEmu.dolphin-emu extract -i "$possible_archive_file" -o "$extracted_dir" 2>/dev/null || true
                 rm -f "$dec_file" 2>/dev/null || true
                 ../orthrus ncompress yay0 -d "$possible_archive_file" "$dec_file" > /dev/null 2>&1 || true
                 ../orthrus ncompress yaz0 -d "$possible_archive_file" "$dec_file" > /dev/null 2>&1 || true

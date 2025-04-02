@@ -14,6 +14,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GH_COMMIT }}
+
       - name: Setup env
         run: |
           export $(dbus-launch)
@@ -111,13 +116,16 @@ jobs:
             for i in 1 2 3; do
               echo "   # Scan iteration $i";
               find "." -empty -delete;
-              find "." -type f ! \( -ipath "*mission*" -o -ipath "*room*" \) | while read -r possible_archive_file; do
+              find "." -type f \
+            ! \( -ipath "*mission*" -o -ipath "*room*" -o -ipath "*map*" -o -ipath "*region*" -o -ipath "*effect*" -o -ipath "*graphic*" -o -path "*gfx*" -o -ipath "*sprite*" -o -ipath "*chara*" -o -ipath "*chars*" -o -ipath "*asset*" -o -ipath "*scn*/*" -o -ipath "*scene*" -o -ipath "*model*" -o -ipath "*stream*" -o -ipath "*aud*" -o -ipath "*vid*" -o -ipath "*mus*" -o -ipath "*data/*" -o -ipath "*/data*" -o -ipath "*level*" -o -ipath "*lvl*" -o -ipath "*course*" -o -ipath "*/sys/*" -o -ipath "*obj*" -o -ipath "*snd*" -o -ipath "*sound*" -o -ipath "*spr*" \) \
+            ! \( -name "FILE_*" -o -iname "boot.bin" -o -iname "*.inf" -o -iname "*.ini" -o -iname "*.txt" -o -iname "*.rel" -o -iname "*.h" -o -iname "*.ini" -iname "*level*" -o -iname "*.thp" -o -iname "*lvl" -o -iname "*.stf" -o -iname "*.tsc" -o -iname "*.ani" -o -iname "*.col" -o -iname "*scb" -o -iname "*.adp" -o -iname "*.all" -o -iname "*.geo" -o -iname "vssver.scc" -o -iname "*.lvl" -o -iname "*opening.bnr" -o -iname "*.tpl" -o -iname "*.mtl"  -o -iname "*.bat" -o -iname "*.map" -o -iname "*.dll" -o -iname "*.exe" -o -iname "*.img" -o -iname "*.txt" -o -iname "*.csv" -o -iname "*.elf" -o -iname "*.dol" -o -iname "boot.bin" \) \
+            | while read -r possible_archive_file; do
                 sub_file_name="$(basename "$possible_archive_file" | sed 's/\.[^.]*$//')"
                 echo "   - Trying '$possible_archive_file' ..."
-                mkdir "./files/$sub_file_name.d" -p
-                dolphinTool extract -i "$possible_archive_file" -o "files/$sub_file_name.d" 2>/dev/null || true
                 dec_file="../tmp/CURRENT_POSSIBLE_ARCHIVE"
-                extracted_dir="./files/$sub_file_name.d"
+                extracted_dir="./files/$sub_file_name.d/"
+                mkdir "$extracted_dir" -p
+                dolphinTool extract -i "$possible_archive_file" -o "$extracted_dir" 2>/dev/null || true
                 rm -f "$dec_file" 2>/dev/null || true
                 ../orthrus ncompress yay0 -d "$possible_archive_file" "$dec_file" > /dev/null 2>&1 || true
                 ../orthrus ncompress yaz0 -d "$possible_archive_file" "$dec_file" > /dev/null 2>&1 || true
@@ -142,11 +150,11 @@ jobs:
                 echo "   # Extracted sub-archive: $possible_archive_file" #;
               done;
             done;
-            pathMainD="$(find . -type d -name "main.d")";
-            if ! [ -z "$pathMainD" ]; then
+            pathMainD="$(find . -type d -name "*.d")";
+            if [ -d "/sys" ] && ! [ -z "$pathMainD" ]; then
                if [ -z "$(cmp "$pathMainD/sys/main.dol" "./sys/main.dol")" ]; then
                    cp -rf "$pathMainD/*" ".";
-                   rm -rf "$pathMainD"
+                   rm -rf "$pathMainD/"
                fi
             fi;
             echo "  # Cutting files ...";
@@ -157,7 +165,7 @@ jobs:
             echo " # Post-Processing ...";
             filterFind;
             found=$(find "../$file_name/" -type f | awk -F. '{if (NF>1) print $NF}' | sort -u | paste -sd "," - );
-            size=$(du -sh "$file_name" | awk '{print $1}')
+            size=$(du -sh "$file_name/" | awk '{print $1}')
             find "../$file_name/" -empty -delete;
             if rmdir "../$file_name/" 2>/dev/null; then
                echo " ! No code data found.";
@@ -188,15 +196,6 @@ jobs:
         with:
           name: BundleGC
           path: BundleGC.7z.*
-
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.GH_COMMIT }}
-
-      - name: Copy gameList to Repository
-        run: |
-          cp gameList .  # Copy the updated file to the root of the repo
 
       - name: Configure Git
         run: |

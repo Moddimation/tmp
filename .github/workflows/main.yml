@@ -81,16 +81,10 @@ jobs:
               continue;
             fi
             wget -q "$link/$zip_file"
-            filename=$(ls *.zip 2>/dev/null | head -n 1)
-            if [ -z "$filename" ]; then
-              while [ -z "$filename" ]; do
-                filename=$(ls *.zip 2>/dev/null | head -n 1) 2>/dev/null
-              done;
-              file_name="${filename%.zip}"
-            fi
+            filename=$(ls *.zip 2>/dev/null | head -n 1) 2>/dev/null
+            file_name="${filename%.zip}"
             echo ">> Fetching next game ..."
             echo "   Name: $file_name"
-            wait $!
             mkdir "$file_name"
             echo " # Extracting download ..."
             7z x "$filename" -y -bso0 -bsp0 -bse0

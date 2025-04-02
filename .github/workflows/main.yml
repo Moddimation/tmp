@@ -61,6 +61,7 @@ jobs:
             rm index.html
             folderNum="$(cat gameList | wc -l)"
             echo "# Number of games: $folderNum"
+            cat gameList | head
 
             # Set the time limit (in seconds, 5 hours = 18000 seconds)
             time_limit=300

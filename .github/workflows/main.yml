@@ -61,7 +61,6 @@ jobs:
             rm index.html
             folderNum="$(cat gameList | wc -l)"
             echo "# Number of games: $folderNum"
-            cat gameList | head
 
             # Set the time limit (in seconds, 5 hours = 18000 seconds)
             time_limit=300
@@ -76,7 +75,7 @@ jobs:
               echo "Time limit reached. Skipping iteration $i and moving to the next step."
               break  # Exit the loop if time limit is exceeded
             fi
-            zip_file=$(cat gameList | head -n 1 2>/dev/null)
+            zip_file=$(head -n 1 gameList 2>/dev/null)
             sed -i '1d' gameList
             if [[ "$zip_file" == *"Action"*"Replay"* ]]; then
               continue;
@@ -99,6 +98,7 @@ jobs:
             rm -rf tmp
             mkdir -p tmp
             cd "$file_name"
+            ls sys
             filterDelete || true
             for i in 1 2 3; do
               echo "   # Scan iteration $i";
@@ -141,14 +141,17 @@ jobs:
                    rm -rf "$pathMainD"
                fi
             fi;
+            ls sys
             echo "  # Cutting files ...";
             filterDelete || true;
             filterExt || true;
             filterTextFiles || true;
+            ls sys
             cd "../tmp/";
             echo " # Post-Processing ...";
             filterFind;
-            found=$(find "../$file_name/" -type f | awk -F. '{if (NF>1) print $NF}' | sort -u | paste -sd "," - ); 
+            found=$(find "../$file_name/" -type f | awk -F. '{if (NF>1) print $NF}' | sort -u | paste -sd "," - );
+            size=$(du -sh "$file_name" | awk '{print $1}')
             find "../$file_name/" -empty -delete;
             if rmdir "../$file_name" 2>/dev/null; then
                echo " ! No code data found.";
@@ -166,7 +169,7 @@ jobs:
             echo "$ignored";
             echo "   Found:";
             echo "$found";
-            echo " # Continuing, size: $(du -sh "$file_name" | awk '{print $1}') / $(du -sh . | awk '{print $1}')"
+            echo " # Continuing, size: $size / $(du -sh . | awk '{print $1}')"
             done
       - name: Compress
         if: success()  # Only list contents if extraction succeeded

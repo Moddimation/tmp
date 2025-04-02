@@ -75,18 +75,13 @@ jobs:
               echo "Time limit reached. Skipping iteration $i and moving to the next step."
               break  # Exit the loop if time limit is exceeded
             fi
-            echo "test 1"
             zip_file=$(cat gameList | head -n 1 2>/dev/null)
             sed -i '1d' gameList
-            echo "test 2"
             if [[ "$zip_file" == *"Action"*"Replay"* ]]; then
               continue;
             fi
-            echo "test 3"
-            wget -q "$link/$zip_file"
-            echo "test 4"
+            wget "$link/$zip_file"
             filename=$(ls *.zip 2>/dev/null | head -n 1) 2>/dev/null
-            echo "test 5"
             file_name="${filename%.zip}"
             echo ">> Fetching next game ..."
             echo "   Name: $file_name"

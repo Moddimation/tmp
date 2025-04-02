@@ -57,10 +57,11 @@ jobs:
             echo "# Getting index ..."
             wget -q "$link/"
             echo "# OK, now index for filenames, download and process everything ..."
-            folderNum="$(cat gameList | wc -l)"
-            echo "# Number of games: $folderNum"
             grep -oP '(?<=href=")[^"]*\.zip' index.html >> gameList
             rm index.html
+            folderNum="$(cat gameList | wc -l)"
+            echo "# Number of games: $folderNum"
+
             # Set the time limit (in seconds, 5 hours = 18000 seconds)
             time_limit=300
             start_time=$(date +%s)  # Get the current time in seconds

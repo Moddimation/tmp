@@ -167,12 +167,14 @@ jobs:
               done;
             done;
             pathMainD="$(find . -type d -name "*.d")";
-            if [ -d "/sys" ] && ! [ -z "$pathMainD" ]; then
-               if [ -z "$(cmp "$pathMainD/sys/main.dol" "./sys/main.dol")" ]; then
-                   cp -rf "$pathMainD/*" ".";
-                   rm -rf "$pathMainD/"
-               fi
-            fi;
+            for dir in "$pathMainD": do
+              if [ -d "$dir" ] && [ -d "$dir/sys" ] && [ -e "./sys/main.dol" ] && [ -e "$dir/sys/main.dol" ]; then
+                 if [ -z "$(cmp "$dir/sys/main.dol" "./sys/main.dol")" ]; then
+                     cp -rf "$pathMainD/*" ".";
+                     rm -rf "$pathMainD/"
+                 fi
+              fi;
+            done
             echo "  # Cutting files ...";
             filterDelete || true;
             filterExt || true;

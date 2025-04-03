@@ -30,10 +30,13 @@ jobs:
 
       - name: Install dependencies
         run: |
+          wget https://github.com/encounter/decomp-toolkit/releases/download/v1.4.1/dtk-linux-x86_64
           wget https://github.com/Moddimation/OP_GC_EXE_ALL_SCRIPT/raw/ae428a20d8b19cc1d9ee053b1670fabe23aba12b/orthrus-linux-x86_64.zip
           7z x orthrus-linux-x86_64.zip
           rm orthrus-linux-x86_64.zip -f
+          mv dtk* dtk
           chmod +x orthrus
+          chmod +x dtk
           sudo apt-get update && sudo apt-get install -y p7zip-full
           sudo apt install flatpak
           sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
@@ -140,9 +143,9 @@ jobs:
                 ../orthrus jsystem rarc -d "$possible_archive_file" "$dec_file" > /dev/null 2>&1 || true;
                 ../orthrus godot pck -d "$possible_archive_file" "$dec_file" > /dev/null 2>&1 || true;
                 cp -f "$dec_file" "$possible_archive_file" 2>/dev/null || true;
-               # dtk rarc extract "$possible_archive_file" -o "$extracted_dir" > /dev/null 2>&1 || true;
-               # dtk u8 extract "$possible_archive_file" -o "$extracted_dir" > /dev/null 2>&1 || true;
-               # dtk wad extract "$possible_archive_file" -o "$extracted_dir" > /dev/null 2>&1 || true;
+                dtk rarc extract "$possible_archive_file" -o "$extracted_dir" > /dev/null 2>&1 || true;
+                dtk u8 extract "$possible_archive_file" -o "$extracted_dir" > /dev/null 2>&1 || true;
+                dtk wad extract "$possible_archive_file" -o "$extracted_dir" > /dev/null 2>&1 || true;
                 tar -xf "$possibble_archive_file" -C "$extracted_dir" > /dev/null 2>&1 || true;
                 7z x "$possible_archive_file" -o"$extracted_dir" > /dev/null 2>&1 || true;
                 if [ -z "$(ls -A "$extracted_dir")" ]; then

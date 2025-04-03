@@ -143,9 +143,9 @@ jobs:
                 ../orthrus jsystem rarc -d "$possible_archive_file" "$dec_file" > /dev/null 2>&1 || true;
                 ../orthrus godot pck -d "$possible_archive_file" "$dec_file" > /dev/null 2>&1 || true;
                 cp -f "$dec_file" "$possible_archive_file" 2>/dev/null || true;
-                dtk rarc extract "$possible_archive_file" -o "$extracted_dir" > /dev/null 2>&1 || true;
-                dtk u8 extract "$possible_archive_file" -o "$extracted_dir" > /dev/null 2>&1 || true;
-                dtk wad extract "$possible_archive_file" -o "$extracted_dir" > /dev/null 2>&1 || true;
+                ../dtk rarc extract "$possible_archive_file" -o "$extracted_dir" > /dev/null 2>&1 || true;
+                ../dtk u8 extract "$possible_archive_file" -o "$extracted_dir" > /dev/null 2>&1 || true;
+                ../dtk wad extract "$possible_archive_file" -o "$extracted_dir" > /dev/null 2>&1 || true;
                 tar -xf "$possibble_archive_file" -C "$extracted_dir" > /dev/null 2>&1 || true;
                 7z x "$possible_archive_file" -o"$extracted_dir" > /dev/null 2>&1 || true;
                 if [ -z "$(ls -A "$extracted_dir")" ]; then

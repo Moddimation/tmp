@@ -65,7 +65,7 @@ jobs:
                 -iname "*.bad" -o -iname "*.add" -o -iname "*.adb" -o -iname "*.fs" \
               \) -a \( \
                 -ipath "*asset*" -o -ipath "*sound" -o -ipath "*mov*" -o -ipath "*snd*" -o -ipath "*char*" -o \
-                -ipath "*vid*" -o -ipath "*room*" -o -ipath "*area*" -o -ipath "*aud*" -o -ipath "*data*" -o \
+                -ipath "*vid*" -o -ipath "*room*" -o -ipath "*area*" -o -ipath "*arena*" -o -ipath "*props*" -o -ipath "*aud*" -o -ipath "*data*" -o \
                 -ipath "*map*" -o -ipath "*scene*" -o -ipath "*scn*" -o -ipath "*act*" -o -ipath "*toy*" -o \
                 -ipath "*obj*" -o -ipath "*gun*" -o -ipath "*sfx*" -o -ipath "*effect*" -o -ipath "*prop*" -o \
                 -ipath "*ball*" -o -ipath "*music*" \

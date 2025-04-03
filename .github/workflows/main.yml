@@ -195,7 +195,7 @@ jobs:
                continue;
             fi;
             find "./$file_name/" -empty -delete;
-            ignored=$(find "./$file_name/" -type f | awk -F. '{if (NF>1) print $NF}' | sort -u | paste -sd "," - ); 
+            ignored=$(find "./tmp/" -type f | awk -F. '{if (NF>1) print $NF}' | sort -u | paste -sd "," - ); 
             rm -rf tmp;
             echo "<< Finished '$file_name'";
             echo "   Ignored:";

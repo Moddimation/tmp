@@ -167,11 +167,11 @@ jobs:
               done;
             done;
             pathMainD="$(find . -type d -name "*.d")";
-            for dir in "$pathMainD": do
+            for dir in $pathMainD; do
               if [ -d "$dir" ] && [ -d "$dir/sys" ] && [ -e "./sys/main.dol" ] && [ -e "$dir/sys/main.dol" ]; then
                  if [ -z "$(cmp "$dir/sys/main.dol" "./sys/main.dol")" ]; then
-                     cp -rf "$pathMainD/*" ".";
-                     rm -rf "$pathMainD/"
+                     cp -rf "$dir/*" ".";
+                     rm -rf "$dir/"
                  fi
               fi;
             done

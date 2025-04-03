@@ -67,7 +67,7 @@ jobs:
             filterTextFiles() {
               find . -type f \( -iname "*.csv" -o -iname "*.txt" -o -iname "*.log" -o -iname "*.cfg" -o -iname "*.xml" -o -iname "*.ini" -o -iname "*.inf" -o -iname "*.map" \) \
                 -exec grep -ELi "__start|ppceabi|MetroTRK|3DPane|jaudio|jsystem|([a-z_-]|[A-Z_-])\{6,\}\.(cpp|hpp|a|o|c|h)[^a-zA-Z%!\$&=;,:._-]$|section layout|\.text" "{}" \; \
-                -exec rm -f "{}" \;
+                -exec rm -f "{}" \; 2>/dev/null
             }
             reset() {
               rm -f gameList

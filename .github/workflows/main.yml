@@ -53,7 +53,7 @@ jobs:
               find . -type f \( \
                 -iname "*.ggf" -o -iname "*.p3d" -o -iname "*.tpl" -o -iname "*.lsb" -o -iname "*.mhp" -o -iname "*.drs" -o -iname "*.evd" -o -iname "*.fnt" -o -iname "*.rby" -o -iname "*.emd" -o -iname "*.rdt" -o -iname "*.tim" -o -iname "*.adx" -o -iname "*.gma" -o -iname "*.vtx" -o -iname "*.*gfx*" -o -iname "*.gcp" -o -iname "*.lfh" -o -iname "*.lfa" -o -iname "*.lfg" -o -iname "*.bnk" -o -iname "*.dtm" -o -iname "*anim*" -o -iname "*.tga" -o -iname "*.shf" -o -iname "*.shg" -o -iname "*.gct" -o -iname "*.ngc" -o -iname "*.gsf" -o -iname "*.spt" -o -iname "*.loc" -o -iname "*.gdf" -o -iname "*.tex" -o -iname "*.bmd" -o -iname "*.*pcm*" -o -iname "*.mid" -o -iname "*.dsp" -o -iname "vssver.scc" -o -iname "*.gfn" -o -iname "*.bnr" -o -iname "*.h4m" -o -iname "*.sni" -o -iname "*.zsd" -o -iname "*.thp" -o -iname "*.mpc" -o -iname "*.fpk" -o -iname "*.viv" -o -iname "*.div" -o -iname "*.vid" -o -iname "*.vp*" -o -iname "*.sp" -o -iname "*.str" -o -iname "*.mus" -o -iname "*.flo" -o -iname "*.exa" -o -iname "*.ssd" -o -iname "*.sbf" -o -iname "*.spe" -o -iname "*.dat" -o -iname "*.sdt" -o -iname "*.lmp" -o -iname "*.feb" -o -iname "*.bin" -o -iname "*.obj" -o -iname "*.lfb" -o -iname "*.med" -o -iname "*.samp" -o -iname "*.dsp" -o -iname "*.gsh" -o -iname "*.fsh" -o -iname "*.vsh" -o -iname "*.big" -o -iname "*.abg" -o -iname "*.bad" -o -iname "*.add" -o -iname "*.adb" -o -iname "*.fs" \
               \) -o \( \
-                -ipath "*asset*" -o -ipath "*sound*" -o -ipath "*mov*" -o -ipath "*snd*" -o -ipath "*char*" -o -ipath "*vid*" -o -ipath "*room*" -o -ipath "*area*" -o -ipath "*arena*" -o -ipath "*props*" -o -ipath "*aud*" -o -ipath "*data*" -o -ipath "*map*" -o -ipath "*scene*" -o -ipath "*scn*" -o -ipath "*act*" -o -ipath "*toy*" -o -ipath "*obj*" -o -ipath "*gun*" -o -ipath "*sfx*" -o -ipath "*effect*" -o -ipath "*prop*" -o -ipath "*ball*" -o -ipath "*music*" \
+                -ipath "*asset*/*" -o -ipath "*sound*/*" -o -ipath "*mov*/*" -o -ipath "*snd*/*" -o -ipath "*char*/*" -o -ipath "*vid*/*" -o -ipath "*room*/*" -o -ipath "*area*/*" -o -ipath "*arena*/*" -o -ipath "*props*/*" -o -ipath "*aud*/*" -o -ipath "*data*/*" -o -ipath "*map*/*" -o -ipath "*scene*/*" -o -ipath "*scn*/*" -o -ipath "*act*/*" -o -ipath "*toy*/*" -o -ipath "*obj*/*" -o -ipath "*gun*/*" -o -ipath "*sfx*/*" -o -ipath "*effect*/*" -o -ipath "*prop*/*" -o -ipath "*ball*/*" -o -ipath "*music*/*" \
               \) | xargs -I {} mv -t "../tmp/" "{}" 2>/dev/null
             }
             filterFind() {
@@ -79,7 +79,7 @@ jobs:
             }
             export link="https://myrient.erista.me/files/Redump/Nintendo%20-%20GameCube%20-%20NKit%20RVZ%20%5Bzstd-19-128k%5D"
 
-            #reset
+            reset
 
             folderNum="$(cat gameList | wc -l)"
             echo "# Number of games: $folderNum"
@@ -137,7 +137,7 @@ jobs:
               echo "   # Scan iteration $i";
               find "." -empty -delete;
               find "." -type f \
-            ! \( -ipath "*mission*" -o -ipath "*room*" -o -ipath "*map*" -o -ipath "*region*" -o -ipath "*effect*" -o -ipath "*graphic*" -o -path "*gfx*" -o -ipath "*sprite*" -o -ipath "*chara*" -o -ipath "*chars*" -o -ipath "*asset*" -o -ipath "*scn*/*" -o -ipath "*scene*" -o -ipath "*model*" -o -ipath "*stream*" -o -ipath "*aud*" -o -ipath "*vid*" -o -ipath "*mus*" -o -ipath "*data/*" -o -ipath "*/data*" -o -ipath "*level*" -o -ipath "*lvl*" -o -ipath "*course*" -o -ipath "*/sys/*" -o -ipath "*obj*" -o -ipath "*snd*" -o -ipath "*sound*" -o -ipath "*spr*" \) \
+            ! \( -ipath "*mission*/*" -o -ipath "*room*/*" -o -ipath "*map*/*" -o -ipath "*region*/*" -o -ipath "*effect*/*" -o -ipath "*graphic*" -o -path "*gfx*/*" -o -ipath "*sprite*/*" -o -ipath "*chara*/*" -o -ipath "*chars*/*" -o -ipath "*asset*/*" -o -ipath "*scn*/*" -o -ipath "*scene*/*" -o -ipath "*model*/*" -o -ipath "*stream*/*" -o -ipath "*aud*/*" -o -ipath "*vid*/*" -o -ipath "*mus*/*" -o -ipath "*data*/*" -o -ipath "*/data*/*" -o -ipath "*level*/*" -o -ipath "*lvl*/*" -o -ipath "*course*/*" -o -ipath "*/sys/" -o -ipath "*obj*/*" -o -ipath "*snd*/*" -o -ipath "*sound*/*" -o -ipath "*spr*" \) \
             ! \( -iname "*.hip" -o -iname "*.hop" -o -iname "*.bik" -o -name "FILE_*" -o -iname "boot.bin" -o -iname "*.inf" -o -iname "*.ini" -o -iname "*.txt" -o -iname "*.rel" -o -iname "*.h" -o -iname "*.ini" -iname "*level*" -o -iname "*.thp" -o -iname "*lvl" -o -iname "*.stf" -o -iname "*.tsc" -o -iname "*.ani" -o -iname "*.col" -o -iname "*scb" -o -iname "*.adp" -o -iname "*.all" -o -iname "*.geo" -o -iname "vssver.scc" -o -iname "*.lvl" -o -iname "*opening.bnr" -o -iname "*.tpl" -o -iname "*.mtl"  -o -iname "*.bat" -o -iname "*.map" -o -iname "*.dll" -o -iname "*.exe" -o -iname "*.img" -o -iname "*.txt" -o -iname "*.csv" -o -iname "*.elf" -o -iname "*.dol" -o -iname "boot.bin" \) \
             | while read -r possible_archive_file; do
                 sub_file_name="$(basename "$possible_archive_file" | sed 's/\.[^.]*$//')"
@@ -158,7 +158,7 @@ jobs:
                 ../dtk u8 extract "$possible_archive_file" -o "$extracted_dir" > /dev/null 2>&1 || true;
                 ../dtk wad extract "$possible_archive_file" -o "$extracted_dir" > /dev/null 2>&1 || true;
                 tar -xf "$possibble_archive_file" -C "$extracted_dir" > /dev/null 2>&1 || true;
-                7z x "$possible_archive_file" -o"$extracted_dir" > /dev/null 2>&1 || true;
+                7z x -xr!*/.text -xr!*/.rodata -xr!*/.data -xr!*/.bss -xr!*/.symtab -xr!*/.strtab -xr!*/.debug* -xr!*/.comment -xr!*/.shstrtab -xr!*/.ctors -xr!*/.dtors -xr!*/.sdata* -xr!*/.sbss* -xr!*/.got -xr!*/.plt "$possible_archive_file" -o"$extracted_dir" > /dev/null 2>&1 || true;
                 if [ -z "$(ls -A "$extracted_dir")" ]; then
                     # echo "   ! No data found, continue";
                     rmdir "$extracted_dir";

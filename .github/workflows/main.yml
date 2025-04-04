@@ -61,7 +61,7 @@ jobs:
                  | xargs -I {} mv "{}" "../$file_name/files/" 2>/dev/null
             }
             filterExt() {
-              find . -type f ! \( -iname "*.dmp" -o -iname "*.fld*" -o -iname "*.run" -o -iname "*.xls*" -o -iname "*.bpr*" -o -iname "*.ddf*" -o -iname "*.mdl*" -o -iname "*.img*" -o -iname "*.map*" -o -iname "*.rel*" -o -iname "*.elf*" -o -iname "*.exe*" -o -iname "*.txt*" -o -iname "*.dol*" -o -iname "*.*sym*" -o -iname "*.lua*" -o -iname "*.rso*" -o -iname "*.csv*" -o -iname "*.dlf*" -o -iname "*.sh" -o -iname "*.sav*" -o -iname "*.tdf*" -o -iname "*.inf*" -o -iname "*.bat*" -o -iname "*readme*" -o -iname "*.doc*" -o -iname "*.cfg*" -o -iname "*.s" -o -iname "*.s.*" -o -iname "*.c" -o -iname "*.c.*" -o -iname "*.cs" -o -iname "*.cs.*" -o -iname "*.h" -o -iname "*.h.*" -o -iname "*.cpp*" -o -iname "*.hpp*" -o -iname "*.o" -o -iname "*.o.*" -o -iname "*.a" -o -iname "*.a.*" -o -iname "*.flb*" -o -iname "*.xml*" -o -iname "*.so" -o -iname "*.dll*" -o -iname "*.*log*" -o -iname "*.ini*" -o -iname "*.pdf*" -o -iname "*.yml*" -o -iname "*.yaml*" -o -iname "*.json*" -o -iname "*.py" -o -iname "*.exe*" -o -iname "*makefile*" -o -iname "*cmake*" -o -iname "*.sln*" -o -iname "*vsproj*" -o -iname "*.mak" -o -iname "*.mk" \) \
+              find . -type f ! \( -iname "*.dmp" -o -iname "*.fld*" -o -iname "*.run" -o -iname "*.xls*" -o -iname "*.bpr*" -o -iname "*.ddf*" -o -iname "*.mdl*" -o -iname "*.img*" -o -iname "*.map*" -o -iname "*.rel*" -o -iname "*.elf*" -o -iname "*.exe*" -o -iname "*.txt*" -o -iname "*.dol*" -o -iname "*.*sym*" -o -iname "*.lua*" -o -iname "*.rso*" -o -iname "*.csv*" -o -iname "*.sh" -o -iname "*.sav*" -o -iname "*.tdf*" -o -iname "*.inf*" -o -iname "*.bat*" -o -iname "*readme*" -o -iname "*.doc*" -o -iname "*.cfg*" -o -iname "*.s" -o -iname "*.s.*" -o -iname "*.c" -o -iname "*.c.*" -o -iname "*.cs" -o -iname "*.cs.*" -o -iname "*.h" -o -iname "*.h.*" -o -iname "*.cpp*" -o -iname "*.hpp*" -o -iname "*.o" -o -iname "*.o.*" -o -iname "*.a" -o -iname "*.a.*" -o -iname "*.flb*" -o -iname "*.xml*" -o -iname "*.so" -o -iname "*.dll*" -o -iname "*.*log*" -o -iname "*.ini*" -o -iname "*.pdf*" -o -iname "*.yml*" -o -iname "*.yaml*" -o -iname "*.json*" -o -iname "*.py" -o -iname "*.exe*" -o -iname "*makefile*" -o -iname "*cmake*" -o -iname "*.sln*" -o -iname "*vsproj*" -o -iname "*.mak" -o -iname "*.mk" \) \
                  | xargs -I {} mv "{}" "../tmp/" 2>/dev/null
             }
             filterTextFiles() {
@@ -94,8 +94,12 @@ jobs:
             elapsed_time=$((current_time - start_time))  # Calculate elapsed time
             
             if [ $elapsed_time -ge $time_limit ]; then
-              echo "Time limit reached. Skipping iteration $i and moving to the next step."
+              echo " !& Time limit reached (5h). Continuing in a new workflow ..."
               break  # Exit the loop if time limit is exceeded
+            fi
+            if [ $(du -sb . | cut -f1) -gt $((10 * 1024 * 1024 * 1024)) ]; then
+              echo " !! Space limit reached (10gb). Continuing in a new workflow ..."
+              break
             fi
             zip_file=$(head -n 1 gameList)
             sed -i '1d' gameList
@@ -129,7 +133,7 @@ jobs:
             mkdir -p tmp
             cd "$file_name/"
             filterDelete || true
-            for i in 1 2 3; do
+            for i in 1 2 3 4; do
               echo "   # Scan iteration $i";
               find "." -empty -delete;
               find "." -type f \
@@ -187,6 +191,7 @@ jobs:
             found=$(find "." -type f | sort -u);
             size=$(du -sh "." | awk '{print $1}')
             find "." -empty -delete;
+            find "." -type f \( -iname "*.tgc" -o -iname "*.gcm" \) -delete
             cd ".."
             if rmdir "./$file_name/" 2>/dev/null; then
                echo " ! No code data found.";

@@ -2,7 +2,7 @@
 name: Extract code and references from GameCube games.
 
 on:
-  push:
+  push: 
     branches:
       - "**"  # Runs on every commit on any branch
 

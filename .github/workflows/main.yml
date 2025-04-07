@@ -53,11 +53,11 @@ jobs:
               find . -type f \( \
                 -iname "*.cad" -o -iname "*.cas" -o -iname "*.sdir" -iname "*.acc" -o -iname "*.aco" -o -iname "*.acp" -o -iname "*.act" -o -iname "*.ggf" -o -iname "*.p3d" -o -iname "*.tpl" -o -iname "*.lsb" -o -iname "*.mhp" -o -iname "*.drs" -o -iname "*.evd" -o -iname "*.fnt" -o -iname "*.rby" -o -iname "*.emd" -o -iname "*.rdt" -o -iname "*.tim" -o -iname "*.adx" -o -iname "*.gma" -o -iname "*.vtx" -o -iname "*.*gfx*" -o -iname "*.gcp" -o -iname "*.lfh" -o -iname "*.lfa" -o -iname "*.lfg" -o -iname "*.bnk" -o -iname "*.dtm" -o -iname "*anim*" -o -iname "*.tga" -o -iname "*.shf" -o -iname "*.shg" -o -iname "*.gct" -o -iname "*.ngc" -o -iname "*.gsf" -o -iname "*.spt" -o -iname "*.loc" -o -iname "*.gdf" -o -iname "*.tex" -o -iname "*.bmd" -o -iname "*.*pcm*" -o -iname "*.mid" -o -iname "*.dsp" -o -iname "vssver.scc" -o -iname "*.gfn" -o -iname "*.bnr" -o -iname "*.h4m" -o -iname "*.sni" -o -iname "*.zsd" -o -iname "*.thp" -o -iname "*.mpc" -o -iname "*.fpk" -o -iname "*.viv" -o -iname "*.div" -o -iname "*.vid" -o -iname "*.vp*" -o -iname "*.sp" -o -iname "*.str" -o -iname "*.mus" -o -iname "*.flo" -o -iname "*.exa" -o -iname "*.ssd" -o -iname "*.sbf" -o -iname "*.spe" -o -iname "*.dat" -o -iname "*.sdt" -o -iname "*.lmp" -o -iname "*.feb" -o -iname "*.bin" -o -iname "*.obj" -o -iname "*.lfb" -o -iname "*.med" -o -iname "*.samp" -o -iname "*.dsp" -o -iname "*.gsh" -o -iname "*.fsh" -o -iname "*.vsh" -o -iname "*.big" -o -iname "*.abg" -o -iname "*.bad" -o -iname "*.add" -o -iname "*.adb" -o -iname "*.fs" \
               \) -o \( \
-                -ipath "*asset*/*" -o -ipath "*sound*/*" -o -ipath "*mov*/*" -o -ipath "*snd*/*" -o -ipath "*char*/*" -o -ipath "*vid*/*" -o -ipath "*room*/*" -o -ipath "*area*/*" -o -ipath "*arena*/*" -o -ipath "*props*/*" -o -ipath "*aud*/*" -o -ipath "*data*/*" -o -ipath "*map*/*" -o -ipath "*scene*/*" -o -ipath "*scn*/*" -o -ipath "*act*/*" -o -ipath "*toy*/*" -o -ipath "*obj*/*" -o -ipath "*gun*/*" -o -ipath "*sfx*/*" -o -ipath "*effect*/*" -o -ipath "*prop*/*" -o -ipath "*ball*/*" -o -ipath "*music*/*" \
+                -ipath "*bgm*/*" -o -ipath "*music*/*" -o -ipath "*asset*/*" -o -ipath "*sound*/*" -o -ipath "*mov*/*" -o -ipath "*snd*/*" -o -ipath "*char*/*" -o -ipath "*vid*/*" -o -ipath "*room*/*" -o -ipath "*area*/*" -o -ipath "*arena*/*" -o -ipath "*props*/*" -o -ipath "*aud*/*" -o -ipath "*data*/*" -o -ipath "*map*/*" -o -ipath "*scene*/*" -o -ipath "*scn*/*" -o -ipath "*act*/*" -o -ipath "*toy*/*" -o -ipath "*obj*/*" -o -ipath "*gun*/*" -o -ipath "*sfx*/*" -o -ipath "*effect*/*" -o -ipath "*prop*/*" -o -ipath "*ball*/*" -o -ipath "*music*/*" \
               \) | xargs -I {} mv -t "../tmp/" "{}" 2>/dev/null
             }
             filterFind() {
-              find . -type f -exec grep -Eli "MetroTRK|jaudio|jsystem|section layout|([a-z_-]|[A-Z_-])\{6,\}\.(cpp|hpp|a|o|c|h)[^a-zA-Z%\!\$&=;,:._-]{3,}$" "{}" \; \
+              find . -type f -exec grep -Eli "MetroTRK|jaudio|j2dwindow|jkrheap|jsystem|section layout|([a-z_-]|[A-Z_-])\{6,\}\.(cpp|hpp|a|o|c|h)[^a-zA-Z%\!\$&=;,:._-]{3,}$" "{}" \; \
                  | xargs -I {} mv "{}" "../$file_name/files/" 2>/dev/null
             }
             filterExt() {
@@ -65,7 +65,7 @@ jobs:
                  | xargs -I {} mv "{}" "../tmp/" 2>/dev/null
             }
             filterTextFiles() {
-              find . -type f \( -iname "*.csv" -o -iname "*.txt" -o -iname "*.log" -o -iname "*.cfg" -o -iname "*.xml" -o -iname "*.ini" -o -iname "*.inf" -o -iname "*.map" \) -exec grep -ELi "__start|ppceabi|MetroTRK|3DPane|jaudio|jsystem|([a-z_-]|[A-Z_-])\{6,\}\.(cpp|hpp|a|o|c|h)[^a-zA-Z%\!\$&=;,:._-]$|section layout|\.text" "{}" \; | xargs -I {} rm -f "{}" 2>/dev/null
+              find . -type f \( -iname "*.csv" -o -iname "*.txt" -o -iname "*.log" -o -iname "*.cfg" -o -iname "*.xml" -o -iname "*.ini" -o -iname "*.inf" -o -iname "*.map" \) -exec grep -ELi "__start|ppceabi|MetroTRK|3DPane|jaudio|j2dwindow|jkrheap|jsystem|([a-z_-]|[A-Z_-])\{6,\}\.(cpp|hpp|a|o|c|h)[^a-zA-Z%\!\$&=;,:._-]$|section layout|\.text" "{}" \; | xargs -I {} rm -f "{}" 2>/dev/null
             }
             reset() {
               rm -f gameList

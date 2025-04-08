@@ -77,7 +77,7 @@ jobs:
               rm index.html
               exit 0
             }
-						timeCheck (time) {
+              timeCheck (time) {
 
               # Set the time limit (in seconds, 5 hours = 18000 seconds)
               time_limit=time
@@ -90,11 +90,10 @@ jobs:
             
               if [ $elapsed_time -ge $time_limit ]; then
                 echo " !& Time limit reached. Continuing in a new workflow ..."
-								return false
+              return false
               fi
-							return true
-
-						}
+              return true
+            }
             export link="https://myrient.erista.me/files/Redump/Nintendo%20-%20GameCube%20-%20NKit%20RVZ%20%5Bzstd-19-128k%5D"
 
             #reset

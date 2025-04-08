@@ -75,10 +75,10 @@ jobs:
               rm index.html
               exit 0
             }
-            timeCheck (time) {
+            timeCheck() {
 
               # Set the time limit (in seconds, 5 hours = 18000 seconds)
-              time_limit=time
+              time_limit=$1
               start_time=$(date +%s)  # Get the current time in seconds
 
               while (true); do

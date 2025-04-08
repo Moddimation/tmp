@@ -45,6 +45,7 @@ jobs:
 
       - name: Downloads & Extracts
         run: |
+            check=true
             set +e
             export link="https://myrient.erista.me/files/Redump/Nintendo%20-%20GameCube%20-%20NKit%20RVZ%20%5Bzstd-19-128k%5D"
             filterDelete() {
@@ -75,13 +76,12 @@ jobs:
               rm index.html
               exit 0
             }
+            start_time=$(date +%s)  # Get the current time in seconds
             timeCheck() {
               local -n ret=$2
               # Set the time limit (in seconds, 5 hours = 18000 seconds)
               time_limit=$1
-              start_time=$(date +%s)  # Get the current time in seconds
 
-              while (true); do
               # Get the current time in seconds
               current_time=$(date +%s)
               elapsed_time=$((current_time - start_time))  # Calculate elapsed time
@@ -103,7 +103,8 @@ jobs:
               break
             fi
 
-            timeCheck(10000, check)
+            while (true); do
+            timeCheck 10000, check
             if ! check; then break; fi
 
             zip_file=$(head -n 1 gameList)
@@ -145,7 +146,7 @@ jobs:
             ! \( -iname "*.acg" -o -iname "*.hip" -o -iname "*.hop" -o -iname "*.bik" -o -name "FILE_*" -o -iname "boot.bin" -o -iname "*.inf" -o -iname "*.ini" -o -iname "*.txt" -o -iname "*.rel" -o -iname "*.h" -o -iname "*.ini" -iname "*level*" -o -iname "*.thp" -o -iname "*lvl" -o -iname "*.stf" -o -iname "*.tsc" -o -iname "*.ani" -o -iname "*.col" -o -iname "*scb" -o -iname "*.adp" -o -iname "*.all" -o -iname "*.geo" -o -iname "vssver.scc" -o -iname "*.lvl" -o -iname "*opening.bnr" -o -iname "*.tpl" -o -iname "*.mtl"  -o -iname "*.bat" -o -iname "*.map" -o -iname "*.dll" -o -iname "*.exe" -o -iname "*.img" -o -iname "*.txt" -o -iname "*.csv" -o -iname "*.elf" -o -iname "*.dol" -o -iname "boot.bin" \) \
             | while read -r possible_archive_file; do
 
-                timeCheck(18000, check)
+                timeCheck 18000, check
                 if ! check; then break; fi
 
                 sub_file_name="$(basename "$possible_archive_file" | sed 's/\.[^.]*$//')"

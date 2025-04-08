@@ -104,7 +104,7 @@ jobs:
             fi
 
             while (true); do
-            timeCheck 10000, check
+            timeCheck 10000 $check
             if ! check; then break; fi
 
             zip_file=$(head -n 1 gameList)
@@ -146,7 +146,7 @@ jobs:
             ! \( -iname "*.acg" -o -iname "*.hip" -o -iname "*.hop" -o -iname "*.bik" -o -name "FILE_*" -o -iname "boot.bin" -o -iname "*.inf" -o -iname "*.ini" -o -iname "*.txt" -o -iname "*.rel" -o -iname "*.h" -o -iname "*.ini" -iname "*level*" -o -iname "*.thp" -o -iname "*lvl" -o -iname "*.stf" -o -iname "*.tsc" -o -iname "*.ani" -o -iname "*.col" -o -iname "*scb" -o -iname "*.adp" -o -iname "*.all" -o -iname "*.geo" -o -iname "vssver.scc" -o -iname "*.lvl" -o -iname "*opening.bnr" -o -iname "*.tpl" -o -iname "*.mtl"  -o -iname "*.bat" -o -iname "*.map" -o -iname "*.dll" -o -iname "*.exe" -o -iname "*.img" -o -iname "*.txt" -o -iname "*.csv" -o -iname "*.elf" -o -iname "*.dol" -o -iname "boot.bin" \) \
             | while read -r possible_archive_file; do
 
-                timeCheck 18000, check
+                timeCheck 18000 $check
                 if ! check; then break; fi
 
                 sub_file_name="$(basename "$possible_archive_file" | sed 's/\.[^.]*$//')"

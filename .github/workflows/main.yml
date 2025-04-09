@@ -147,7 +147,7 @@ jobs:
             | while read -r possible_archive_file; do
 
                 timeCheck 18000 $check
-                if ! check; then break; fi
+                if ! $check; then break; fi
 
                 sub_file_name="$(basename "$possible_archive_file" | sed 's/\.[^.]*$//')"
                 echo "   - Trying '$possible_archive_file' ..."

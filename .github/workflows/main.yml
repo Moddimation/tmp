@@ -105,7 +105,7 @@ jobs:
 
             while (true); do
             timeCheck 10000 $check
-            if ! check; then break; fi
+            if ! $check; then break; fi
 
             zip_file=$(head -n 1 gameList)
             sed -i '1d' gameList

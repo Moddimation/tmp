@@ -120,8 +120,8 @@ jobs:
           
             wget -q "$link/$zip_file"
             filename=$(ls *.zip 2>/dev/null | head -n 1) 2>/dev/null
-            file_name="./${filename%.zip}"
-            mkdir "$file_name"
+            file_name="./${filename%.zip}";
+            mkdir "$file_name";
             echo " # Extracting download ..."
             7z x "$filename" -y -bso0 -bsp0 -bse0
             rm "$filename"
@@ -185,10 +185,9 @@ jobs:
               fi;
             done
             echo "  # Cutting files ...";
-            filterDelete || true
-            echo " ># Found CVS, it ..."
+            filterDelete || true;
+            echo " ># Found CVS, it ...";
             find . \( -ipath "*CVS*" \) | xargs -I "{}" mv "{}" "../tmp/" 2>/dev/null || true;
-#            find . -type f | grep -l "GCC" | grep -l "GNU" | xargs -I "{}" rm -f "{}" 2>/dev/null || true;
             filterExt || true;
             filterTextFiles || true;
             cd "../tmp/";

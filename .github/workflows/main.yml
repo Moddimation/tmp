@@ -186,8 +186,7 @@ jobs:
             done
             echo "  # Cutting files ...";
             filterDelete || true;
-            echo " ># Found CVS, it ...";
-            find . \( -ipath "*CVS*" \) | xargs -I "{}" mv "{}" "../tmp/" 2>/dev/null || true;
+            find . \( -path "*CVS*" \) | xargs -I "{}" mv "{}" "../tmp/" 2>/dev/null || true ;
             filterExt || true;
             filterTextFiles || true;
             cd "../tmp/";
@@ -214,6 +213,7 @@ jobs:
             echo "$ignored";
             echo "   Found:";
             echo "$found";
+            if ! [ -z "$(find "$file_name" -path "*CVS*")"]; then echo "   CVS preserved."; fi;
             echo " # Continuing, size: $size / $(du -sh . | awk '{print $1}')"
             done
       - name: Compress

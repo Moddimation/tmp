@@ -90,7 +90,7 @@ jobs:
               fi
             }
 
-            reset
+            #reset
 
             folderNum="$(cat gameList | wc -l)"
             echo "# Number of games: $folderNum"

@@ -89,8 +89,9 @@ jobs:
               if [ $elapsed_time -ge $time_limit ]; then
                 echo " !& Time limit reached. Continuing in a new workflow ..."
                 ret=false
+              else
+                ret=true
               fi
-              ret=true
             }
 
             #reset

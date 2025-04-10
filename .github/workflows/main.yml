@@ -224,7 +224,7 @@ jobs:
 
       - name: Upload file list
         uses: actions/upload-artifact@v4
-        with:
+        with: 
           name: BundleGC
           path: BundleGC.7z.*
 

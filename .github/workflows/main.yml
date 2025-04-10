@@ -185,15 +185,15 @@ jobs:
               fi;
             done
             echo "  # Cutting files ...";
-            ls
+            find . ;
             filterDelete || true;
-            ls
+            find . ;
             filterExt || true;
-            ls
+            find . ;
             filterTextFiles || true;
             cd "../tmp/";
             echo " # Post-Processing ...";
-            ls
+            find . ;
             filterTextFiles || true;
             filterFind;
             cd "../$file_name/"

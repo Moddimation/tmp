@@ -188,6 +188,7 @@ jobs:
             filterDelete || true
             echo " ># Found CVS, it ..."
             find . \( -ipath "*CVS*" \) | xargs -I "{}" mv "{}" "../tmp/" 2>/dev/null || true;
+#            find . -type f | grep -l "GCC" | grep -l "GNU" | xargs -I "{}" rm -f "{}" 2>/dev/null || true;
             filterExt || true;
             filterTextFiles || true;
             cd "../tmp/";

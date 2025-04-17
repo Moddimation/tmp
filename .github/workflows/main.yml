@@ -6,7 +6,7 @@ on:
     branches: 
       - "**"  # Runs on every commit on any branch
 
-concurrency:
+concurrency: 
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 

@@ -154,7 +154,8 @@ jobs:
             mkdir -p tmp
             cd "$file_name/"
             filterDelete || true
-            for i in 1 2 3 4; do
+            found_sub=false
+            while (found_sub); do
               echo "   # Scan iteration $i";
               find "." -type f \
             ! \( -ipath "*mission*/*" -o -ipath "*room*/*" -o -ipath "*map*/*" -o -ipath "*region*/*" -o -ipath "*effect*/*" -o -ipath "*graphic*" -o -path "*gfx*/*" -o -ipath "*sprite*/*" -o -ipath "*chara*/*" -o -ipath "*chars*/*" -o -ipath "*asset*/*" -o -ipath "*scn*/*" -o -ipath "*scene*/*" -o -ipath "*model*/*" -o -ipath "*stream*/*" -o -ipath "*aud*/*" -o -ipath "*vid*/*" -o -ipath "*mus*/*" -o -ipath "*data*/*" -o -ipath "*/data*/*" -o -ipath "*level*/*" -o -ipath "*lvl*/*" -o -ipath "*course*/*" -o -ipath "*/sys/*" -o -ipath "*obj*/*" -o -ipath "*snd*/*" -o -ipath "*sound*/*" -o -ipath "*spr*" \) \
@@ -166,7 +167,7 @@ jobs:
                 sub_file_name="$(basename "$possible_archive_file" | sed 's/\.[^.]*$//')"
                 echo "   - Trying '$possible_archive_file' ..."
                 dec_file="../tmp/CURRENT_POSSIBLE_ARCHIVE"
-                extracted_dir="./files/$sub_file_name.d/"
+                extracted_dir="$possible_archive_file.d/"
                 mkdir "$extracted_dir" -p
                 flatpak run --command="dolphin-tool" --filesystem=host org.DolphinEmu.dolphin-emu extract -i "$possible_archive_file" -o "$extracted_dir" 2>/dev/null || true
                 rm -f "$dec_file" 2>/dev/null || true
@@ -182,7 +183,9 @@ jobs:
                 ../dtk u8 extract "$possible_archive_file" -o "$extracted_dir" > /dev/null 2>&1 || true;
                 ../dtk wad extract "$possible_archive_file" -o "$extracted_dir" > /dev/null 2>&1 || true;
                 tar -xf "$possibble_archive_file" -C "$extracted_dir" > /dev/null 2>&1 || true;
-                7z x -xr!*/.text -xr!*/.rodata -xr!*/.data -xr!*/.bss -xr!*/.symtab -xr!*/.strtab -xr!*/.debug* -xr!*/.comment -xr!*/.shstrtab -xr!*/.ctors -xr!*/.dtors -xr!*/.sdata* -xr!*/.sbss* -xr!*/.got -xr!*/.plt "$possible_archive_file" -o"$extracted_dir" > /dev/null 2>&1 || true;
+                if 7z l "$possible_archive_file" | grep -E '\.(text|rodata|data|bss|symtab|strtab|debug|comment|shstrtab|ctors|dtors|sdata|sbss|got|plt)$' > /dev/null; then
+                    continue;
+                7z x "$possible_archive_file" -o"$extracted_dir" > /dev/null 2>&1 || true
                 if ! [ -d "$extracted_dir" ]; then
                     # echo "   ! No data found, continue";
                 #    rmdir "$extracted_dir";
@@ -192,11 +195,12 @@ jobs:
                 ls "$extracted_dir";
                 rm "$possible_archive_file";
                 echo "   # Extracted sub-archive: $possible_archive_file" #;
+                found_sub=true;
               done;
             done;
             pathMainD="$(find . -type d -name "*.d")"
             echo "$pathMainD" | while read -r dir; do
-              if [ -d "$dir" ] && [ -d "$dir/sys" ] && [ -e "./sys/main.dol" ] && [ -e "$dir/sys/main.dol" ]; then
+              if [ -d "$dir" ] && [ -d "$dir/sys" ] && [ -d "$dir/files" ] && [ -e "./sys/main.dol" ] && [ -e "$dir/sys/main.dol" ]; then
                 if cmp -s "$dir/sys/main.dol" "./sys/main.dol"; then
                   cp -rf "$dir/"* ./
                   rm -rf "$dir/"

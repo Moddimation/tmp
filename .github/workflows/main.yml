@@ -93,8 +93,8 @@ jobs:
                 echo " !& Time limit reached. Continuing in a new workflow ..."
                 return 1 # time done
               else
-                return 0 # still ok
                 echo "DEBUG SESSION CONTINUE!"
+                return 0 # still ok
               fi
             }
 

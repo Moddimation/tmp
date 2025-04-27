@@ -185,6 +185,7 @@ jobs:
                 tar -xf "$possibble_archive_file" -C "$extracted_dir" > /dev/null 2>&1 || true;
                 if 7z l "$possible_archive_file" | grep -E '\.(text|rodata|data|bss|symtab|strtab|debug|comment|shstrtab|ctors|dtors|sdata|sbss|got|plt)$' > /dev/null; then
                     continue;
+                fi;
                 7z x "$possible_archive_file" -o"$extracted_dir" > /dev/null 2>&1 || true
                 if ! [ -d "$extracted_dir" ]; then
                     # echo "   ! No data found, continue";
@@ -194,8 +195,8 @@ jobs:
                 fi;
                 ls "$extracted_dir";
                 rm "$possible_archive_file";
-                echo "   # Extracted sub-archive: $possible_archive_file" #;
-                found_sub=true;
+                echo "   # Extracted sub-archive: $possible_archive_file";
+                found_sub=true #;
               done;
             done;
             pathMainD="$(find . -type d -name "*.d")"

@@ -77,6 +77,7 @@ jobs:
               exit 0
             }
             timeCheck() {
+              echo "DEBUG SESSION!"
               # Set the time limit (in seconds, 5 hours = 18000 seconds)
               time_limit=$1
 
@@ -84,11 +85,16 @@ jobs:
               current_time=$(date +%s)
               elapsed_time=$((current_time - start_time))  # Calculate elapsed time
             
+              echo "Start: $start_time"
+              echo "Current: $current_time"
+              echo "Elapsed: $elapsed_time"
+              echo "Limit: $time_limit"
               if [ $elapsed_time -ge $time_limit ]; then
                 echo " !& Time limit reached. Continuing in a new workflow ..."
                 return 1 # time done
               else
                 return 0 # still ok
+                echo "DEBUG SESSION CONTINUE!"
               fi
             }
 

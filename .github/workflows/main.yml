@@ -66,7 +66,7 @@ jobs:
             filterTextFiles() {
               find . -type f \( -iname "*.csv" -o -iname "*.txt" -o -iname "*.log" -o -iname "*.cfg" -o -iname "*.xml" -o -iname "*.ini" -o -iname "*.inf" -o -iname "*.map" \) | while read -r file; do
                 # Check if file command thinks it's text-based
-                if file "$file" | grep -qiE 'text|ascii|unicode'; then
+                if file "$file" | grep -qiE 'text|ascii|unicode|shiftjis|shift-jis'; then
                   # Proceed with grep for text-based files only
                   if ! grep --binary-files=text -ELi "__start|ppceabi|MetroTRK|J3DModel|J2DScreen|J2DPrint|JUTException|JAInterface|JAIBasic|JAISound|JKRAram|jutfont|jaudio|j2dwindow|jkrheap|jsystem|[a-zA-Z_-]{6,}\.(cpp|hpp|a|o|c|h)[^a-zA-Z%\!\$&=;,:._-]$|section layout|\.text" "$file"; then
                     rm -f "$file" 2>/dev/null

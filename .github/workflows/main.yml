@@ -76,7 +76,6 @@ jobs:
               rm index.html
               exit 0
             }
-            start_time=$(date +%s)  # Get the current time in seconds
             timeCheck() {
               # Set the time limit (in seconds, 5 hours = 18000 seconds)
               time_limit=$1
@@ -90,18 +89,21 @@ jobs:
               fi
             }
 
+            start_time=$(date +%s)  # Get the current time in seconds
+
             #reset
 
             folderNum="$(cat gameList | wc -l)"
             echo "# Number of games: $folderNum"
 
+            while (true); do
+
+            if ! [ -z "$(timeCheck 5000)" ]; then break; fi
+
             if [ $(du -sb . | cut -f1) -gt $((10 * 1024 * 1024 * 1024)) ]; then
               echo " !! Space limit reached (10gb). Continuing in a new workflow ..."
               break
             fi
-
-            while (true); do
-            if ! [ -z "$(timeCheck 5000)" ]; then break; fi
 
             zip_file=$(head -n 1 gameList)
             sed -i '1d' gameList

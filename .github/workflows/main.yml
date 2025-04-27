@@ -155,7 +155,7 @@ jobs:
             cd "$file_name/"
             filterDelete || true
             found_sub=false
-            while (found_sub); do
+            while [ "$found_sub" = true ]; do
               echo "   # Scan iteration $i";
               find "." -type f \
             ! \( -ipath "*mission*/*" -o -ipath "*room*/*" -o -ipath "*map*/*" -o -ipath "*region*/*" -o -ipath "*effect*/*" -o -ipath "*graphic*" -o -path "*gfx*/*" -o -ipath "*sprite*/*" -o -ipath "*chara*/*" -o -ipath "*chars*/*" -o -ipath "*asset*/*" -o -ipath "*scn*/*" -o -ipath "*scene*/*" -o -ipath "*model*/*" -o -ipath "*stream*/*" -o -ipath "*aud*/*" -o -ipath "*vid*/*" -o -ipath "*mus*/*" -o -ipath "*data*/*" -o -ipath "*/data*/*" -o -ipath "*level*/*" -o -ipath "*lvl*/*" -o -ipath "*course*/*" -o -ipath "*/sys/*" -o -ipath "*obj*/*" -o -ipath "*snd*/*" -o -ipath "*sound*/*" -o -ipath "*spr*" \) \

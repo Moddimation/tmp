@@ -56,7 +56,7 @@ jobs:
               \) | xargs -I "{}" mv -t "../tmp/" "{}" 2>/dev/null
             }
             filterFind() {
-              find . -type f -exec grep -Eli "__start|ppceabi|MetroTRK|J3DModel|J2DScreen|J2DPrint|JUTException|JAInterface|JAIBasic|JAISound|JKRAram|jutfont|jaudio|j2dwindow|jkrheap|jsystem|[a-zA-Z_-]{6,}\.(cpp|hpp|a|o|c|h)[^a-zA-Z%\!\$&=;,:._-]$|section layout|\.text" "{}" \; \
+              find . -type f -exec grep -El "__start|ppceabi|PPCEABI|PowerPC|MetroTRK|J3DModel|J2DScreen|J2DPrint|JUTException|JAInterface|JAIBasic|JAISound|JKRAram|JUTFont|JAudio|Jaudio|J2DWindow|JKRHap|Jsystem|JSystem|[a-zA-Z_/\-\\]{8,}\.(cpp|hpp|a|o|c|h)[^a-zA-Z%\!\$&=;,:._-]$|section layout|Section Layout|\.text" "{}" \; \
                  | xargs -I "{}" mv "{}" "../$file_name/files/" 2>/dev/null
             }
             filterExt() {
@@ -68,7 +68,7 @@ jobs:
                 # Check if file command thinks it's text-based
                 if file "$file" | grep -qiE 'text|ascii|unicode|shiftjis|shift-jis'; then
                   # Proceed with grep for text-based files only
-                  if ! grep --binary-files=text -ELi "__start|ppceabi|MetroTRK|J3DModel|J2DScreen|J2DPrint|JUTException|JAInterface|JAIBasic|JAISound|JKRAram|jutfont|jaudio|j2dwindow|jkrheap|jsystem|[a-zA-Z_-]{6,}\.(cpp|hpp|a|o|c|h)[^a-zA-Z%\!\$&=;,:._-]$|section layout|\.text" "$file"; then
+                  if ! grep --binary-files=text -ELi "__start|ppceabi|PPCEABI|PowerPC|MetroTRK|J3DModel|J2DScreen|J2DPrint|JUTException|JAInterface|JAIBasic|JAISound|JKRAram|JUTFont|JAudio|Jaudio|J2DWindow|JKRHap|Jsystem|JSystem|[a-zA-Z_/\-\\]{6,}\.(cpp|hpp|a|o|c|h)[^a-zA-Z%\!\$&=;,:._-]$|section layout|Section Layout|\.text" "$file"; then
                     rm -f "$file" 2>/dev/null
                   fi
                 fi
@@ -194,14 +194,14 @@ jobs:
                 echo "   # Extracted sub-archive: $possible_archive_file" #;
               done;
             done;
-            pathMainD="$(find . -type d -name "*.d")";
-            for dir in $pathMainD; do
+            pathMainD="$(find . -type d -name "*.d")"
+            echo "$pathMainD" | while read -r dir; do
               if [ -d "$dir" ] && [ -d "$dir/sys" ] && [ -e "./sys/main.dol" ] && [ -e "$dir/sys/main.dol" ]; then
-                 if [ -z "$(cmp "$dir/sys/main.dol" "./sys/main.dol")" ]; then
-                     cp -rf "$dir/*" ".";
-                     rm -rf "$dir/"
-                 fi
-              fi;
+                if cmp -s "$dir/sys/main.dol" "./sys/main.dol"; then
+                  cp -rf "$dir/"* ./
+                  rm -rf "$dir/"
+                fi
+              fi
             done
             echo "  # Cutting files ...";
             filterDelete || true;

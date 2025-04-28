@@ -154,7 +154,7 @@ jobs:
             mkdir -p tmp
             cd "$file_name/"
             filterDelete || true
-            found_sub=false
+            found_sub=true
             while [ "$found_sub" = true ]; do
               echo "   # Scan iteration $i";
               find "." -type f \

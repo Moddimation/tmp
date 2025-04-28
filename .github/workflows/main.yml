@@ -66,11 +66,13 @@ jobs:
             filterTextFiles() {
               find . -type f \( -iname "*.csv" -o -iname "*.txt" -o -iname "*.log" -o -iname "*.cfg" -o -iname "*.xml" -o -iname "*.ini" -o -iname "*.inf" -o -iname "*.map" \) | while read -r file; do
                 # Check if file command thinks it's text-based
-                if file "$file" | grep -qiE 'text|ascii|unicode|shiftjis|shift-jis'; then
+                if file "$file" | grep -qiE 'text|ascii|unicode|utf-8|utf8|shiftjis|shift-jis|euc-jp|latin|big5'; then
                   # Proceed with grep for text-based files only
                   if ! grep --binary-files=text -ELi "__start|ppceabi|PPCEABI|PowerPC|MetroTRK|J3DModel|J2DScreen|J2DPrint|JUTException|JAInterface|JAIBasic|JAISound|JKRAram|JUTFont|JAudio|Jaudio|J2DWindow|JKRHap|Jsystem|JSystem|[a-zA-Z_/\-\\]{6,}\.(cpp|hpp|a|o|c|h)[^a-zA-Z%\!\$&=;,:._-]$|section layout|Section Layout|\.text" "$file"; then
                     rm -f "$file" 2>/dev/null
                   fi
+                else
+                  rm -f "$file" 2>/dev/null
                 fi
               done
             }
@@ -158,11 +160,11 @@ jobs:
             while [ "$found_sub" = true ]; do
               echo "   # Scan iteration $i";
               find "." -type f \
-            ! \( -ipath "*mission*/*" -o -ipath "*room*/*" -o -ipath "*map*/*" -o -ipath "*region*/*" -o -ipath "*effect*/*" -o -ipath "*graphic*" -o -path "*gfx*/*" -o -ipath "*sprite*/*" -o -ipath "*chara*/*" -o -ipath "*chars*/*" -o -ipath "*asset*/*" -o -ipath "*scn*/*" -o -ipath "*scene*/*" -o -ipath "*model*/*" -o -ipath "*stream*/*" -o -ipath "*aud*/*" -o -ipath "*vid*/*" -o -ipath "*mus*/*" -o -ipath "*data*/*" -o -ipath "*/data*/*" -o -ipath "*level*/*" -o -ipath "*lvl*/*" -o -ipath "*course*/*" -o -ipath "*/sys/*" -o -ipath "*obj*/*" -o -ipath "*snd*/*" -o -ipath "*sound*/*" -o -ipath "*spr*" \) \
-            ! \( -iname "*.acg" -o -iname "*.hip" -o -iname "*.hop" -o -iname "*.bik" -o -name "FILE_*" -o -iname "boot.bin" -o -iname "*.inf" -o -iname "*.ini" -o -iname "*.txt" -o -iname "*.rel" -o -iname "*.h" -o -iname "*.ini" -iname "*level*" -o -iname "*.thp" -o -iname "*lvl" -o -iname "*.stf" -o -iname "*.tsc" -o -iname "*.ani" -o -iname "*.col" -o -iname "*scb" -o -iname "*.adp" -o -iname "*.all" -o -iname "*.geo" -o -iname "vssver.scc" -o -iname "*.lvl" -o -iname "*opening.bnr" -o -iname "*.tpl" -o -iname "*.mtl"  -o -iname "*.bat" -o -iname "*.map" -o -iname "*.dll" -o -iname "*.exe" -o -iname "*.img" -o -iname "*.txt" -o -iname "*.csv" -o -iname "*.elf" -o -iname "*.dol" -o -iname "boot.bin" \) \
+            ! \( -ipath "*mission*/*" -o -ipath "*room*/*" -o -ipath "*map*/*" -o -ipath "*effect*/*" -o -ipath "*graphic*/*" -o -path "*gfx*/*" -o -ipath "*sprite*/*" -o -ipath "*chara*/*" -o -ipath "*chars*/*" -o -ipath "*asset*/*" -o -ipath "*scn*/*" -o -ipath "*scene*/*" -o -ipath "*model*/*" -o -ipath "*stream*/*" -o -ipath "*aud*/*" -o -ipath "*vid*/*" -o -ipath "*mus*/*" -o -ipath "*data*/*" -o -ipath "*/data*/*" -o -ipath "*level*/*" -o -ipath "*lvl*/*" -o -ipath "*course*/*" -o -ipath "*/sys/*" -o -ipath "*obj*/*" -o -ipath "*snd*/*" -o -ipath "*sound*/*" -o -ipath "*spr*" \) \
+            ! \( -iname "*.acg" -o -iname "*.hip" -o -iname "*.hop" -o -iname "*.bik" -o -name "FILE_*" -o -iname "boot.bin" -o -iname "*.inf" -o -iname "*.ini" -o -iname "*.txt" -o -iname "*.rel" -o -iname "*.h" -o -iname "*.ini" -o -iname "*level*" -o -iname "*.thp" -o -iname "*lvl" -o -iname "*.stf" -o -iname "*.tsc" -o -iname "*.ani" -o -iname "*.col" -o -iname "*scb" -o -iname "*.adp" -o -iname "*.all" -o -iname "*.geo" -o -iname "vssver.scc" -o -iname "*.lvl" -o -iname "*opening.bnr" -o -iname "*.tpl" -o -iname "*.mtl"  -o -iname "*.bat" -o -iname "*.map" -o -iname "*.dll" -o -iname "*.exe" -o -iname "*.img" -o -iname "*.txt" -o -iname "*.csv" -o -iname "*.elf" -o -iname "*.dol" -o -iname "boot.bin" \) \
             | while read -r possible_archive_file; do
 
-                timeCheck 20000 || break # break if time > 5H 30M 
+                timeCheck 20000 || { found_sub=false; break; }
 
                 sub_file_name="$(basename "$possible_archive_file" | sed 's/\.[^.]*$//')"
                 echo "   - Trying '$possible_archive_file' ..."

@@ -72,7 +72,7 @@ jobs:
                     rm -f "$file" 2>/dev/null
                   fi
                 else
-                  rm -f "$file" 2>/dev/null
+                  mv "$file" "$file.b" 2>/dev/null
                 fi
               done
             }

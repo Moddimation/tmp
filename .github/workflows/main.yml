@@ -185,10 +185,10 @@ jobs:
                 ../dtk u8 extract "$possible_archive_file" -o "$extracted_dir" > /dev/null 2>&1 || true;
                 ../dtk wad extract "$possible_archive_file" -o "$extracted_dir" > /dev/null 2>&1 || true;
                 tar -xf "$possibble_archive_file" -C "$extracted_dir" > /dev/null 2>&1 || true;
-                if 7z l "$possible_archive_file" | grep -E '\.(text|rodata|data|bss|symtab|strtab|debug|comment|shstrtab|ctors|dtors|sdata|sbss|got|plt)$' > /dev/null; then
-                    continue;
-                fi;
-                7z x "$possible_archive_file" -o"$extracted_dir" > /dev/null 2>&1 || true
+          
+                if ! 7z l "$possible_archive_file" 2>/dev/null | grep -E '\.(text|rodata|data|bss|symtab|strtab|debug|comment|shstrtab|ctors|dtors|sdata|sbss|got|plt)$' > /dev/null; then
+                    7z x "$possible_archive_file" -o"$extracted_dir" > /dev/null 2>&1 || true
+                fi
                 if ! [ -d "$extracted_dir" ]; then
                     # echo "   ! No data found, continue";
                 #    rmdir "$extracted_dir";

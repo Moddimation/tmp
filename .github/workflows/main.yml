@@ -211,8 +211,7 @@ jobs:
             pathMainD="$(find . -type d -name "*.d")"
             echo "$pathMainD" | while read -r dir; do
               if [ -d "$dir" ] && [ -d "$dir/sys" ] && [ -d "$dir/files" ] && [ -e "./sys/main.dol" ] && [ -e "$dir/sys/main.dol" ]; then
-                if cmp -s "$dir/sys/main.dol" "./sys/main.dol"; then
-                  cp -rf "$dir/"* ./
+                if ! cmp -s "$dir/sys/main.dol" "./sys/main.dol"; then
                   rm -rf "$dir/"
                 fi
               fi

@@ -211,7 +211,7 @@ jobs:
             pathMainD="$(find . -type d -name "*.d")"
             echo "$pathMainD" | while read -r dir; do
               if [ -d "$dir" ] && [ -d "$dir/sys" ] && [ -d "$dir/files" ] && [ -e "./sys/main.dol" ] && [ -e "$dir/sys/main.dol" ]; then
-                if ! cmp -s "$dir/sys/main.dol" "./sys/main.dol"; then
+                if cmp -s "$dir/sys/main.dol" "./sys/main.dol"; then
                   rm -rf "$dir/"
                 fi
               fi
@@ -229,7 +229,7 @@ jobs:
             found=$(find "." -type f | sort -u);
             size=$(du -sh "." | awk '{print $1}')
             find "." -empty -delete;
-            find "." -type f \( -iname "*.tgc" -o -iname "*.gcm" \) -delete
+            find "." -type f \( -iname "*.tgc" -o -iname "*.gcm" -o -iname "*.arc" \) -delete
             cd ".."
             if rmdir "./$file_name/" 2>/dev/null; then
                echo " ! No code data found.";

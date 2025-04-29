@@ -163,7 +163,7 @@ jobs:
             while [ "$is_sub_run_first" = true ] || { [ "$found_sub" = true ] && [ "$did_sub_abort" = false ]; }; do
               echo "   # Scan iteration $sub_iter_num";
               sub_iter_num++;
-              if [ "$is_sub_run_first" = true ]; do
+              if [ "$is_sub_run_first" = true ]; then
                 is_sub_run_first=false;
               fi
               find "." -type f \

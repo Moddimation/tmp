@@ -229,7 +229,7 @@ jobs:
             found=$(find "." -type f | sort -u);
             size=$(du -sh "." | awk '{print $1}')
             find "." -empty -delete;
-            find "." -type f \( -iname "*.tgc" -o -iname "*.gcm" -o -iname "*.arc" \) -delete
+            find "." -type f \( -iname "*.tgc" -o -iname "*.gcm" -o -iname "*.arc" -o -iname "*.ghr" -o -iname "*.gcr" \) -delete
             cd ".."
             if rmdir "./$file_name/" 2>/dev/null; then
                echo " ! No code data found.";

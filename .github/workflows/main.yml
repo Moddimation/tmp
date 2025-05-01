@@ -221,9 +221,9 @@ jobs:
                 fi
               fi
             done
-            if [ -d "UPDATE" ]; then
-               find "UPDATE" -maxdepth 1 -exec mv "{}" "." \;
-            fi
+            #if [ -d "UPDATE" ]; then
+               #find "UPDATE" -maxdepth 1 -exec mv "{}" "." \;
+            #fi
             echo "  # Cutting files ...";
             filterDelete || true;
             filterExt || true;

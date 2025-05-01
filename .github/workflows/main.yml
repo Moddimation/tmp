@@ -171,7 +171,7 @@ jobs:
               fi
               find "." -type f \
             ! \( -ipath "*/sys/*" \) \
-            ! \( -iname "*.hdr" -o -iname "*.snd" -o -iname "*.acg" -o -iname "*.hip" -o -iname "*.hop" -o -iname "*.bik" -o -name "FILE_*" -o -iname "boot.bin" -o -iname "*.inf" -o -iname "*.ini" -o -iname "*.txt" -o -iname "*.rel" -o -iname "*.h" -o -iname "*.ini" -o -iname "*level*" -o -iname "*.thp" -o -iname "*lvl" -o -iname "*.stf" -o -iname "*.tsc" -o -iname "*.ani" -o -iname "*.col" -o -iname "*scb" -o -iname "*.adp" -o -iname "*.all" -o -iname "*.geo" -o -iname "vssver.scc" -o -iname "*.lvl" -o -iname "*opening.bnr" -o -iname "*.tpl" -o -iname "*.mtl"  -o -iname "*.bat" -o -iname "*.map" -o -iname "*.dll" -o -iname "*.exe" -o -iname "*.img" -o -iname "*.txt" -o -iname "*.csv" -o -iname "*.elf" -o -iname "*.dol" -o -iname "boot.bin" \) \
+            ! \( -iname "*.mwr" -o -iname "*.hdr" -o -iname "*.snd" -o -iname "*.acg" -o -iname "*.hip" -o -iname "*.hop" -o -iname "*.bik" -o -name "FILE_*" -o -iname "boot.bin" -o -iname "*.inf" -o -iname "*.ini" -o -iname "*.txt" -o -iname "*.rel" -o -iname "*.h" -o -iname "*.ini" -o -iname "*level*" -o -iname "*.thp" -o -iname "*lvl" -o -iname "*.stf" -o -iname "*.tsc" -o -iname "*.ani" -o -iname "*.col" -o -iname "*scb" -o -iname "*.adp" -o -iname "*.all" -o -iname "*.geo" -o -iname "vssver.scc" -o -iname "*.lvl" -o -iname "*opening.bnr" -o -iname "*.tpl" -o -iname "*.mtl"  -o -iname "*.bat" -o -iname "*.map" -o -iname "*.dll" -o -iname "*.exe" -o -iname "*.img" -o -iname "*.txt" -o -iname "*.csv" -o -iname "*.elf" -o -iname "*.dol" -o -iname "boot.bin" \) \
             | while read -r possible_archive_file; do
 
                 timeCheck 20000 || { found_sub=false; did_sub_abort=true; break; }
@@ -183,7 +183,6 @@ jobs:
                 mkdir "$extracted_dir" -p
                 flatpak run --command="dolphin-tool" --filesystem=host org.DolphinEmu.dolphin-emu extract -i "$possible_archive_file" -o "$extracted_dir" 2>/dev/null || true
                 rm -f "$dec_file" 2>/dev/null || true
-                #find "." -empty -delete;
                 ../orthrus ncompress yay0 -d "$possible_archive_file" "$dec_file" > /dev/null 2>&1 || true
                 ../orthrus ncompress yaz0 -d "$possible_archive_file" "$dec_file" > /dev/null 2>&1 || true
                 ../orthrus panda3d bam -d "$possible_archive_file" "$dec_file" > /dev/null 2>&1 || true;
@@ -199,6 +198,7 @@ jobs:
                 if ! 7z l "$possible_archive_file" 2>/dev/null | grep -E '\.(text|rodata|data|bss|symtab|strtab|debug|comment|shstrtab|ctors|dtors|sdata|sbss|got|plt)$' > /dev/null; then
                     7z x "$possible_archive_file" -o"$extracted_dir" > /dev/null 2>&1 || true
                 fi
+                find "." -empty -delete;
                 if ! [ -d "$extracted_dir" ]; then
                     # echo "   ! No data found, continue";
                 #    rmdir "$extracted_dir";

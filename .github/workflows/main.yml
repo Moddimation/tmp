@@ -144,10 +144,10 @@ jobs:
             ')'" && \
           
             wget -q "$link/$zip_file"
-            filename=$(ls *.zip 2>/dev/null | head -n 1) 2>/dev/null
+            filename="$(ls *.zip 2>/dev/null | head -n 1)" 2>/dev/null
             file_name="./${filename%.zip}";
             mkdir "$file_name";
-            echo " # Extracting download ..."
+            echo " # Extracting $file_name ..."
             7z x "$filename" -y -bso0 -bsp0 -bse0
             rm "$filename"
             rvz_file=$(ls *.rvz | head -n 1)

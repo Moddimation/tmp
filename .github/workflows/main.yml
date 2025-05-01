@@ -234,8 +234,10 @@ jobs:
             cd "../$file_name/"
             find "." -empty -delete;
             find "." -type f \( -iname "*.tgc" -o -iname "*.gcm" -o -iname "*.arc" -o -iname "*.ghr" -o -iname "*.gcr" \) -delete
-            find "../save" -maxdepth 1 -exec mv "{}" "." \;
-            if [ "$(ls)" = "UPDATE" ]; then
+            if [ -d "../save" ]; then
+               find "../save" -maxdepth 1 -exec mv "{}" "." \;
+            fi
+            if [ -d "UPDATE" ]; then
                find "UPDATE" -maxdepth 1 -exec mv "{}" "." \;
             fi
             found=$(find "." -type f | sort -u);

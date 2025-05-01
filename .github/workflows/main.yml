@@ -233,7 +233,7 @@ jobs:
             filterFind;
             cd "../$file_name/"
             find "." -empty -delete;
-            find "." -type f \( -iname "*.tgc" -o -iname "*.gcm" -o -iname "*.arc" -o -iname "*.ghr" -o -iname "*.gcr" -o -ipath "files/__*.inf*"\) -delete
+            find "." -type f \( -iname "*.tgc" -o -iname "*.gcm" -o -iname "*.arc" -o -iname "*.ghr" -o -iname "*.gcr" -o -path "./files/__*.inf*" \) -delete
             if [ -d "../save" ]; then
                find "../save" -maxdepth 1 -exec mv "{}" "." \;
             fi

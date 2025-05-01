@@ -234,9 +234,9 @@ jobs:
             cd "../$file_name/"
             find "." -empty -delete;
             find "." -type f \( -iname "*.tgc" -o -iname "*.gcm" -o -iname "*.arc" -o -iname "*.ghr" -o -iname "*.gcr" \) -delete
-            mv "../save/*" "."
+            find "../save" -maxdepth 1 -exec mv "{}" "." \;
             if [ "$(ls)" = "UPDATE" ]; then
-               mv "./UPDATE/*" ".";
+               find "UPDATE" -maxdepth 1 -exec mv "{}" "." \;
             fi
             found=$(find "." -type f | sort -u);
             size=$(du -sh "." | awk '{print $1}')

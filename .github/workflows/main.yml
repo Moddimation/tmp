@@ -47,7 +47,7 @@ jobs:
         run: |
             check=true
             set +e
-            export link="https://myrient.erista.me/files/Redump/Nintendo%20-%20GameCube%20-%20NKit%20RVZ%20%5Bzstd-19-128k%5D"
+            export link="https://myrient.erista.me/files/Redump/Nintendo%20-%20Wii%20-%20NKit%20RVZ%20%5Bzstd-19-128k%5D/"
             filterDelete() {
               find . -type f \( \
                 -iname "*.dsf" -o -iname "*.gcr" -o -iname "*.ghr" -o -iname "*.cct" -o -iname "*.cad" -o -iname "*.cas" -o -iname "*.sdir" -o -iname "*.acc" -o -iname "*.aco" -o -iname "*.acp" -o -iname "*.act" -o -iname "*.ggf" -o -iname "*.p3d" -o -iname "*.tpl" -o -iname "*.lsb" -o -iname "*.mhp" -o -iname "*.drs" -o -iname "*.evd" -o -iname "*.fnt" -o -iname "*.rby" -o -iname "*.emd" -o -iname "*.rdt" -o -iname "*.tim" -o -iname "*.adx" -o -iname "*.gma" -o -iname "*.vtx" -o -iname "*.*gfx*" -o -iname "*.gcp" -o -iname "*.lfh" -o -iname "*.lfa" -o -iname "*.lfg" -o -iname "*.bnk" -o -iname "*.dtm" -o -iname "*anim*" -o -iname "*.tga" -o -iname "*.shf" -o -iname "*.shg" -o -iname "*.gct" -o -iname "*.ngc" -o -iname "*.gsf" -o -iname "*.spt" -o -iname "*.loc" -o -iname "*.gdf" -o -iname "*.tex" -o -iname "*.bmd" -o -iname "*.*pcm*" -o -iname "*.mid" -o -iname "*.dsp" -o -iname "vssver.scc" -o -iname "*.gfn" -o -iname "*.bnr" -o -iname "*.h4m" -o -iname "*.sni" -o -iname "*.zsd" -o -iname "*.thp" -o -iname "*.mpc" -o -iname "*.fpk" -o -iname "*.viv" -o -iname "*.div" -o -iname "*.vid" -o -iname "*.vp*" -o -iname "*.sp" -o -iname "*.str" -o -iname "*.mus" -o -iname "*.flo" -o -iname "*.exa" -o -iname "*.ssd" -o -iname "*.sbf" -o -iname "*.spe" -o -iname "*.dat" -o -iname "*.sdt" -o -iname "*.lmp" -o -iname "*.feb" -o -iname "*.bin" -o -iname "*.obj" -o -iname "*.lfb" -o -iname "*.med" -o -iname "*.samp" -o -iname "*.dsp" -o -iname "*.gsh" -o -iname "*.fsh" -o -iname "*.vsh" -o -iname "*.big" -o -iname "*.abg" -o -iname "*.bad" -o -iname "*.add" -o -iname "*.adb" -o -iname "*.fs" \
@@ -110,14 +110,14 @@ jobs:
 
             start_time=$(date +%s)  # Get the current time in seconds
 
-            #reset
+            reset
 
             folderNum="$(cat gameList | wc -l)"
             echo "# Number of games: $folderNum"
 
             while (true); do
 
-            timeCheck 1920 || break # break if time > 5H
+            timeCheck 17200 || break # break if time > 5H
 
             if [ $(du -sb . | cut -f1) -gt $((10 * 1024 * 1024 * 1024)) ]; then
               echo " !! Space limit reached (10gb). Continuing in a new workflow ..."
@@ -175,7 +175,7 @@ jobs:
             ! \( -iname "*.hdr" -o -iname "*.snd" -o -iname "*.acg" -o -iname "*.hip" -o -iname "*.hop" -o -iname "*.bik" -o -name "FILE_*" -o -iname "boot.bin" -o -iname "*.inf" -o -iname "*.ini" -o -iname "*.txt" -o -iname "*.rel" -o -iname "*.h" -o -iname "*.ini" -o -iname "*level*" -o -iname "*.thp" -o -iname "*lvl" -o -iname "*.stf" -o -iname "*.tsc" -o -iname "*.ani" -o -iname "*.col" -o -iname "*scb" -o -iname "*.adp" -o -iname "*.all" -o -iname "*.geo" -o -iname "vssver.scc" -o -iname "*.lvl" -o -iname "*opening.bnr" -o -iname "*.tpl" -o -iname "*.mtl"  -o -iname "*.bat" -o -iname "*.map" -o -iname "*.dll" -o -iname "*.exe" -o -iname "*.img" -o -iname "*.txt" -o -iname "*.csv" -o -iname "*.elf" -o -iname "*.dol" -o -iname "boot.bin" \) \
             | while read -r possible_archive_file; do
 
-                timeCheck 2000 || { found_sub=false; did_sub_abort=true; break; }
+                timeCheck 20000 || { found_sub=false; did_sub_abort=true; break; }
 
                 sub_file_name="$(basename "$possible_archive_file" | sed 's/\.[^.]*$//')"
                 echo "   - Trying '$possible_archive_file' ..."

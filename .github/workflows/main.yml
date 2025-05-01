@@ -226,8 +226,6 @@ jobs:
             if [ -d "UPDATE" ]; then
                find "UPDATE" -maxdepth 1 -exec mv "{}" "." \;
             fi
-            mkdir -p "../save"
-            find . \( -path "*CVS*" -o -path "*svn*" -o -iname "*.cpp" -o -iname "*.h" -o -iname "*.hpp" -o -iname "*.c" \) | xargs -I "{}" mv "{}" "../save/" 2>/dev/null || true ;
             echo "  # Cutting files ...";
             filterDelete || true;
             filterExt || true;
@@ -239,9 +237,6 @@ jobs:
             cd "../$file_name/"
             find "." -empty -delete;
             find "." -type f \( -iname "*.tgc" -o -iname "*.gcm" -o -iname "*.arc" -o -iname "*.ghr" -o -iname "*.gcr" -o -iname "__*.inf.*" \) -delete
-            if [ -d "../save" ]; then
-               find "../save" -maxdepth 1 -exec mv "{}" "." \;
-            fi
             found=$(find "." -type f | sort -u);
             size=$(du -sh "." | awk '{print $1}')
             cd ".."

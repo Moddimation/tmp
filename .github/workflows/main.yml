@@ -125,6 +125,10 @@ jobs:
             fi
 
             zip_file=$(head -n 1 gameList)
+            if [ -z "$zip_file" ]; then
+              echo "All Done! be happy :D";
+              break;
+            fi
             sed -i '1d' gameList
             if [[ "$zip_file" == *"Action"*"Replay"* ]]; then
               continue;

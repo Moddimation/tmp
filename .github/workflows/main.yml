@@ -180,7 +180,7 @@ jobs:
                 mkdir "$extracted_dir" -p
                 flatpak run --command="dolphin-tool" --filesystem=host org.DolphinEmu.dolphin-emu extract -i "$possible_archive_file" -o "$extracted_dir" 2>/dev/null || true
                 rm -f "$dec_file" 2>/dev/null || true
-                find "." -empty -delete;
+                #find "." -empty -delete;
                 ../orthrus ncompress yay0 -d "$possible_archive_file" "$dec_file" > /dev/null 2>&1 || true
                 ../orthrus ncompress yaz0 -d "$possible_archive_file" "$dec_file" > /dev/null 2>&1 || true
                 ../orthrus panda3d bam -d "$possible_archive_file" "$dec_file" > /dev/null 2>&1 || true;
@@ -237,7 +237,6 @@ jobs:
                rm -rf "./$file_name/";
                continue;
             fi;
-            find "./$file_name/" -empty -delete;
             ignored=$(find "./tmp/" -type f | awk -F. '{if (NF>1) print $NF}' | sort -u | paste -sd "," - ); 
             rm -rf tmp;
             echo "<< Finished '$file_name'";

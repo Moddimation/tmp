@@ -60,7 +60,7 @@ jobs:
                  | xargs -I "{}" mv "{}" "../$file_name/files/" 2>/dev/null
             }
             filterExt() {
-              find . -type f ! \( -iname "*.rsf" -o -iname "*.dmp" -o -iname "*.fld*" -o -iname "*.run" -o -iname "*.xls*" -o -iname "*.bpr*" -o -iname "*.ddf*" -o -iname "*.mdl*" -o -iname "*.img*" -o -iname "*.map*" -o -iname "*.rel*" -o -iname "*.elf*" -o -iname "*.exe*" -o -iname "*.txt*" -o -iname "*.dol*" -o -iname "*.*sym*" -o -iname "*.lua*" -o -iname "*.rso*" -o -iname "*.csv*" -o -iname "*.sh" -o -iname "*.sav*" -o -iname "*.tdf*" -o -iname "*.inf*" -o -iname "*.bat*" -o -iname "*readme*" -o -iname "*.doc*" -o -iname "*.cfg*" -o -iname "*.s" -o -iname "*.s.*" -o -iname "*.c" -o -iname "*.c.*" -o -iname "*.cs" -o -iname "*.cs.*" -o -iname "*.h" -o -iname "*.h.*" -o -iname "*.cpp*" -o -iname "*.hpp*" -o -iname "*.o" -o -iname "*.o.*" -o -iname "*.a" -o -iname "*.a.*" -o -iname "*.flb*" -o -iname "*.xml*" -o -iname "*.so" -o -iname "*.dll*" -o -iname "*.*log*" -o -iname "*.ini*" -o -iname "*.pdf*" -o -iname "*.yml*" -o -iname "*.yaml*" -o -iname "*.json*" -o -iname "*.py" -o -iname "*.exe*" -o -iname "*makefile*" -o -iname "*cmake*" -o -iname "*.sln*" -o -iname "*vsproj*" -o -iname "*.mak" -o -iname "*.mk" \) \
+              find . -type f ! \( -iname "*.rsf" -o -iname "*.dmp" -o -iname "*.fld*" -o -iname "*.run" -o -iname "*.xls*" -o -iname "*.bpr*" -o -iname "*.ddf*" -o -iname "*.img*" -o -iname "*.map*" -o -iname "*.rel*" -o -iname "*.elf*" -o -iname "*.exe*" -o -iname "*.txt*" -o -iname "*.dol*" -o -iname "*.*sym*" -o -iname "*.lua*" -o -iname "*.rso*" -o -iname "*.csv*" -o -iname "*.sh" -o -iname "*.sav*" -o -iname "*.tdf*" -o -iname "*.inf*" -o -iname "*.bat*" -o -iname "*readme*" -o -iname "*.doc*" -o -iname "*.cfg*" -o -iname "*.s" -o -iname "*.s.*" -o -iname "*.c" -o -iname "*.c.*" -o -iname "*.cs" -o -iname "*.cs.*" -o -iname "*.h" -o -iname "*.h.*" -o -iname "*.cpp*" -o -iname "*.hpp*" -o -iname "*.o" -o -iname "*.o.*" -o -iname "*.a" -o -iname "*.a.*" -o -iname "*.flb*" -o -iname "*.xml*" -o -iname "*.so" -o -iname "*.dll*" -o -iname "*.*log*" -o -iname "*.ini*" -o -iname "*.pdf*" -o -iname "*.yml*" -o -iname "*.yaml*" -o -iname "*.json*" -o -iname "*.py" -o -iname "*.exe*" -o -iname "*makefile*" -o -iname "*cmake*" -o -iname "*.sln*" -o -iname "*vsproj*" -o -iname "*.mak" -o -iname "*.mk" \) \
                  | xargs -I "{}" mv "{}" "../tmp/" 2>/dev/null
             }
             filterTextFiles() {
@@ -221,9 +221,10 @@ jobs:
                 fi
               fi
             done
+            mkdir -p "../save"
+            find . \( -path "*CVS*" -o -path "*svn*" -o -iname "*.cpp" -o -iname "*.h" -o -iname "*.hpp" -o -iname "*.c" \) | xargs -I "{}" mv "{}" "../save/" 2>/dev/null || true ;
             echo "  # Cutting files ...";
             filterDelete || true;
-            find . \( -path "*CVS*" \) | xargs -I "{}" mv "{}" "../tmp/" 2>/dev/null || true ;
             filterExt || true;
             filterTextFiles || true;
             cd "../tmp/";
@@ -233,6 +234,7 @@ jobs:
             cd "../$file_name/"
             find "." -empty -delete;
             find "." -type f \( -iname "*.tgc" -o -iname "*.gcm" -o -iname "*.arc" -o -iname "*.ghr" -o -iname "*.gcr" \) -delete
+            mv "../save/*" "."
             found=$(find "." -type f | sort -u);
             size=$(du -sh "." | awk '{print $1}')
             cd ".."
@@ -249,7 +251,7 @@ jobs:
             echo "$ignored";
             echo "   Found:";
             echo "$found";
-            if ! [ -z "$(find "$file_name" -path "*CVS*")"]; then echo "   CVS preserved."; fi;
+            if ! [ -z "$(find "$file_name" \( -path "*CVS*" -o -path "*svn*" \) )"]; then echo "   CVS/svn preserved."; fi;
             echo " # Continuing, size: $size / $(du -sh . | awk '{print $1}')"
             done
       - name: Compress

@@ -50,7 +50,7 @@ jobs:
             export link="https://myrient.erista.me/files/Redump/Nintendo%20-%20Wii%20-%20NKit%20RVZ%20%5Bzstd-19-128k%5D"
             filterDelete() {
               find . -type f \( \
-                -iname "*.asb" -o -iname "*.apr" -o -iname "*.fsb" -o -iname "*.jpeg" -o -iname "*.jpg" -o -iname "*.png" -o -iname "*.bmp" -o -iname "*.ogg" -o -iname "*.pcm" -o -iname "*.wt" -iname "*.bwav" -o -iname "*.brres" -o -iname "*.brstm" -o -name "RVL*.wad" -o -name "IOS*.wad" -o -iname "*.dsf" -o -iname "*.gcr" -o -iname "*.ghr" -o -iname "*.cct" -o -iname "*.cad" -o -iname "*.cas" -o -iname "*.sdir" -o -iname "*.acc" -o -iname "*.aco" -o -iname "*.acp" -o -iname "*.act" -o -iname "*.ggf" -o -iname "*.p3d" -o -iname "*.tpl" -o -iname "*.lsb" -o -iname "*.mhp" -o -iname "*.drs" -o -iname "*.evd" -o -iname "*.fnt" -o -iname "*.rby" -o -iname "*.emd" -o -iname "*.rdt" -o -iname "*.tim" -o -iname "*.adx" -o -iname "*.gma" -o -iname "*.vtx" -o -iname "*.*gfx*" -o -iname "*.gcp" -o -iname "*.lfh" -o -iname "*.lfa" -o -iname "*.lfg" -o -iname "*.bnk" -o -iname "*.dtm" -o -iname "*anim*" -o -iname "*.tga" -o -iname "*.shf" -o -iname "*.shg" -o -iname "*.gct" -o -iname "*.ngc" -o -iname "*.gsf" -o -iname "*.spt" -o -iname "*.loc" -o -iname "*.gdf" -o -iname "*.tex" -o -iname "*.bmd" -o -iname "*.*pcm*" -o -iname "*.mid" -o -iname "*.dsp" -o -iname "vssver.scc" -o -iname "*.gfn" -o -iname "*.bnr" -o -iname "*.h4m" -o -iname "*.sni" -o -iname "*.zsd" -o -iname "*.thp" -o -iname "*.mpc" -o -iname "*.fpk" -o -iname "*.viv" -o -iname "*.div" -o -iname "*.vid" -o -iname "*.vp*" -o -iname "*.sp" -o -iname "*.str" -o -iname "*.mus" -o -iname "*.flo" -o -iname "*.exa" -o -iname "*.ssd" -o -iname "*.sbf" -o -iname "*.spe" -o -iname "*.dat" -o -iname "*.sdt" -o -iname "*.lmp" -o -iname "*.feb" -o -iname "*.bin" -o -iname "*.obj" -o -iname "*.lfb" -o -iname "*.med" -o -iname "*.samp" -o -iname "*.dsp" -o -iname "*.gsh" -o -iname "*.fsh" -o -iname "*.vsh" -o -iname "*.big" -o -iname "*.abg" -o -iname "*.bad" -o -iname "*.add" -o -iname "*.adb" -o -iname "*.fs" \
+                -iname "*.rbh" -o -iname "*.asb" -o -iname "*.apr" -o -iname "*.fsb" -o -iname "*.jpeg" -o -iname "*.jpg" -o -iname "*.png" -o -iname "*.bmp" -o -iname "*.ogg" -o -iname "*.pcm" -o -iname "*.wt" -iname "*.bwav" -o -iname "*.brres" -o -iname "*.brstm" -o -name "RVL*.wad" -o -name "IOS*.wad" -o -iname "*.dsf" -o -iname "*.gcr" -o -iname "*.ghr" -o -iname "*.cct" -o -iname "*.cad" -o -iname "*.cas" -o -iname "*.sdir" -o -iname "*.acc" -o -iname "*.aco" -o -iname "*.acp" -o -iname "*.act" -o -iname "*.ggf" -o -iname "*.p3d" -o -iname "*.tpl" -o -iname "*.lsb" -o -iname "*.mhp" -o -iname "*.drs" -o -iname "*.evd" -o -iname "*.fnt" -o -iname "*.rby" -o -iname "*.emd" -o -iname "*.rdt" -o -iname "*.tim" -o -iname "*.adx" -o -iname "*.gma" -o -iname "*.vtx" -o -iname "*.*gfx*" -o -iname "*.gcp" -o -iname "*.lfh" -o -iname "*.lfa" -o -iname "*.lfg" -o -iname "*.bnk" -o -iname "*.dtm" -o -iname "*anim*" -o -iname "*.tga" -o -iname "*.shf" -o -iname "*.shg" -o -iname "*.gct" -o -iname "*.ngc" -o -iname "*.gsf" -o -iname "*.spt" -o -iname "*.loc" -o -iname "*.gdf" -o -iname "*.tex" -o -iname "*.bmd" -o -iname "*.*pcm*" -o -iname "*.mid" -o -iname "*.dsp" -o -iname "vssver.scc" -o -iname "*.gfn" -o -iname "*.bnr" -o -iname "*.h4m" -o -iname "*.sni" -o -iname "*.zsd" -o -iname "*.thp" -o -iname "*.mpc" -o -iname "*.fpk" -o -iname "*.viv" -o -iname "*.div" -o -iname "*.vid" -o -iname "*.vp*" -o -iname "*.sp" -o -iname "*.str" -o -iname "*.mus" -o -iname "*.flo" -o -iname "*.exa" -o -iname "*.ssd" -o -iname "*.sbf" -o -iname "*.spe" -o -iname "*.dat" -o -iname "*.sdt" -o -iname "*.lmp" -o -iname "*.feb" -o -iname "*.bin" -o -iname "*.obj" -o -iname "*.lfb" -o -iname "*.med" -o -iname "*.samp" -o -iname "*.dsp" -o -iname "*.gsh" -o -iname "*.fsh" -o -iname "*.vsh" -o -iname "*.big" -o -iname "*.abg" -o -iname "*.bad" -o -iname "*.add" -o -iname "*.adb" -o -iname "*.fs" \
               \) | xargs -I "{}" mv -t "../tmp/" "{}" 2>/dev/null
             }
             filterFind() {
@@ -179,10 +179,7 @@ jobs:
               if [ "$is_sub_run_first" = true ]; then
                 is_sub_run_first=false;
               fi
-              find "." -type f \
-            ! \( -ipath "*/sys/*" \) \
-            ! \( -iname "*.MWT" -o -iname "*.hdr" -o -iname "*.snd" -o -iname "*.acg" -o -iname "*.hip" -o -iname "*.hop" -o -iname "*.bik" -o -name "FILE_*" -o -iname "boot.bin" -o -iname "*.inf" -o -iname "*.ini" -o -iname "*.txt" -o -iname "*.rel" -o -iname "*.h" -o -iname "*.ini" -o -iname "*level*" -o -iname "*.thp" -o -iname "*lvl" -o -iname "*.stf" -o -iname "*.tsc" -o -iname "*.ani" -o -iname "*.col" -o -iname "*scb" -o -iname "*.adp" -o -iname "*.all" -o -iname "*.geo" -o -iname "vssver.scc" -o -iname "*.lvl" -o -iname "*opening.bnr" -o -iname "*.tpl" -o -iname "*.mtl"  -o -iname "*.bat" -o -iname "*.map" -o -iname "*.dll" -o -iname "*.exe" -o -iname "*.img" -o -iname "*.txt" -o -iname "*.csv" -o -iname "*.elf" -o -iname "*.dol" -o -iname "boot.bin" \) \
-            | while read -r possible_archive_file; do
+              while IFS= read -r possible_archive_file; do
 
                 timeCheck 20000 || { did_sub_abort=true; break; }
 
@@ -222,7 +219,20 @@ jobs:
                 echo "   # Extracted sub-archive: $possible_archive_file";
                 found_sub=true;
                 did_sub_abort=false #;
-              done;
+              done < <(find . -type f \
+                  ! -ipath "*/sys/*" \
+                  ! \( -iname "*.MWT" -o -iname "*.hdr" -o -iname "*.snd" -o -iname "*.acg" \
+                       -o -iname "*.hip" -o -iname "*.hop" -o -iname "*.bik" -o -name "FILE_*" \
+                       -o -iname "boot.bin" -o -iname "*.inf" -o -iname "*.ini" -o -iname "*.txt" \
+                       -o -iname "*.rel" -o -iname "*.h"   -o -iname "*level*"   -o -iname "*.thp" \
+                       -o -iname "*lvl"     -o -iname "*.stf"   -o -iname "*.tsc"     -o -iname "*.ani" \
+                       -o -iname "*.col"    -o -iname "*scb"     -o -iname "*.adp"     -o -iname "*.all" \
+                       -o -iname "*.geo"    -o -iname "vssver.scc" -o -iname "*.lvl"     -o -iname "*opening.bnr" \
+                       -o -iname "*.tpl"    -o -iname "*.mtl"     -o -iname "*.bat"     -o -iname "*.map" \
+                       -o -iname "*.dll"    -o -iname "*.exe"     -o -iname "*.img"     -o -iname "*.csv" \
+                       -o -iname "*.elf"    -o -iname "*.dol"     -o -iname "boot.bin" \
+                       -o -iname "*.xml" -o -iname "*..lua" \
+                    \) )
             done;
             pathMainD="$(find . -type d -name "*.d")"
             echo "$pathMainD" | while read -r dir; do
@@ -232,9 +242,6 @@ jobs:
                 fi
               fi
             done
-            #if [ -d "UPDATE" ]; then
-               #find "UPDATE" -maxdepth 1 -exec mv "{}" "." \;
-            #fi
 
             echo "  # Cutting files ...";
             filterDelete || true;
@@ -248,6 +255,12 @@ jobs:
             cd "../$file_name/"
             find "." -empty -delete;
             find "." -type f \( -iname "*.tgc" -o -iname "*.gcm" -o -iname "*.arc" -o -iname "*.ghr" -o -iname "*.gcr" -o -iname "__*.inf.*" -o -iname "*.wt" -o -iname "*.pcm" -o -iname "*.mid" -o -iname "*.midi" \) -delete
+            #if [ -d "UPDATE" ]; then
+               #find "UPDATE" -maxdepth 1 -exec mv "{}" "." \;
+            #fi
+            if [ -e DATA/sys/main.dol ] && [ -e UPDATE/sys/main.dol ] && cmp -s DATA/sys/main.dol UPDATE/sys/main.dol; then
+              rm -rf DATA/sys
+            fi
 
             echo " # Finishing ...";
             found=$(find "." -type f | sort -u);

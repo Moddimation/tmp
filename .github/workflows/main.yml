@@ -186,7 +186,7 @@ jobs:
                 is_sub_run_first=false;
               fi
 
-              find . \( -iname "homemenu" -o -iname "homebtn" -o -iname "homebutton" -o -iname "hbm" -o -iname "*.jpg" -o -iname "*.png" -o -iname "*.jpeg" -o -iname "*.jpg" -o -iname "*.skl" -o -iname "*.anm" -o -iname "*.mdl" -o -iname "*.tex" \) -exec rm -rf "{}" \;
+              find . \( -iname "*.brlan" -o -iname "homemenu" -o -iname "homebtn" -o -iname "homebutton" -o -iname "hbm" -o -iname "*.jpg" -o -iname "*.png" -o -iname "*.jpeg" -o -iname "*.jpg" -o -iname "*.skl" -o -iname "*.anm" -o -iname "*.mdl" -o -iname "*.tex" \) -exec rm -rf "{}" \;
               
               while IFS= read -r possible_archive_file; do
 
@@ -220,7 +220,7 @@ jobs:
                 if ! [ -d "$extracted_dir" ]; then
                     # echo "  ! No data found, continue";
                 #    rmdir "$extracted_dir";
-                    mv "filename.szs" "${filename%.szs}" > /dev/null 2>&1;
+                    mv "filename.szs" "${filename%.szs}" > /dev/null 2>&1; # ??
                     continue;
                 fi;
                 ls "$extracted_dir";
@@ -229,18 +229,18 @@ jobs:
                 found_sub=true;
                 did_sub_abort=false #;
               done < <(find . -type f \
-                  ! \( -ipath "*/svn*" -o -ipath "*/CVS*" -o -ipath "*/sys/*" \) \
+                  ! \( -ipath "*/*svn*" -o -ipath "*/*CVS*" -o -ipath "*/sys/*" \) \
                   ! \( -iname "*.MWT" -o -iname "*.hdr" -o -iname "*.snd" -o -iname "*.acg" \
                        -o -iname "*.hip" -o -iname "*.hop" -o -iname "*.bik" -o -name "FILE_*" \
                        -o -iname "boot.bin" -o -iname "*.inf" -o -iname "*.ini" -o -iname "*.txt" \
-                       -o -iname "*.rel" -o -iname "*.h"   -o -iname "*level*"   -o -iname "*.thp" \
+                       -o -iname "*.rel" -o -iname "*.h" -o -iname "*.o" -o -iname "*level*"   -o -iname "*.thp" \
                        -o -iname "*lvl"     -o -iname "*.stf"   -o -iname "*.tsc"     -o -iname "*.ani" \
                        -o -iname "*.col"    -o -iname "*scb"     -o -iname "*.adp"     -o -iname "*.all" \
                        -o -iname "*.geo"    -o -iname "vssver.scc" -o -iname "*.lvl"     -o -iname "*opening.bnr" \
                        -o -iname "*.tpl"    -o -iname "*.mtl"     -o -iname "*.bat"     -o -iname "*.map" \
                        -o -iname "*.dll"    -o -iname "*.exe"     -o -iname "*.img"     -o -iname "*.csv" \
                        -o -iname "*.elf"    -o -iname "*.dol"     -o -iname "boot.bin" \
-                       -o -iname "*.xml" -o -iname "*.lua" -o -iname "*.ddf" -o -iname "*.cfg" \
+                       -o -iname "*.xml" -o -iname "*.lua" -o -iname "*.ddf" -o -iname "*.cfg"\
                     \) )
             done;
             echo " # Checking ..."

@@ -68,7 +68,7 @@ jobs:
                 if file "$file" | grep -qiE 'text|ascii|unicode|utf-8|utf8|shiftjis|shift-jis|euc-jp|latin|big5'; then
                   if ! grep -aEL "__start|ppceabi|PPCEABI|PowerPC|MetroTRK|J3DModel|J2DScreen|J2DPrint|JUTException|JAInterface|JAIBasic|JAISound|JKRAram|JUTFont|JAudio|Jaudio|J2DWindow|JKRHap|Jsystem|JSystem|[a-zA-Z_-]{7,}\.(cpp|hpp|a|o|c|h)[^a-zA-Z%\!\$=;,:]$|section layout|Section Layout" "$file"; then
                     rm -f "$file" 2>/dev/null
-                    echo "blah"
+                    echo "$file"
                   fi
                 else
                   mv "$file" "$file.b" 2>/dev/null

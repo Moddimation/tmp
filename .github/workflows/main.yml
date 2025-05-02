@@ -165,7 +165,8 @@ jobs:
 
             echo " # Pre-Processing ..."
             [ "$(find . -type f -name '*.plf' | wc -l)" -gt 5 ] && find . -type f -name '*.plf' -delete
-            find UPDATE
+            rm -rf UPDATE
+            
             echo " # Scanning ..."
             found_sub=false
             did_sub_abort=false

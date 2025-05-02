@@ -38,8 +38,8 @@ jobs:
           mv dtk* dtk
           chmod +x orthrus
           chmod +x dtk
-          sudo apt-get update && sudo apt-get install -y p7zip-full
-          sudo apt install flatpak
+          sudo apt-get update
+          sudo apt install -y p7zip-full flatpak unp
           sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
           sudo flatpak install flathub org.DolphinEmu.dolphin-emu -y
 
@@ -110,7 +110,7 @@ jobs:
 
             start_time=$(date +%s)  # Get the current time in seconds
 
-            reset
+            #reset
 
             folderNum="$(cat gameList | wc -l)"
             echo "# Number of games: $folderNum"
@@ -142,25 +142,33 @@ jobs:
               s/%5D/]/g;  s/%5E/^/g;  s/%5F/_/g;  s/%60/`/g;  s/%7B/{/g;
               s/%7C/|/g;  s/%7D/}/g;  s/%7E/~/g;
             ')'" && \
-          
+
+            echo " # Init extraction ... "
             wget -q "$link/$zip_file"
             #ls
             filename="$(ls *.zip 2>/dev/null | head -n 1)" 2>/dev/null
             file_name="./${filename%.zip}";
             mkdir "$file_name";
+
             echo " # Extracting $file_name ..."
             7z x "$filename" -y -bso0 -bsp0 -bse0
             rm "$filename"
             rvz_file=$(ls *.rvz | head -n 1)
+
             echo " # Extracting game ..."
             flatpak run --command="dolphin-tool" --filesystem=host org.DolphinEmu.dolphin-emu extract -i "$rvz_file" -o "$file_name/" -q 2>/dev/null || true
             rm "$rvz_file"
-            echo " # Run filter ..."
-            echo "  # Scan for sub archives ..."
+
+            echo " # Init filter ..."
             rm -rf tmp
             mkdir -p tmp
-            cd "$file_name/"
+            cd "$file_name/
+
+            echo " # Pre-Processing ..."
             filterDelete || true
+            [ "$(find . -type f -name '*.plf' | wc -l)" -gt 5 ] && find . -type f -name '*.plf' -delete
+
+            echo "  # Scan for sub archives ..."
             found_sub=false
             did_sub_abort=false
             is_sub_run_first=true
@@ -196,9 +204,11 @@ jobs:
                 ../dtk u8 extract "$possible_archive_file" -o "$extracted_dir" > /dev/null 2>&1 || true;
                 ../dtk wad extract "$possible_archive_file" -o "$extracted_dir" > /dev/null 2>&1 || true;
                 tar -xf "$possibble_archive_file" -C "$extracted_dir" > /dev/null 2>&1 || true;
-          
                 if ! 7z l "$possible_archive_file" 2>/dev/null | grep -E '\.(text|rodata|data|bss|symtab|strtab|debug|comment|shstrtab|ctors|dtors|sdata|sbss|got|plt)$' > /dev/null; then
                     7z x "$possible_archive_file" -o"$extracted_dir" > /dev/null 2>&1 || true
+                fi
+                if ! unp -l "$possible_archife_file" 2>/dev/null | grep -E '\.(text|rodata|data|bss|symtab|strtab|debug|comment|shstrtab|ctors|dtors|sdata|sbss|got|plt)$' > /dev/null; then
+                    unp "$possible_archive_file" -- --out "$extracted_dir" > /dev/null 2>&1 || true
                 fi
                 find "." -empty -delete;
                 if ! [ -d "$extracted_dir" ]; then
@@ -225,17 +235,21 @@ jobs:
             #if [ -d "UPDATE" ]; then
                #find "UPDATE" -maxdepth 1 -exec mv "{}" "." \;
             #fi
+
             echo "  # Cutting files ...";
             filterDelete || true;
             filterExt || true;
             filterTextFiles || true;
             cd "../tmp/";
+
             echo " # Post-Processing ...";
             filterTextFiles || true;
             filterFind;
             cd "../$file_name/"
             find "." -empty -delete;
             find "." -type f \( -iname "*.tgc" -o -iname "*.gcm" -o -iname "*.arc" -o -iname "*.ghr" -o -iname "*.gcr" -o -iname "__*.inf.*" -o -iname "*.wt" -o -iname "*.pcm" -o -iname "*.mid" -o -iname "*.midi" \) -delete
+
+            echo " # Finishing ...";
             found=$(find "." -type f | sort -u);
             size=$(du -sh "." | awk '{print $1}')
             cd ".."
@@ -247,6 +261,7 @@ jobs:
             fi;
             ignored=$(find "./tmp/" -type f | awk -F. '{if (NF>1) print $NF}' | sort -u | paste -sd "," - ); 
             rm -rf tmp;
+
             echo "<< Finished '$file_name'";
             echo "   Ignored:";
             echo "$ignored";

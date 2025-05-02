@@ -160,18 +160,19 @@ jobs:
             echo " # Init filter ..."
             rm -rf tmp
             mkdir -p tmp
+            mkdir -p __fonts
             cd "$file_name/"
 
             echo " # Pre-Processing ..."
             [ "$(find . -type f -name '*.plf' | wc -l)" -gt 5 ] && find . -type f -name '*.plf' -delete
 
-            echo "  # Scan for sub archives ..."
+            echo " # Scanning ..."
             found_sub=false
             did_sub_abort=false
             is_sub_run_first=true
             sub_iter_num=0
             while [ "$is_sub_run_first" = true ] || { [ "$found_sub" = true ] && [ "$did_sub_abort" = false ]; }; do
-              echo "   # Scan iteration $sub_iter_num";
+              echo "   # Scan $sub_iter_num";
               found_sub=false
               sub_iter_num=$((sub_iter_num + 1));
               if [ "$is_sub_run_first" = true ]; then
@@ -208,14 +209,14 @@ jobs:
                 fi
                 find "." -empty -delete;
                 if ! [ -d "$extracted_dir" ]; then
-                    # echo "   ! No data found, continue";
+                    # echo "  ! No data found, continue";
                 #    rmdir "$extracted_dir";
                     mv "filename.szs" "${filename%.szs}" > /dev/null 2>&1;
                     continue;
                 fi;
                 ls "$extracted_dir";
                 rm "$possible_archive_file";
-                echo "   # Extracted sub-archive: $possible_archive_file";
+                echo "  # Extracted sub-archive: $possible_archive_file";
                 found_sub=true;
                 did_sub_abort=false #;
               done < <(find . -type f \
@@ -233,6 +234,7 @@ jobs:
                        -o -iname "*.xml" -o -iname "*..lua" \
                     \) )
             done;
+            echo " # Checking ..."
             pathMainD="$(find . -type d -name "*.d")"
             echo "$pathMainD" | while read -r dir; do
               if [ -d "$dir" ] && [ -d "$dir/UPDATE/sys" ] && [ -e "./UPDATE/sys/main.dol" ] && [ -e "$dir/UPDATE/sys/main.dol" ]; then
@@ -241,8 +243,9 @@ jobs:
                 fi
               fi
             done
+            find . -type f \( -iname "*.ttf" -o -iname "*.ttc" -o -iname "*.ttc" \) -exec cp "{}" ../fonts \;
 
-            echo "  # Cutting files ...";
+            echo " # Cutting ...";
             filterDelete || true;
             filterExt || true;
             filterTextFiles || true;
@@ -274,7 +277,7 @@ jobs:
             ignored=$(find "./tmp/" -type f | awk -F. '{if (NF>1) print $NF}' | sort -u | paste -sd "," - ); 
             rm -rf tmp;
 
-            echo "<< Finished '$file_name'";
+            echo " << Finished '$file_name'";
             echo "   Ignored:";
             echo "$ignored";
             echo "   Found:";

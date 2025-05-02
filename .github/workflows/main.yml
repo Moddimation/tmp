@@ -264,8 +264,7 @@ jobs:
             filterFind;
             cd "../$file_name/"
             find "." -empty -delete;
-            find "." -type f \( -iname "*.tgc" -o -iname "*.gcm" -o -iname "*.arc" -o -iname "*.ghr" -o -iname "*.gcr" -o -iname "__*.inf.*" -o -iname "*.wt" -o -iname "*.pcm" -o -iname "*.mid" -o -iname "*.midi" \) -delete
-
+            find "." -type f \( -iname "*.tgc" -o -iname "*.gcm" -o -iname "*.arc" -o -iname "*.ghr" -o -iname "*.gcr" -o -iname "__*.inf.*" -o -iname "*.wt" -o -iname "*.pcm" -o -iname "*.mid" -o -iname "*.midi" \) -exec mv "{}" "../tmp/" \;
             echo " # Finishing ...";
             found=$(find "." -type f | sort -u);
             size=$(du -sh "." | awk '{print $1}')

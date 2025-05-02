@@ -178,6 +178,8 @@ jobs:
               if [ "$is_sub_run_first" = true ]; then
                 is_sub_run_first=false;
               fi
+
+              find . -type f \( -iname "*.jpg" -o -iname "*.png" -o -iname "*.jpeg" -o -iname "*.jpg" -o -iname "*.skl" -o -iname "*.anm" -o -iname "*.mdl" -o -iname "*.tex" \) -delete;
               
               while IFS= read -r possible_archive_file; do
 

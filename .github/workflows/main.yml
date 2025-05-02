@@ -164,8 +164,13 @@ jobs:
             cd "$file_name/"
 
             echo " # Pre-Processing ..."
+            filterDelete || true
             [ "$(find . -type f -name '*.plf' | wc -l)" -gt 5 ] && find . -type f -name '*.plf' -delete
             rm -rf UPDATE
+            if [ -d "DATA" ]; then
+               find "DATA" -maxdepth 1 -exec cp -rf "{}" "." \;
+               rm -rf DATA;
+            fi
             
             echo " # Scanning ..."
             found_sub=false
@@ -260,13 +265,6 @@ jobs:
             cd "../$file_name/"
             find "." -empty -delete;
             find "." -type f \( -iname "*.tgc" -o -iname "*.gcm" -o -iname "*.arc" -o -iname "*.ghr" -o -iname "*.gcr" -o -iname "__*.inf.*" -o -iname "*.wt" -o -iname "*.pcm" -o -iname "*.mid" -o -iname "*.midi" \) -delete
-            if [ -d "DATA" ]; then
-               find "DATA" -maxdepth 1 -exec cp -rf "{}" "." \;
-               rm -rf DATA;
-            fi
-            if [ -e DATA/sys/main.dol ] && [ -e UPDATE/sys/main.dol ] && cmp -s DATA/sys/main.dol UPDATE/sys/main.dol; then
-              rm -rf DATA/sys
-            fi
 
             echo " # Finishing ...";
             found=$(find "." -type f | sort -u);

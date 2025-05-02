@@ -186,7 +186,7 @@ jobs:
                 is_sub_run_first=false;
               fi
 
-              find . \( -name "*.*tex*" -o -iname "*.brlan" -o -iname "homemenu" -o -iname "homebtn" -o -iname "homebutton" -o -iname "hbm" -o -iname "*.jpg" -o -iname "*.png" -o -iname "*.jpeg" -o -iname "*.jpg" -o -iname "*.skl" -o -iname "*.anm" -o -iname "*.mdl" -o -iname "*.tex" \) -exec rm -rf "{}" \;
+              find . \( -name "*.*tex*" -o -iname "*.br???$" -o -iname "homemenu" -o -iname "homebtn" -o -iname "homebutton" -o -iname "hbm" -o -iname "*.jpg" -o -iname "*.png" -o -iname "*.jpeg" -o -iname "*.jpg" -o -iname "*.skl" -o -iname "*.anm" -o -iname "*.mdl" -o -iname "*.tex" \) -exec rm -rf "{}" \;
               
               while IFS= read -r possible_archive_file; do
 

@@ -261,7 +261,8 @@ jobs:
             find "." -empty -delete;
             find "." -type f \( -iname "*.tgc" -o -iname "*.gcm" -o -iname "*.arc" -o -iname "*.ghr" -o -iname "*.gcr" -o -iname "__*.inf.*" -o -iname "*.wt" -o -iname "*.pcm" -o -iname "*.mid" -o -iname "*.midi" \) -delete
             if [ -d "DATA" ]; then
-               find "DATA" -maxdepth 1 -exec mv "{}" "." \;
+               find "DATA" -maxdepth 1 -exec cp -rf "{}" "." \;
+               rm -rf DATA;
             fi
             if [ -e DATA/sys/main.dol ] && [ -e UPDATE/sys/main.dol ] && cmp -s DATA/sys/main.dol UPDATE/sys/main.dol; then
               rm -rf DATA/sys

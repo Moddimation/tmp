@@ -168,7 +168,7 @@ jobs:
             [ "$(find . -type f -name '*.plf' | wc -l)" -gt 5 ] && find . -type f -name '*.plf' -delete
             rm -rf UPDATE
             if [ -d "DATA" ]; then
-               find "DATA" -maxdepth 1 -exec cp -rf "{}" "." \;
+               find "DATA" -maxdepth 1 | xargs -I "{}" cp -rf "{}" "." 2>/dev/null;
                rm -rf DATA;
             fi
             

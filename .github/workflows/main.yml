@@ -141,9 +141,9 @@ jobs:
               s/%7C/|/g;  s/%7D/}/g;  s/%7E/~/g;
             ')'" && \
 
-            echo " # Init extraction ... "
             wget -q "$link/$zip_file"
-            #ls
+
+            echo " # Init extraction ... "
             filename="$(ls *.zip 2>/dev/null | head -n 1)" 2>/dev/null
             file_name="./${filename%.zip}";
             mkdir "$file_name";

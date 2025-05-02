@@ -260,9 +260,9 @@ jobs:
             cd "../$file_name/"
             find "." -empty -delete;
             find "." -type f \( -iname "*.tgc" -o -iname "*.gcm" -o -iname "*.arc" -o -iname "*.ghr" -o -iname "*.gcr" -o -iname "__*.inf.*" -o -iname "*.wt" -o -iname "*.pcm" -o -iname "*.mid" -o -iname "*.midi" \) -delete
-            #if [ -d "UPDATE" ]; then
-               #find "UPDATE" -maxdepth 1 -exec mv "{}" "." \;
-            #fi
+            if [ -d "DATA" ]; then
+               find "DATA" -maxdepth 1 -exec mv "{}" "." \;
+            fi
             if [ -e DATA/sys/main.dol ] && [ -e UPDATE/sys/main.dol ] && cmp -s DATA/sys/main.dol UPDATE/sys/main.dol; then
               rm -rf DATA/sys
             fi

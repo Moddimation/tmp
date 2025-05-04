@@ -116,7 +116,7 @@ jobs:
 
             while (true); do
 
-            timeCheck 17200 || break # break if time > 5H
+            timeCheck 16700 || break # break if time > 5H
 
             if [ $(du -sb . | cut -f1) -gt $((10 * 1024 * 1024 * 1024)) ]; then
               echo " !! Space limit reached (10gb). Continuing in a new workflow ..."
@@ -190,7 +190,7 @@ jobs:
               
               while IFS= read -r possible_archive_file; do
 
-                timeCheck 20000 || { did_sub_abort=true; break; }
+                timeCheck 18000 || { did_sub_abort=true; break; }
 
                 sub_file_name="$(basename "$possible_archive_file" | sed 's/\.[^.]*$//')"
                 echo "   - Trying '$possible_archive_file' ..."

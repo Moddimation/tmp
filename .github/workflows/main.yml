@@ -221,6 +221,7 @@ jobs:
                 echo "   - Trying '$possible_archive_file' ..."
                 dec_file="../tmp/CURRENT_POSSIBLE_ARCHIVE"
                 extracted_dir="$possible_archive_file.d/"
+                extracted_dir_basename="$(basename "$extracted_dir")"
                 mkdir "$extracted_dir" -p
                 flatpak run --command="dolphin-tool" --filesystem=host org.DolphinEmu.dolphin-emu extract -i "$possible_archive_file" -o "$extracted_dir" 2>/dev/null || true
                 rm -f "$dec_file" 2>/dev/null || true
@@ -248,6 +249,7 @@ jobs:
                     mv "filename.szs" "${filename%.szs}" > /dev/null 2>&1; # ??
                     continue;
                 fi;
+                find "$extracted_dir" -exec sh -c 'if grep -q "$0" "$1"; then rm -rf "$0"; break; fi' "$extracted_dir_basename" {} \;
                 ls "$extracted_dir";
                 rm "$possible_archive_file";
                 echo "  # Extracted sub-archive: $possible_archive_file";

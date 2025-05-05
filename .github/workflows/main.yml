@@ -73,7 +73,7 @@ jobs:
                       -o -iname "*.abg" -o -iname "*.bad" -o -iname "*.add" -o -iname "*.adb" -o -iname "*.fs" \
                   \) \) \
                   -o \
-                  \( -type f -a \( -path "*scaleform/*" -o -path "*layout/*" -o -path "*sound*/*" \) \) \
+                  \( -type f -a \( -ipath "*level*" -o -ipath "*scene*" -o -path "*scaleform/*" -o -ipath "*layout*" -o -path "*sound*" \) \) \
               \) \
               -a ! \( -path "*svn*" -o -path "*CVS*" \) \
               -exec mv -t "../tmp/" "{}" + 2>/dev/null

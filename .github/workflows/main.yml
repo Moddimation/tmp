@@ -96,7 +96,7 @@ jobs:
             
               #echo "Start: $start_time"
               #echo "Current: $current_time"
-              #echo "Elapsed: $elapsed_time"
+              echo "Elapsed: $elapsed_time"
               #echo "Limit: $time_limit"
               if [ $elapsed_time -ge $time_limit ]; then
                 echo " !& Time limit reached. Continuing in a new workflow ..."

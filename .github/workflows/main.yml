@@ -191,6 +191,7 @@ jobs:
             echo " # Pre-Processing ..."
             filterDelete || true
             [ "$(find . -type f -name '*.plf' | wc -l)" -gt 4 ] && find . -type f -name '*.plf' -delete
+            [ "$(find . -type f -name '*.ev' | wc -l)" -gt 10 ] && find . -type f -name '*.ev' -delete
             rm -rf UPDATE
             if [ -d "DATA" ]; then
                find "DATA" -maxdepth 1 -exec cp -rf -t "." "{}" \; 2>/dev/null;

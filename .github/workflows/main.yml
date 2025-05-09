@@ -279,7 +279,7 @@ jobs:
                 fi
               fi
             done
-            find . -type f \( -iname "*.ttf" -o -iname "*.ttc" -o -iname "*.ttc" \) -exec cp "{}" ../fonts \;
+            find . -type f \( -iname "*.ttf" -o -iname "*.ttc" -o -iname "*.ttc" \) -exec cp "{}" ../__fonts \;
 
             echo " # Cutting ...";
             filterDelete || true;

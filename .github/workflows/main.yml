@@ -319,6 +319,7 @@ jobs:
       - name: Compress
         if: success()  # Only list contents if extraction succeeded
         run: |
+          find . -empty -delete || true
           7z a -v4900M BundleGC.7z ./*
           sudo rm -rf ./*/
 

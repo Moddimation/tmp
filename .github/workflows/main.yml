@@ -258,7 +258,7 @@ jobs:
               done < <(find . -type f \
                   ! \( -ipath "*svn*" -o -ipath "*CVS*" -o -ipath "*/sys/*" \) \
                   ! \( -iname "*.MWT" -o -iname "*.hdr" -o -iname "*.snd" -o -iname "*.acg" \
-                       -o -iname "*.hip" -o -iname "*.hop" -o -iname "*.bik" -o -name "FILE_*" \
+                       -o -iname "*.hip" -o -iname "*.hop" -o -iname "*.bik" -o -name "FILE_*" -o -name "*.a" -o -name "*.o" \
                        -o -iname "boot.bin" -o -iname "*.inf" -o -iname "*.ini" -o -iname "*.txt" \
                        -o -iname "*.rel" -o -iname "*.h" -o -iname "*.o" -o -iname "*level*"   -o -iname "*.thp" \
                        -o -iname "*lvl"     -o -iname "*.stf"   -o -iname "*.tsc"     -o -iname "*.ani" \

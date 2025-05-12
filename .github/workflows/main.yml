@@ -51,7 +51,7 @@ jobs:
             filterDelete() {
               find . \( \
                   \( -type f -a \( \
-                      -iname "*.lua" -o -iname "*.lua.*" -o -iname "*.pms" -o -iname "*.cprm" -o -iname "*.scd" -o -iname "*.spc" -o -iname "*.ypc" -o -iname "*.ymg" -o -iname "*.wdb" -o -iname "*.wds" \
+                      -iname "*.bzd" -o-iname "*.lua" -o -iname "*.lua.*" -o -iname "*.pms" -o -iname "*.cprm" -o -iname "*.scd" -o -iname "*.spc" -o -iname "*.ypc" -o -iname "*.ymg" -o -iname "*.wdb" -o -iname "*.wds" \
                       -o -iname "*.bmg" -o -iname "*.anim" -o -iname "*.sound" -o -iname "*.font" -o -iname "*.cpath" -o -iname "*.bf" -o -iname "*.cpk" -o -iname "*.ivt" \
                       -o -iname "*.rcf" -o -iname "*.*tex*" -o -iname "*.tplc" -o -iname "*.xpf" -o -iname "*.br???" -o -iname "*scaleform*" -o -iname "*LEVEL*.plf" \
                       -o -iname "*.fon" -o -iname "*.dir" -o -iname "__*.inf.*" -o -iname "*.cam" -o -iname "*.scn" -o -iname "*.anm" -o -iname "*.skl" \
@@ -75,7 +75,7 @@ jobs:
                   -o \
                   \( -type f -a \( -path "*HUNKFILES*" -o -ipath "*level*" -o -ipath "*scene*" -o -path "*scaleform/*" -o -ipath "*layout*" -o -path "*sound*" \) \) \
               \) \
-              -a ! \( -path "*svn*" -o -path "*CVS*" \) \
+              -a ! \( -path "*svn*" -o -path "*CVS*" -o -path "*.git*" \) \
               -exec mv -t "../tmp/" "{}" + 2>/dev/null
             }
             filterFind() {
@@ -292,7 +292,7 @@ jobs:
             filterFind;
             cd "../$file_name/"
             find "." -empty -delete;
-            find "." -type f \( -iname "*.tgc" -o -iname "*.gcm" -o -iname "*.arc" -o -iname "*.ghr" -o -iname "*.gcr" -o -iname "__*.inf.*" -o -iname "*.wt" -o -iname "*.pcm" -o -iname "*.mid" -o -iname "*.midi" \) -exec mv "{}" "../tmp/" \;
+            find "." -type f \( -name "*.lua" -o -iname "*.tgc" -o -iname "*.gcm" -o -iname "*.arc" -o -iname "*.ghr" -o -iname "*.gcr" -o -iname "__*.inf.*" -o -iname "*.wt" -o -iname "*.pcm" -o -iname "*.mid" -o -iname "*.midi" \) -exec mv "{}" "../tmp/" \;
             echo " # Finishing ...";
             found=$(find "." -type f ! \( -name "*svn*" -o -path "*svn*" -o -path "*CVS*" -o -name "*CVS*" \) | sort -u);
             size=$(du -sh "." | awk '{print $1}')

@@ -32,7 +32,7 @@ jobs:
       - name: Install dependencies
         run: |
           wget https://github.com/encounter/decomp-toolkit/releases/download/v1.4.1/dtk-linux-x86_64
-          wget https://github.com/Moddimation/OP_GC_EXE_ALL_SCRIPT/raw/ae428a20d8b19cc1d9ee053b1670fabe23aba12b/orthrus-linux-x86_64.zip
+          wget https://github.com/Moddimation/tmp/blob/770ea62dc54dcb49d955261ce13de095b006e91c/orthrus-linux-x86_64.zip
           7z x orthrus-linux-x86_64.zip
           rm orthrus-linux-x86_64.zip -f
           mv dtk* dtk

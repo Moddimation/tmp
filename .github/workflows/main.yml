@@ -90,8 +90,9 @@ jobs:
             filterTextFiles() {
               find . -type f \( -iname "*.md" -o -iname "*.csv" -o -iname "*.txt" -o -iname "*.log" -o -iname "*.cfg" -o -iname "*.xml" -o -iname "*.ini" -o -iname "*.inf" -o -iname "*.map" \) | while read -r file; do
                 if file "$file" | grep -iE 'iso|text|ascii|unicode|utf-8|utf-16|utf16|utf-32|utf32|utf8|shiftjis|shift-jis|euc-jp|eucjp|latin|big5'; then
-                  if grep -aEL "OSInit|GXInit|osInit|__start|ppceabi|PPCEABI|PowerPC|MetroWerksMetroTRK|J3DModel|J2DScreen|J2DPrint|JUTException|JAInterface|JAIBasic|JAISound|JKRAram|JUTFont|JAudio|Jaudio|J2DWindow|JKRHap|Jsystem|JSystem|typedef struct|#include \"|#include \<|#define|#ifdef|#ifndef|#pragma|#undef|[a-zA-Z_-]{7,}\.(cpp|hpp|a|o|c|h)[^a-zA-Z%\!\$=;,:]$|section layout|Section Layout" "$file" > /dev/null 2>&1; then
+                  if grep -EL "OSInit|GXInit|osInit|__start|ppceabi|PPCEABI|PowerPC|MetroWerksMetroTRK|J3DModel|J2DScreen|J2DPrint|JUTException|JAInterface|JAIBasic|JAISound|JKRAram|JUTFont|JAudio|Jaudio|J2DWindow|JKRHap|Jsystem|JSystem|typedef struct|#include \"|#include \<|#define|#ifdef|#ifndef|#pragma|#undef|[a-zA-Z_-]{7,}\.(cpp|hpp|a|o|c|h)[^a-zA-Z%\!\$=;,:]$|section layout|Section Layout" "$file"; then
                     rm -f "$file" 2>/dev/null
+                    echo "Removed text file: $file"
                   fi
                 fi
               done

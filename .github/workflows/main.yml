@@ -52,7 +52,7 @@ jobs:
             filterDelete() {
               find . \( \
                   \( \
-                      -iname "*.wdb" -o -iname "*.bzd" -o -iname "*.lua" -o -iname "*.lua.*" -o -iname "*.pms" -o -iname "*.cprm" -o -iname "*.scd" -o -iname "*.spc" -o -iname "*.ypc" -o -iname "*.ymg" -o -iname "*.wdb" -o -iname "*.wds" \
+                      -iname "*.wem" -o -iname "*.wdb" -o -iname "*.bzd" -o -iname "*.lua" -o -iname "*.lua.*" -o -iname "*.pms" -o -iname "*.cprm" -o -iname "*.scd" -o -iname "*.spc" -o -iname "*.ypc" -o -iname "*.ymg" -o -iname "*.wdb" -o -iname "*.wds" \
                       -o -iname "*.bmg" -o -iname "*.anim" -o -iname "*.sound" -o -iname "*.font" -o -iname "*.cpath" -o -iname "*.bf" -o -iname "*.cpk" -o -iname "*.ivt" \
                       -o -iname "*.rcf" -o -iname "*.*tex*" -o -iname "*.tplc" -o -iname "*.xpf" -o -iname "*.br???" -o -iname "*scaleform*" -o -iname "*LEVEL*.plf" \
                       -o -iname "*.fon" -o -iname "*.dir" -o -iname "__*.inf.*" -o -iname "*.cam" -o -iname "*.scn" -o -iname "*.anm" -o -iname "*.skl" \

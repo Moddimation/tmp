@@ -191,7 +191,6 @@ jobs:
             [ "$(find . -type f -name '*.plf' | wc -l)" -gt 4 ] && find . -type f -name '*.plf' -delete
             [ "$(find . -type f -name '*.ev' | wc -l)" -gt 10 ] && find . -type f -name '*.ev' -delete
             [ "$(find . -type f -name '*.dsf' | wc -l)" -lt  2 ] && find . -type f -name '*.dsf' -delete
-            [ "$(find . -type f -name '*.dsf' | wc -l)" -ge 1 ] && timeCheck 12000 || { break; }
             rm -rf UPDATE
             if [ -d "DATA" ]; then
                find "DATA" -maxdepth 1 -exec cp -rf -t "." "{}" \; 2>/dev/null;
@@ -218,6 +217,9 @@ jobs:
                 timeCheck 18000 || { did_sub_abort=true; break; }
 
                 sub_file_name="$(basename "$possible_archive_file" | sed 's/\.[^.]*$//')"
+
+                [ "$(echo "$sub_file_name" | grep -F ".dsf" | wc -l )" -gt 0 ] && timeCheck 11000 || { break; }
+
                 echo "   - Trying '$possible_archive_file' ..."
                 dec_file="../tmp/CURRENT_POSSIBLE_ARCHIVE"
                 extracted_dir="$possible_archive_file.d/"

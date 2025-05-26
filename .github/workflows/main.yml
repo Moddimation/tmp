@@ -74,7 +74,7 @@ jobs:
                       -o -iname "*.abg" -o -iname "*.bad" -o -iname "*.add" -o -iname "*.adb" -o -iname "*.fs" \
                   \) \) \
               \) \
-              -a ! \( -path "*svn*" -o -path "*CVS*" -o -path "*.git*" \) \
+             # -a ! \( -path "*svn*" -o -path "*CVS*" -o -path "*.git*" \) \
               -exec mv -t "../tmp/" "{}" + 2>/dev/null
             }
             filterFind() {
@@ -84,7 +84,7 @@ jobs:
             filterExt() {
               find . -type f \
                  ! \( -iname "*.lcf" -o -iname "*.py" -o -iname "*.rsf" -o -iname "*.dmp" -o -iname "*.fld*" -o -iname "*.run" -o -iname "*.xls*" -o -iname "*.bpr*" -o -iname "*.plf" -o -iname "*.ddf*" -o -iname "apploader.img" -o -iname "*.map*" -o -iname "*.rel*" -o -iname "*.ddf*" -o -iname "*.elf*" -o -iname "*.exe*" -o -iname "*.txt*" -o -iname "*.dol*" -o -iname "*.*sym*" -o -iname "*.lua*" -o -iname "*.rso*" -o -iname "*.csv*" -o -iname "*.sh" -o -iname "*.sav*" -o -iname "*.tdf*" -o -iname "*.inf*" -o -iname "*.bat*" -o -iname "*readme*" -o -iname "*.doc*" -o -iname "*.cfg*" -o -iname "*.s" -o -iname "*.s.*" -o -iname "*.c" -o -iname "*.c.*" -o -iname "*.cs" -o -iname "*.cs.*" -o -iname "*.h" -o -iname "*.h.*" -o -iname "*.cpp*" -o -iname "*.hpp*" -o -iname "*.o" -o -iname "*.o.*" -o -iname "*.a" -o -iname "*.a.*" -o -iname "*.flb*" -o -iname "*.xml*" -o -iname "*.so" -o -iname "*.dll*" -o -iname "*.*log*" -o -iname "*.ini*" -o -iname "*.pdf*" -o -iname "*.yml*" -o -iname "*.yaml*" -o -iname "*.json*" -o -iname "*.py" -o -iname "*.exe*" -o -iname "*makefile*" -o -iname "*cmake*" -o -iname "*.sln*" -o -iname "*vsproj*" -o -iname "*.mak" -o -iname "*.mk" \) \
-                 -a ! \( -path "*svn*" -o -path "*CVS*" -o -name "*svn*" -o -name "*CVS*" \) \
+                # -a ! \( -path "*svn*" -o -path "*CVS*" -o -name "*svn*" -o -name "*CVS*" \) \
                  -exec mv -t "../tmp/" "{}" \; 2>/dev/null
             }
             filterTextFiles() {
@@ -299,7 +299,7 @@ jobs:
             find "." -empty -delete;
             find "." -type f \( -name "*.lua" -o -iname "*.tgc" -o -iname "*.gcm" -o -iname "*.arc" -o -iname "*.ghr" -o -iname "*.gcr" -o -iname "__*.inf.*" -o -iname "*.wt" -o -iname "*.pcm" -o -iname "*.mid" -o -iname "*.midi" \) -exec mv "{}" "../tmp/" \;
             echo " # Finishing ...";
-            found=$(find "." -type f ! \( -name "*svn*" -o -path "*svn*" -o -path "*CVS*" -o -name "*CVS*" \) | sort -u);
+            found=$(find "." -type f | sort -u);
             size=$(du -sh "." | awk '{print $1}')
             cd ".."
             if rmdir "./$file_name/" 2>/dev/null; then
@@ -311,9 +311,9 @@ jobs:
             ignored=$(find "./tmp/" -type f | awk -F. '{if (NF>1) print $NF}' | sort -u | paste -sd "," - ); 
             rm -rf tmp;
 
-            if [ -n "$(find "$file_name" \( -path "*CVS*" -o -path "*svn*" \) )" ]; then
-                echo "  ! Leftover version info preserved."
-            fi
+          #  if [ -n "$(find "$file_name" \( -path "*CVS*" -o -path "*svn*" \) )" ]; then
+          #      echo "  ! Leftover version info preserved."
+          #  fi
             echo " << Finished '$file_name'";
             echo "   Ignored:";
             echo "$ignored";

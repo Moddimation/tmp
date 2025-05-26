@@ -47,7 +47,7 @@ jobs:
         run: |
             check=true
             set +e
-            export link="https://myrient.erista.me/files/Redump/Nintendo%20-%20Gamecube%20-%20NKit%20RVZ%20%5Bzstd-19-128k%5D"
+            export link="https://myrient.erista.me/files/Redump/Nintendo%20-%20GameCube%20-%20NKit%20RVZ%20%5Bzstd-19-128k%5D"
 
             filterDelete() {
               find . \( \
@@ -131,7 +131,7 @@ jobs:
 
             start_time=$(date +%s)  # Get the current time in seconds
 
-            #reset
+            reset
 
             folderNum="$(cat gameList | wc -l)"
             echo "# Number of games: $folderNum"

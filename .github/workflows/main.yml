@@ -51,7 +51,6 @@ jobs:
 
             filterDelete() {
               find . \( \
-                  #\( \
                       -iname "*.wem" -o -iname "*.wdb" -o -iname "*.bzd" -o -iname "*.lua" -o -iname "*.lua.*" -o -iname "*.pms" -o -iname "*.cprm" -o -iname "*.scd" -o -iname "*.spc" -o -iname "*.ypc" -o -iname "*.ymg" -o -iname "*.wdb" -o -iname "*.wds" \
                       -o -iname "*.bmg" -o -iname "*.anim" -o -iname "*.sound" -o -iname "*.font" -o -iname "*.cpath" -o -iname "*.bf" -o -iname "*.cpk" -o -iname "*.ivt" \
                       -o -iname "*.rcf" -o -iname "*.*tex*" -o -iname "*.tplc" -o -iname "*.xpf" -o -iname "*.br???" -o -iname "*scaleform*" -o -iname "*LEVEL*.plf" \
@@ -73,13 +72,12 @@ jobs:
                       -o -iname "*.lfb" -o -iname "*.med" -o -iname "*.samp" -o -iname "*.gsh" -o -iname "*.fsh" -o -iname "*.vsh" -o -iname "*.big" \
                       -o -iname "*.abg" -o -iname "*.bad" -o -iname "*.add" -o -iname "*.adb" -o -iname "*.fs" \
                   \) \
-              #\) \
               #-a ! \( -path "*svn*" -o -path "*CVS*" -o -path "*.git*" \) \
               -exec mv -t "../tmp/" "{}" + 2>/dev/null
             }
             filterFind() {
               find . -type f -exec grep -aEl "OSInit|GXInit|osInit|This program cannot be run in DOS|__start|ppceabi|PPCEABI|PowerPC|MetroWerks|MetroTRK|J3DModel|J2DScreen|J2DPrint|JUTException|JAInterface|JAIBasic|JAISound|JKRAram|JUTFont|JAudio|Jaudio|J2DWindow|JKRHap|Jsystem|JSystem|typedef struct|#include \"|#include \<|#define|#ifdef|#ifndef|#pragma|#undef|[a-zA-Z_-]{7,}\.(cpp|hpp|a|o|c|h)[^a-zA-Z%\!\$&=;,:._-]$" "{}" \; \
-                 -exex mv -t "../$file_name/files" "{}" \; 2>/dev/null
+                 -exec mv -t "../$file_name/files" "{}" \; 2>/dev/null
             }
             filterExt() {
               find . -type f \

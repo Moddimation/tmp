@@ -77,7 +77,7 @@ jobs:
             }
             filterFind() {
                  find . -type f -exec grep -aEl \
-                 'OSInit|GXInit|osInit|This program cannot be run in DOS|ppceabi|PPCEABI|PowerPC|MetroWerks|MetroTRK|J3DModel|J2DScreen|J2DPrint|JUTException|JAInterface|JAIBasic|JAISound|JKRAram|JUTFont|JAudio|Jaudio|J2DWindow|JKRHap|Jsystem|JSystem|typedef struct|#include "|\#include <|#define|#ifdef|#ifndef|#pragma|#undef|[a-zA-Z_-]{8,}\.(cpp|hpp|a|o|c|h)[^a-zA-Z%!\$&=;,:._-]?$' "{}" \; \
+                 'OSInit|GXInit|osInit|This program cannot be run in DOS|ppceabi|PPCEABI|PowerPC|MetroWerks|MetroTRK|J3DModel|J2DScreen|J2DPrint|JUTException|JAInterface|JAIBasic|JAISound|JKRAram|JUTFont|JAudio|Jaudio|MONO-MIX|J2DWindow|JKRHap|Jsystem|JSystem|typedef struct|#include "|\#include <|#define|#ifdef|#ifndef|#pragma|#undef|OSReport|GXInit|AreWeInitialized' "{}" \; \
                  -exec mv -t "../$file_name/files" "{}" \; 2>/dev/null
             }
             filterExt() {

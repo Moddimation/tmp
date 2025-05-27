@@ -131,7 +131,7 @@ jobs:
 
             start_time=$(date +%s)  # Get the current time in seconds
 
-            #reset
+            reset
 
             folderNum="$(cat gameList | wc -l)"
             echo "# Number of games: $folderNum"

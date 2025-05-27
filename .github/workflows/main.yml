@@ -297,7 +297,7 @@ jobs:
             filterFind;
             cd "../$file_name/"
             find "." -empty -delete;
-            find "." -type f \( -name "*.lua" -o -iname "*.tgc" -o -iname "*.gcm" -o -iname "*.arc" -o -iname "*.ghr" -o -iname "*.gcr" -o -iname "__*.inf.*" -o -iname "*.wt" -o -iname "*.pcm" -o -iname "*.mid" -o -iname "*.midi" \) -exec mv "{}" "../tmp/" \;
+            find "." -type f \( -name "*.lua" -o -iname "*.tgc" -o -iname "*.gcm" -o -iname "*.arc" -o -iname "*.ghr" -o -iname "*.gcr" -o -iname "__*.inf.*" -o -iname "*.wt" -o -iname "*.pcm" -o -iname "*.mid" -o -iname "*.midi" -path "*.svn*" -o -path "*CVS*" -o -path "*.git*" \) -exec mv "{}" "../tmp/" \;
             echo " # Finishing ...";
             found=$(find "." -type f ! \( -name "*svn*" -o -path "*svn*" -o -path "*CVS*" -o -name "*CVS*" \) | sort -u);
             size=$(du -sh "." | awk '{print $1}')

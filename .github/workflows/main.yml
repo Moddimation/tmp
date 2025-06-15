@@ -184,7 +184,7 @@ jobs:
             rm -rf tmp
             mkdir -p tmp
             mkdir -p __fonts
-            cd "$file_name/"
+            cd "$file_name//"
 
             echo " # Pre-Processing ..."
             filterDelete || true

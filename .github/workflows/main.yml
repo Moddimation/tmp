@@ -261,6 +261,7 @@ jobs:
                 echo "  \# Extracted sub-archive: $possible_archive_file";
                 found_sub=true;
                 did_sub_abort=false
+
               done < <(find . -type f \
                   ! \( -ipath "*svn*" -o -ipath "*CVS*" -o -ipath "*/sys/*" \) \
                   ! \( -iname "*.MWT" -o -iname "*.hdr" -o -iname "*.snd" -o -iname "*.acg" \
@@ -275,6 +276,8 @@ jobs:
                        -o -iname "*.elf"    -o -iname "*.dol"     -o -iname "boot.bin" \
                        -o -iname "*.xml" -o -iname "*.lua" -o -iname "*.ddf" -o -iname "*.cfg"\
                     \) )
+
+            
             done;
             echo " \# Checking ..."
             pathMainD="$(find . -type d -name "*.d")"

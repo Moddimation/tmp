@@ -103,7 +103,7 @@ jobs:
               echo "# Getting index ..."
               wget -q "$link/"
               echo "# OK, now index for filenames, download and process everything ..."
-              grep -oP '(?<=href=")[^"]*\.zip' index.html >> gameList
+              grep -oP 'href="\K[^"]+\.zip' index.html >> gameList
               rm index.html
               exit 0
             }

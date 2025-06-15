@@ -141,7 +141,7 @@ jobs:
             timeCheck 16700 || break # break if time > 5H
 
             if [ $(du -sb . | cut -f1) -gt $((10 * 1024 * 1024 * 1024)) ]; then
-              echo " !! Space limit reached (10gb). Continuing in a new workflow ..."
+              echo " !! Space limit reached. Continuing in a new workflow ..."
               break
             fi
 

@@ -136,7 +136,7 @@ jobs:
             folderNum="$(cat gameList | wc -l)"
             echo "\# Number of games: $folderNum"
 
-            while (true); do
+            while (true(); do
 
             timeCheck 16700 || break # break if time > 5H
 

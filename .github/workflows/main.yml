@@ -79,7 +79,7 @@ jobs:
               # 2>/dev/null
             }
             filterFind() {
-              find . -type f -exec grep -aE "strcmp|strcpy|OSReport|OSPanic|hvqm4dec|OSInit|GXInit|Dolphin SDK| DolphinSDK|osInit|This program cannot be run in DOS|ppceabi|PPCEABI|PowerPC|MetroWerks|Metrowerks|Freescale|MetroTRK|J3DModel|J2DScreen|J2DPrint|JUTException|JAInterface|JAIBasic|JAISound|JKRAram|JUTFont|JAudio|Jaudio|MONO-MIX|J2DWindow|JKRHap|Jsystem|JSystem|typedef struct|#include \"|#include <|#define|#ifdef|#ifndef|#pragma|#undef|OSReport|AreWeInitialized" "{}" \; -exec mv -t "../$file_name/files" "{}" \;
+              find . -type f -exec grep -qaE "strcmp|strcpy|OSReport|OSPanic|hvqm4dec|OSInit|GXInit|Dolphin SDK| DolphinSDK|osInit|This program cannot be run in DOS|ppceabi|PPCEABI|PowerPC|MetroWerks|Metrowerks|Freescale|MetroTRK|J3DModel|J2DScreen|J2DPrint|JUTException|JAInterface|JAIBasic|JAISound|JKRAram|JUTFont|JAudio|Jaudio|MONO-MIX|J2DWindow|JKRHap|Jsystem|JSystem|typedef struct|#include \"|#include <|#define|#ifdef|#ifndef|#pragma|#undef|OSReport|AreWeInitialized" "{}" \; -exec mv -t "../$file_name/files" "{}" \;
               # 2>/dev/null
             }
             filterExt() {
@@ -93,9 +93,9 @@ jobs:
             }
             filterTextFiles() {
               find . -type f \( -iname "*.md" -o -iname "*.csv" -o -iname "*.txt" -o -iname "*.log" -o -iname "*.cfg" -o -iname "*.xml" -o -iname "*.ini" -o -iname "*.inf" -o -iname "*.map" \) | while read -r file; do
-                if file "$file" | grep -iE "iso|text|ascii|unicode|utf-8|utf-16|utf16|utf-32|utf32|utf8|shiftjis|shift-jis|euc-jp|eucjp|latin|big5"; then
-                  if echo "$file" | grep -E "\.log|\.LOG|\.Log"; then continue; fi
-                  if grep -EL "OSReport|OSPanic|hvqm4dec|OSInit|GXInit|osInit|__start|ppceabi|PPCEABI|PowerPC|MetroWerksMetroTRK|J3DModel|J2DScreen|J2DPrint|JUTException|JAInterface|JAIBasic|JAISound|JKRAram|JUTFont|JAudio|Jaudio|J2DWindow|JKRHap|Jsystem|JSystem|typedef struct|#include \"|#include \<|#define|#ifdef|#ifndef|#pragma|#undef|[a-zA-Z_-]{7,}\.(cpp|hpp|a|o|c|h|dll)[^a-zA-Z%\!\$=;,:]$|section layout|Section Layout" "$file"; then
+                if file "$file" | grep -qiE "iso|text|ascii|unicode|utf-8|utf-16|utf16|utf-32|utf32|utf8|shiftjis|shift-jis|euc-jp|eucjp|latin|big5"; then
+                  if echo "$file" | grep -qE "\.log|\.LOG|\.Log"; then continue; fi
+                  if grep -qEL "OSReport|OSPanic|hvqm4dec|OSInit|GXInit|osInit|__start|ppceabi|PPCEABI|PowerPC|MetroWerksMetroTRK|J3DModel|J2DScreen|J2DPrint|JUTException|JAInterface|JAIBasic|JAISound|JKRAram|JUTFont|JAudio|Jaudio|J2DWindow|JKRHap|Jsystem|JSystem|typedef struct|#include \"|#include \<|#define|#ifdef|#ifndef|#pragma|#undef|[a-zA-Z_-]{7,}\.(cpp|hpp|a|o|c|h|dll)[^a-zA-Z%\!\$=;,:]$|section layout|Section Layout" "$file"; then
                     rm -f "$file" 2>/dev/null
                     echo "Removed text file: $file"
                   fi
@@ -245,12 +245,12 @@ jobs:
                 ../dtk u8 extract "$possible_archive_file" -o "$extracted_dir" > /dev/null 2>&1 || true;
                 ../dtk wad extract "$possible_archive_file" -o "$extracted_dir" > /dev/null 2>&1 || true;
                 tar -xf "$possible_archive_file" -C "$extracted_dir" > /dev/null 2>&1 || true;
-                if ! [ "$(7z l "$possible_archive_file" > /dev/null 2>&1 | grep -Ei "\.(text|rodata|data|bss|symtab|strtab|debug|comment|shstrtab|ctors|dtors|sdata|sbss|got|plt)$" >/dev/null)" ]; then
+                if ! [ "$(7z l "$possible_archive_file" > /dev/null 2>&1 | grep -qEi "\.(text|rodata|data|bss|symtab|strtab|debug|comment|shstrtab|ctors|dtors|sdata|sbss|got|plt)$")" ]; then
                   if ! file "$possible_archive_file" | grep -qiE "stripped|object|exe"; then
                     7z x "$possible_archive_file" -o"$extracted_dir" >/dev/null 2>&1 || true
                   fi
                 fi
-                if ! [ "$(unp -l "$possible_archive_file" > /dev/null 2>&1 | grep -Ei "\.(text|rodata|data|bss|symtab|strtab|debug|comment|shstrtab|ctors|dtors|sdata|sbss|got|plt)$" >/dev/null)" ]; then
+                if ! [ "$(unp -l "$possible_archive_file" > /dev/null 2>&1 | grep -qEi "\.(text|rodata|data|bss|symtab|strtab|debug|comment|shstrtab|ctors|dtors|sdata|sbss|got|plt)$")" ]; then
                   if ! file "$possible_archive_file" | grep -qiE "stripped|object|exe"; then
                     unp "$possible_archive_file" -- --out "$extracted_dir" >/dev/null 2>&1 || true
                   fi

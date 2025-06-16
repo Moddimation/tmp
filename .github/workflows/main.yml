@@ -250,7 +250,8 @@ jobs:
                 find "." -empty -delete;
                 if ! [ -d "$extracted_dir" ]; then
                     # echo "  ! No data found, continue";
-                    # mv "filename.szs" "${filename%.szs}" > /dev/null 2>&1; # ??
+                    mv "filename.szs" "${filename%.szs}" > /dev/null 2>&1;
+                    mv "filename.szp" "${filename%.szp}" > /dev/null 2>&1;
                     continue;
                 fi;
                 find "$extracted_dir" -exec sh -c 'if grep -q "$0" "$1"; then rm -rf "$0"; break; fi' "$extracted_dir_basename" {} \;

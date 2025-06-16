@@ -158,6 +158,7 @@ jobs:
               continue;
             f
 
+
             echo " >> Downloading '$(echo "$zip_file" | sed -E '
               s/%20/ /g;  s/%21/!/g;  s/%22/"/g;  s/%23/#/g;  s/%24/\$/g;
               s/%25/%/g;  s/%26/&/g;  s/%27/'\''/g;  s/%28/(/g;  s/%29/)/g;
@@ -168,6 +169,8 @@ jobs:
               s/%7C/|/g;  s/%7D/}/g;  s/%7E/~/g;
             ')"
             wget -q "$link/$zip_file"
+
+
 
             echo " \# Init extraction ... "
             filename="$(ls *.zip 2>/dev/null | head -n 1)" 2>/dev/null
@@ -188,7 +191,6 @@ jobs:
             mkdir -p tmp
             mkdir -p __fonts
             cd "$file_name//"
-
 
             echo " \# Pre-Processing ..."
             filterDelete || true

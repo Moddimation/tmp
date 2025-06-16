@@ -11,7 +11,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  Get_WII_CODE_DATA:
+  Get_CODE_DATA:
     runs-on: ubuntu-22.04
 
     steps:

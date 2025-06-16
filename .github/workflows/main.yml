@@ -110,7 +110,6 @@ jobs:
               rm index.html
               exit 0
             }
-
             timeCheck() {
               #echo "DEBUG SESSION!"
               # Set the time limit (in seconds, 5 hours = 18000 seconds)
@@ -189,6 +188,7 @@ jobs:
             mkdir -p tmp
             mkdir -p __fonts
             cd "$file_name//"
+
 
             echo " \# Pre-Processing ..."
             filterDelete || true

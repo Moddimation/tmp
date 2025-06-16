@@ -324,7 +324,7 @@ jobs:
             cd ".."
             if rmdir "./$file_name/" 2>/dev/null; then
                echo " ! No code data found.";
-               echo "   Continuing, all size: $(du -sh ./*/ | awk "{print $1}"), games left: $(cat gameList | wc -l)";
+               echo "   Continuing, all size: $(du -sb -- */ | awk '{total+=$1} END {print total}' | numfmt --to=iec  | awk "{print $1}"), games left: $(cat gameList | wc -l)";
                rm -rf "./$file_name/";
                continue;
             fi;
@@ -339,7 +339,7 @@ jobs:
             echo "$ignored";
             echo "   Found:";
             echo "$found";
-            echo " # Continuing, size: $size / $(du -sh ./*/ | awk "{print $1}"), games left: $(cat gameList | wc -l)"
+            echo " # Continuing, size: $size / $(du -sb -- */ | awk '{total+=$1} END {print total}' | numfmt --to=iec  | awk "{print $1}"), games left: $(cat gameList | wc -l)"
             done
 
       - name: Upload file list

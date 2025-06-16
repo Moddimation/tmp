@@ -334,7 +334,7 @@ jobs:
             #if [ -n "$(find "$file_name" \( -path "*CVS*" -o -path "*svn*" \) )" ]; then
                 #echo "  ! Leftover version info preserved."
             #fi
-            echo " << Finished \'$file_name\'";
+            echo " << Finished '$file_name'";
             echo "   Ignored:";
             echo "$ignored";
             echo "   Found:";

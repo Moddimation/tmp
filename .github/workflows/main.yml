@@ -16,13 +16,11 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        if: false
         uses: actions/checkout@v3
         with:
           token: ${{ secrets.GH_COMMIT }}
 
       - name: Setup env
-        if: false
         run: |
           export $(dbus-launch)
           echo "DBUS_SESSION_BUS_ADDRESS=$DBUS_SESSION_BUS_ADDRESS" >> $GITHUB_ENV
@@ -32,7 +30,6 @@ jobs:
           echo "XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR" >> $GITHUB_ENV
 
       - name: Install dependencies
-        if: false
         run: |
           wget https://github.com/encounter/decomp-toolkit/releases/download/v1.6.2/dtk-linux-x86_64
           wget https://github.com/Moddimation/tmp/blob/770ea62dc54dcb49d955261ce13de095b006e91c/orthrus-linux-x86_64.zip?raw=true

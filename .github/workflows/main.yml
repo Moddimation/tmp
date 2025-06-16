@@ -289,7 +289,12 @@ jobs:
                 fi
               fi
             done
-            find . -type f \( -iname "*.ttf" -o -iname "*.ttc" -o -iname "*.ttc" \) -exec cp "{}" ../__fonts \;
+            find . -type f \( -iname "*.ttf" -o -iname "*.ttc" \) | while read f; do
+              d=../__fonts; n=$(basename "$f"); p="$d/$n"; i=1
+              while [[ -e "$p" ]]; do p="$d/${n%.*}.$i.${n##*.}"; ((i++)); done
+              cp "$f" "$p"
+            done
+
 
             echo " # Cutting ...";
             filterDelete || true;

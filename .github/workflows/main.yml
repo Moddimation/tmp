@@ -30,7 +30,7 @@ jobs:
           echo "XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR" >> $GITHUB_ENV
 
       - name: Install dependencies
-        if: false
+       # if: false
         run: |
           wget https://github.com/encounter/decomp-toolkit/releases/download/v1.6.2/dtk-linux-x86_64
           wget https://github.com/Moddimation/tmp/blob/770ea62dc54dcb49d955261ce13de095b006e91c/orthrus-linux-x86_64.zip?raw=true
@@ -136,7 +136,7 @@ jobs:
 
             start_time=$(date +%s)  # Get the current time in seconds
 
-            reset
+            #reset
 
             folderNum="$(cat gameList | wc -l)"
             echo "# Number of games: $folderNum"

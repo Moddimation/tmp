@@ -237,12 +237,12 @@ jobs:
                 ../dtk u8 extract "$possible_archive_file" -o "$extracted_dir" > /dev/null 2>&1 || true;
                 ../dtk wad extract "$possible_archive_file" -o "$extracted_dir" > /dev/null 2>&1 || true;
                 tar -xf "$possible_archive_file" -C "$extracted_dir" > /dev/null 2>&1 || true;
-                if ! 7z l "$possible_archive_file" > /dev/null 2>&1 | grep -Ei "\.(text|rodata|data|bss|symtab|strtab|debug|comment|shstrtab|ctors|dtors|sdata|sbss|got|plt)\$" >/dev/null; then
+                if ! [ "$(7z l "$possible_archive_file" > /dev/null 2>&1 | grep -Ei "\.(text|rodata|data|bss|symtab|strtab|debug|comment|shstrtab|ctors|dtors|sdata|sbss|got|plt)$" >/dev/null)" ]; then
                   if ! file "$possible_archive_file" | grep -qiE "stripped|object|exe"; then
                     7z x "$possible_archive_file" -o"$extracted_dir" >/dev/null 2>&1 || true
                   fi
                 fi
-                if ! unp -l "$possible_archive_file" > /dev/null 2>&1 | grep -Ei "\.(text|rodata|data|bss|symtab|strtab|debug|comment|shstrtab|ctors|dtors|sdata|sbss|got|plt)\$" >/dev/null; then
+                if ! unp -l "$possible_archive_file" > /dev/null 2>&1 | grep -Ei "\.(text|rodata|data|bss|symtab|strtab|debug|comment|shstrtab|ctors|dtors|sdata|sbss|got|plt)$" >/dev/null; then
                   if ! file "$possible_archive_file" | grep -qiE "stripped|object|exe"; then
                     unp "$possible_archive_file" -- --out "$extracted_dir" >/dev/null 2>&1 || true
                   fi

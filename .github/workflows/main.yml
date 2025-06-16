@@ -218,7 +218,7 @@ jobs:
               fi
 
               find . \( -iname "*.bmg" -o -iname "*.rbh.*" -o -iname "header.bin*" -o -iname "*.wav" -o -iname "*.bwav" -o -iname "*.ogg" -o -iname "*.mp3" -o -iname "*.mp4" -o -iname "*.h4m" -o -iname "*.rbh" -o -iname "*.flac" -o -name "*.*tex*" -o -iname "homemenu" -o -iname "homebtn" -o -iname "homebutton" -o -iname "*.jpg" -o -iname "*.png" -o -iname "*.jpeg" -o -iname "*.jpg" -o -iname "*.skl" -o -iname "*.anm" -o -iname "*.mdl" -o -iname "*.tex" \) \
-                -print 0 | xargs -0 -I "{}" mv -t ../tmp "{}"
+                -print0 | xargs -0 -I "{}" mv -t ../tmp "{}"
               
               while IFS= read -r possible_archive_file; do
 

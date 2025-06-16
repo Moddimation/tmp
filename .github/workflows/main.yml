@@ -47,6 +47,7 @@ jobs:
           sudo flatpak install flathub org.DolphinEmu.dolphin-emu -y
 
       - name: main
+        shell: bash
         run: |
             check=true
             set +e

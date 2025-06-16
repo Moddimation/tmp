@@ -156,7 +156,7 @@ jobs:
             sed -i '1d' gameList
             if [[ "$zip_file" == *"Action"*"Replay"* ]]; then
               continue;
-            f
+            fi
 
             echo " >> Downloading '$(echo "$zip_file" | sed -E '
               s/%20/ /g;  s/%21/!/g;  s/%22/"/g;  s/%23/#/g;  s/%24/\$/g;

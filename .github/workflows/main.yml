@@ -325,17 +325,17 @@ jobs:
                rm -rf "./$file_name/";
                continue;
             fi;
-            cd tmp;
-            ignored=$(find "." -type f | sed 's/\.\///' | sort -u | paste -sd "," -); 
-            cd ..;
+            #cd tmp;
+            #ignored=$(find "." -type f | sed 's/\.\///' | sort -u | paste -sd "," -); 
+            #cd ..;
             rm -rf tmp;
 
             #if [ -n "$(find "$file_name" \( -path "*CVS*" -o -path "*svn*" \) )" ]; then
                 #echo "  ! Leftover version info preserved."
             #fi
             echo " << Finished '$file_name'";
-            echo "   Ignored:";
-            echo "$ignored";
+            #echo "   Ignored:";
+            #echo "$ignored";
             echo "   Found:";
             echo "$found";
             echo " # Continuing, size: $size / $(du -sb -- */ | awk '{total+=$1} END {print total}' | numfmt --to=iec  | awk "{print $1}"), games left: $(cat gameList | wc -l)"

@@ -343,5 +343,5 @@ jobs:
           GH_COMMIT: ${{ secrets.GH_COMMIT }}
         run: |
           git add gameList
-          git commit -m "Automated commit: Updating gameList"
+          git commit -m "Continuation"
           git push https://x-access-token:$GH_COMMIT@github.com/${{ github.repository }}.git HEAD:main

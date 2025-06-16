@@ -199,7 +199,8 @@ jobs:
                find "DATA" -maxdepth 1 -exec cp -rf -t "." "{}" \; 2>/dev/null;
                rm -rf DATA;
             fi
-            
+
+
             echo " \# Scanning ..."
             found_sub=false
             did_sub_abort=false
@@ -245,7 +246,6 @@ jobs:
                    file "$possible_archive_file" | grep -qiE 'stripped|object|exe'; then
                     7z x "$possible_archive_file" -o"$extracted_dir" >/dev/null 2>&1 || true
                 fi
-
 
                 if ! unp -l "$possible_archive_file" 2>/dev/null | grep -Ei '\.(text|rodata|data|bss|symtab|strtab|debug|comment|shstrtab|ctors|dtors|sdata|sbss|got|plt)$' >/dev/null || \
                    file "$possible_archive_file" | grep -qiE 'stripped|object|exe'; then

@@ -217,7 +217,8 @@ jobs:
                 is_sub_run_first=false;
               fi
 
-              find . \( -iname "*.bmg" -o -iname "*.rbh.*" -o -iname "header.bin*" -o -iname "*.wav" -o -iname "*.bwav" -o -iname "*.ogg" -o -iname "*.mp3" -o -iname "*.mp4" -o -iname "*.h4m" -o -iname "*.rbh" -o -iname "*.flac" -o -name "*.*tex*" -o -iname "*.br???" -o -iname "homemenu" -o -iname "homebtn" -o -iname "homebutton" -o -iname "*.jpg" -o -iname "*.png" -o -iname "*.jpeg" -o -iname "*.jpg" -o -iname "*.skl" -o -iname "*.anm" -o -iname "*.mdl" -o -iname "*.tex" \) -exec rm -rf "{}" \;
+              find . \( -iname "*.bmg" -o -iname "*.rbh.*" -o -iname "header.bin*" -o -iname "*.wav" -o -iname "*.bwav" -o -iname "*.ogg" -o -iname "*.mp3" -o -iname "*.mp4" -o -iname "*.h4m" -o -iname "*.rbh" -o -iname "*.flac" -o -name "*.*tex*" -o -iname "homemenu" -o -iname "homebtn" -o -iname "homebutton" -o -iname "*.jpg" -o -iname "*.png" -o -iname "*.jpeg" -o -iname "*.jpg" -o -iname "*.skl" -o -iname "*.anm" -o -iname "*.mdl" -o -iname "*.tex" \) \
+                -print 0 | xargs -0 -I "{}" mv -t ../tmp "{}"
               
               while IFS= read -r possible_archive_file; do
 
@@ -286,19 +287,16 @@ jobs:
  
             done;
             echo " # Checking ..."
+
             pathMainD="$(find . -type d -name "*.d")"
             echo "$pathMainD" | while read -r dir; do
-              if [ -d "$dir" ] && [ -d "$dir/DATA/sys" ] && [ -e "./DATA/sys/main.dol" ] && [ -e "$dir/DATA/sys/main.dol" ]; then
-                if cmp -s "$dir/DATA/sys/main.dol" "./DATA/sys/main.dol"; then
-                  rm -rf "$dir/"
-                fi
-              fi
               if [ -d "$dir" ] && [ -d "$dir/sys" ] && [ -e "./sys/main.dol" ] && [ -e "$dir/sys/main.dol" ]; then
                 if cmp -s "$dir/sys/main.dol" "./sys/main.dol"; then
                   rm -rf "$dir/"
                 fi
               fi
             done
+
             find . -type f \( -iname "*.ttf" -o -iname "*.ttc" \) | while read f; do
               d=../__fonts; n=$(basename "$f"); p="$d/$n"; i=1
               while [[ -e "$p" ]]; do p="$d/${n%.*}.$i.${n##*.}"; ((i++)); done

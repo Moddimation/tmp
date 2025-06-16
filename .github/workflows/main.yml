@@ -308,7 +308,9 @@ jobs:
 
             echo " # Cutting ...";
             filterDelete || true;
+            echo "2"
             filterExt || true;
+            echo "8"
             filterTextFiles || true;
             cd "../tmp/";
 

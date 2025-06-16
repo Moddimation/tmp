@@ -81,8 +81,8 @@ jobs:
               # 2>/dev/null
             }
             filterFind() {
-                find . -type f -exec grep -aE "strcmp|strcpy|OSReport|OSPanic|hvqm4dec|OSInit|GXInit|Dolphin SDK| DolphinSDK|osInit|This program cannot be run in DOS|ppceabi|PPCEABI|PowerPC|MetroWerks|Metrowerks|Freescale|MetroTRK|J3DModel|J2DScreen|J2DPrint|JUTException|JAInterface|JAIBasic|JAISound|JKRAram|JUTFont|JAudio|Jaudio|MONO-MIX|J2DWindow|JKRHap|Jsystem|JSystem|typedef struct|#include "|#include <|#define|#ifdef|#ifndef|#pragma|#undef|OSReport|AreWeInitialized" "{}" \; -exec mv -t "../$file_name/files" "{}" \;
-                # 2>/dev/null
+              find . -type f -exec grep -aE "strcmp|strcpy|OSReport|OSPanic|hvqm4dec|OSInit|GXInit|Dolphin SDK| DolphinSDK|osInit|This program cannot be run in DOS|ppceabi|PPCEABI|PowerPC|MetroWerks|Metrowerks|Freescale|MetroTRK|J3DModel|J2DScreen|J2DPrint|JUTException|JAInterface|JAIBasic|JAISound|JKRAram|JUTFont|JAudio|Jaudio|MONO-MIX|J2DWindow|JKRHap|Jsystem|JSystem|typedef struct|#include \"|#include <|#define|#ifdef|#ifndef|#pragma|#undef|OSReport|AreWeInitialized" "{}" \; -exec mv -t "../$file_name/files" "{}" \;
+              # 2>/dev/null
             }
             filterExt() {
               find . -type f \

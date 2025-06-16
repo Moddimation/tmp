@@ -339,7 +339,7 @@ jobs:
             echo "$ignored";
             echo "   Found:";
             echo "$found";
-            echo " # Continuing, size: $size / $(du -sh . | awk "{print $1}")"
+            echo " # Continuing, size: $size / $(du -sh . | awk "{print $1}"), games left: $(cat gameList | wc -l)"
             done
 
       - name: Upload file list

@@ -1,5 +1,5 @@
 
-name: Extract code and references from Wii games.
+name: Extract code and references from GameCube or Wii games.
  
 on:
   push:
@@ -330,7 +330,7 @@ jobs:
       - name: Upload file list
         uses: actions/upload-artifact@v4
         with: 
-          name: BundleGC
+          name: Bundle
           path: "*/"
 
       - name: Configure Git

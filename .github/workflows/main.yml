@@ -107,9 +107,9 @@ jobs:
             reset() {
               rm -f gameList
               touch gameList
-              echo "\# Getting index ..."
+              echo "# Getting index ..."
               wget -q "$link//"
-              echo "\# OK, now index for filenames, download and process everything ..."
+              echo "# OK, now index for filenames, download and process everything ..."
               grep -oP "href="\K[^"]+\.zip" index.html >> gameList
               rm index.html
               exit 0
@@ -141,7 +141,7 @@ jobs:
             #reset
 
             folderNum="$(cat gameList | wc -l)"
-            echo "\# Number of games: $folderNum"
+            echo "# Number of games: $folderNum"
 
             while (true); do
 
@@ -165,27 +165,27 @@ jobs:
             echo " >> Downloading $(echo "$zip_file")"
             wget -q "$link/$zip_file"
 
-            echo " \# Init extraction ... "
+            echo " # Init extraction ... "
             filename="$(ls *.zip 2>/dev/null | head -n 1)" 2>/dev/null
             file_name="./${filename%.zip}";
             mkdir "$file_name";
 
-            echo " \# Extracting download ..."
+            echo " # Extracting download ..."
             7z x "$filename" -y -bso0 -bsp0 -bse0
             rm "$filename"
             rvz_file=$(ls *.rvz | head -n 1)
 
-            echo " \# Extracting game ..."
+            echo " # Extracting game ..."
             flatpak run --command="dolphin-tool" --filesystem=host org.DolphinEmu.dolphin-emu extract -i "$rvz_file" -o "$file_name//" -q 2>/dev/null || true
             rm "$rvz_file"
 
-            echo " \# Init filter ..."
+            echo " # Init filter ..."
             rm -rf tmp
             mkdir -p tmp
             mkdir -p __fonts
             cd "$file_name//"
 
-            echo " \# Pre-Processing ..."
+            echo " # Pre-Processing ..."
             filterDelete || true
             [ "$(find . -type f -name '*.plf' | wc -l)" -gt 4 ] && find . -type f -name '*.plf' -delete
             [ "$(find . -type f -name '*.ev' | wc -l)" -gt 10 ] && find . -type f -name '*.ev' -delete
@@ -196,13 +196,13 @@ jobs:
                rm -rf DATA;
             fi
 
-            echo " \# Scanning ..."
+            echo " # Scanning ..."
             found_sub=false
             did_sub_abort=false
             is_sub_run_first=true
             sub_iter_num=0
             while [ "$is_sub_run_first" = true ] || { [ "$found_sub" = true ] && [ "$did_sub_abort" = false ]; }; do
-              echo "   \# Scan $sub_iter_num";
+              echo "   # Scan $sub_iter_num";
               found_sub=false
               sub_iter_num=$((sub_iter_num + 1));
               if [ "$is_sub_run_first" = true ]; then
@@ -215,7 +215,7 @@ jobs:
 
                 timeCheck 18000 || { did_sub_abort=true; break; }
 
-                sub_file_name="$(basename "$possible_archive_file" | sed 's/\.[^.]*$//')"
+                sub_file_name="$(basename "$possible_archive_file" | sed "s/\.[^.]*$//")"
 
                 [ "$(echo "$sub_file_name" | grep -F ".dsf" | wc -l )" -gt 0 ] && timeCheck 11000 || { break; }
 
@@ -257,7 +257,7 @@ jobs:
                 find "$extracted_dir" -exec sh -c 'if grep -q "$0" "$1"; then rm -rf "$0"; break; fi' "$extracted_dir_basename" {} \;
                 ls "$extracted_dir";
                 rm "$possible_archive_file";
-                echo "  \# Extracted sub-archive: $possible_archive_file";
+                echo "  # Extracted sub-archive: $possible_archive_file";
                 found_sub=true;
                 did_sub_abort=false
 
@@ -277,36 +277,41 @@ jobs:
                     \) )
  
             done;
-            echo " \# Checking ..."
+            echo " # Checking ..."
             pathMainD="$(find . -type d -name "*.d")"
             echo "$pathMainD" | while read -r dir; do
-              if [ -d "$dir" ] && [ -d "$dir/UPDATE/sys" ] && [ -e "./UPDATE/sys/main.dol" ] && [ -e "$dir/UPDATE/sys/main.dol" ]; then
-                if cmp -s "$dir/UPDATE/sys/main.dol" "./UPDATE/sys/main.dol"; then
+              if [ -d "$dir" ] && [ -d "$dir/DATA/sys" ] && [ -e "./DATA/sys/main.dol" ] && [ -e "$dir/DATA/sys/main.dol" ]; then
+                if cmp -s "$dir/DATA/sys/main.dol" "./DATA/sys/main.dol"; then
+                  rm -rf "$dir//"
+                fi
+              fi
+              if [ -d "$dir" ] && [ -d "$dir/sys" ] && [ -e "./sys/main.dol" ] && [ -e "$dir/sys/main.dol" ]; then
+                if cmp -s "$dir/sys/main.dol" "./sys/main.dol"; then
                   rm -rf "$dir//"
                 fi
               fi
             done
             find . -type f \( -iname "*.ttf" -o -iname "*.ttc" -o -iname "*.ttc" \) -exec cp "{}" ../__fonts \;
 
-            echo " \# Cutting ...";
+            echo " # Cutting ...";
             filterDelete || true;
             filterExt || true;
             filterTextFiles || true;
             cd "../tmp//";
 
-            echo " \# Post-Processing ...";
+            echo " # Post-Processing ...";
             filterTextFiles || true;
             filterFind;
             cd "../$file_name//"
             find "." -empty -delete;
             find "." -type f \( -name "*.lua" -o -iname "*.tgc" -o -iname "*.gcm" -o -iname "*.arc" -o -iname "*.ghr" -o -iname "*.gcr" -o -iname "__*.inf.*" -o -iname "*.wt" -o -iname "*.pcm" -o -iname "*.mid" -o -iname "*.midi" -path "*.svn*" -o -path "*CVS*" -o -path "*.git*" \) -exec mv "{}" "../tmp//" \;
-            echo " \# Finishing ...";
-            found=$(find "." -type f ! \( -name "*svn*" -o -path "*svn*" -o -path "*CVS*" -o -name "*CVS*" \) | sort -u);
+            echo " # Finishing ...";
+            found=$(find "." -type f | sort -u);
             size=$(du -sh "." | awk '{print $1}')
             cd ".."
             if rmdir "./$file_name//" 2>/dev/null; then
                echo " ! No code data found.";
-               echo "   Continuing, all size: $(du -sh . | awk '{print $1}')";
+               echo "   Continuing, all size: $(du -sh . | awk "{print $1}")";
                rm -rf "./$file_name//";
                continue;
             fi;
@@ -321,7 +326,7 @@ jobs:
             echo "$ignored";
             echo "   Found:";
             echo "$found";
-            echo " \# Continuing, size: $size / $(du -sh . | awk "{print $1}")"
+            echo " # Continuing, size: $size / $(du -sh . | awk "{print $1}")"
             done
 
       - name: Upload file list

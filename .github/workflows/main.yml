@@ -223,7 +223,7 @@ jobs:
 
                 timeCheck 18000 || { did_sub_abort=true; break; }
 
-                sub_file_name="$(basename "$possible_archive_file" | sed "s/\.[^.]*$/")"
+                sub_file_name="$(basename "$possible_archive_file" | sed 's/\.[^.]*$//')"
 
                 [ "$(echo "$sub_file_name" | grep -F ".dsf" | wc -l )" -gt 0 ] && timeCheck 11000 || { break; }
 

@@ -17,7 +17,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
-        needs: main # DEBUG
+        needs: main
+        # DEBUG
         with:
           token: ${{ secrets.GH_COMMIT }}
 

@@ -17,6 +17,7 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
+        needs: main # DEBUG
         with:
           token: ${{ secrets.GH_COMMIT }}
 
@@ -43,7 +44,7 @@ jobs:
           sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
           sudo flatpak install flathub org.DolphinEmu.dolphin-emu -y
 
-      - name: Downloads & Extracts
+      - name: main
         run: |
             check=true
             set +e

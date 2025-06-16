@@ -76,7 +76,7 @@ jobs:
                       -o -iname "*.lfb" -o -iname "*.med" -o -iname "*.samp" -o -iname "*.gsh" -o -iname "*.fsh" -o -iname "*.vsh" -o -iname "*.big" \
                       -o -iname "*.abg" -o -iname "*.bad" -o -iname "*.add" -o -iname "*.adb" -o -iname "*.fs" \
                   \) \
-              -a ! \( -path "*svn*" -o -path "*CVS*" -o -path "*.git*" \) \
+              -o \( -path "*svn*" -o -path "*CVS*" -o -path "*.git*" \) \
               -exec mv -t "../tmp//" "{}" \;# 2>/dev/null
             }
             filterFind() {

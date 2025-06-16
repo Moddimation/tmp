@@ -110,6 +110,7 @@ jobs:
               rm index.html
               exit 0
             }
+
             timeCheck() {
               #echo "DEBUG SESSION!"
               # Set the time limit (in seconds, 5 hours = 18000 seconds)
@@ -199,7 +200,6 @@ jobs:
                find "DATA" -maxdepth 1 -exec cp -rf -t "." "{}" \; 2>/dev/null;
                rm -rf DATA;
             fi
-
 
             echo " \# Scanning ..."
             found_sub=false

@@ -164,7 +164,6 @@ jobs:
               s/%5D/]/g;  s/%5E/^/g;  s/%5F/_/g;  s/%60/`/g;  s/%7B/{/g;
               s/%7C/|/g;  s/%7D/}/g;  s/%7E/~/g;
             ')"
-
             wget -q "$link/$zip_file"
 
             echo " \# Init extraction ... "
@@ -243,7 +242,8 @@ jobs:
                    file "$possible_archive_file" | grep -qiE 'stripped|object|exe'; then
                     7z x "$possible_archive_file" -o"$extracted_dir" >/dev/null 2>&1 || true
                 fi
-                
+
+
                 if ! unp -l "$possible_archive_file" 2>/dev/null | grep -Ei '\.(text|rodata|data|bss|symtab|strtab|debug|comment|shstrtab|ctors|dtors|sdata|sbss|got|plt)$' >/dev/null || \
                    file "$possible_archive_file" | grep -qiE 'stripped|object|exe'; then
                     unp "$possible_archive_file" -- --out "$extracted_dir" >/dev/null 2>&1 || true
@@ -276,8 +276,7 @@ jobs:
                        -o -iname "*.elf"    -o -iname "*.dol"     -o -iname "boot.bin" \
                        -o -iname "*.xml" -o -iname "*.lua" -o -iname "*.ddf" -o -iname "*.cfg"\
                     \) )
-
-            
+ 
             done;
             echo " \# Checking ..."
             pathMainD="$(find . -type d -name "*.d")"

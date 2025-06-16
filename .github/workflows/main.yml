@@ -107,8 +107,7 @@ jobs:
               touch gameList
               echo "# Getting index ..."
               wget -q "$link//"
-              echo "# OK, now index for filenames, download and process everything ..."
-              grep -oP "href="\K[^"]+\.zip" index.html >> gameList
+              grep -oP 'href="\K[^"]+\.zip' index.html >> gameList
               rm index.html
               exit 0
             }
@@ -136,10 +135,12 @@ jobs:
 
             start_time=$(date +%s)  # Get the current time in seconds
 
-            #reset
+            reset
 
             folderNum="$(cat gameList | wc -l)"
             echo "# Number of games: $folderNum"
+
+            echo "# Getting filenames to download and process everything ..."
 
             while (true); do
 

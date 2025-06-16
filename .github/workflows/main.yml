@@ -326,7 +326,7 @@ jobs:
                continue;
             fi;
             cd tmp;
-            ignored=$(find "." -type f | awk -F. "{if (NF>1) print $NF}" | sort -u | paste -sd "," - | sed 's/\.\///'); 
+            ignored=$(find "." -type f | sed 's/\.\///' | sort -u | paste -sd "," -); 
             cd ..;
             rm -rf tmp;
 

@@ -30,7 +30,7 @@ jobs:
           echo "XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR" >> $GITHUB_ENV
 
       - name: Install dependencies
-       # if: false
+        if: false
         run: |
           wget https://github.com/encounter/decomp-toolkit/releases/download/v1.6.2/dtk-linux-x86_64
           mv dtk* dtk

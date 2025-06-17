@@ -1,6 +1,6 @@
 
 name: Extract code and references from GameCube or Wii games.
- 
+
 on:
   push:
     branches: 

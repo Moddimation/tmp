@@ -33,11 +33,9 @@ jobs:
        # if: false
         run: |
           wget https://github.com/encounter/decomp-toolkit/releases/download/v1.6.2/dtk-linux-x86_64
-          wget https://github.com/Moddimation/tmp/blob/770ea62dc54dcb49d955261ce13de095b006e91c/orthrus-linux-x86_64.zip?raw=true
-          7z x orthrus-linux-x86_64.zip?raw=true
-          rm orthrus-linux-x86_64.zip?raw=true -f
           mv dtk* dtk
           chmod +x orthrus
+          chmod +x rustii
           chmod +x dtk
           sudo apt-get update
           sudo apt install -y p7zip-full flatpak unp
@@ -235,12 +233,19 @@ jobs:
                 mkdir "$extracted_dir" -p
                 flatpak run --command="dolphin-tool" --filesystem=host org.DolphinEmu.dolphin-emu extract -i "$possible_archive_file" -o "$extracted_dir" 2>/dev/null || true
                 rm -f "$dec_file" 2>/dev/null || true
+                ../rustii ash decompress "$possible_archive_file" 2>/dev/null || true;
+                ../rustii lz77 decompress "$possible_archive_file" 2>/dev/null || true;
+                ../rustii u8 unpack "$possible_archive_file" "$extracted_dir" 2>/dev/null || true;
+                ../rustii wad unpack "$possible_archive_file" "$extracted_dir" 2>/dev/null || true;
+                cp -f "$dec_file" "$possible_archive_file" 2>/dev/null || true;
                 ../orthrus ncompress yay0 -d "$possible_archive_file" "$dec_file" > /dev/null 2>&1 || true
                 ../orthrus ncompress yaz0 -d "$possible_archive_file" "$dec_file" > /dev/null 2>&1 || true
-                ../orthrus panda3d bam -d "$possible_archive_file" "$dec_file" > /dev/null 2>&1 || true;
-                ../orthrus panda3d multifile -d "$possible_archive_file" "$dec_file" > /dev/null 2>&1 || true;
-                ../orthrus jsystem rarc -d "$possible_archive_file" "$dec_file" > /dev/null 2>&1 || true;
-                ../orthrus godot pck -d "$possible_archive_file" "$dec_file" > /dev/null 2>&1 || true;
+                ../orthrus ncompress yaz0 -d "$possible_archive_file" "$dec_file" > /dev/null 2>&1 || true
+                cp -f "$dec_file" "$possible_archive_file" 2>/dev/null || true;
+                ../orthrus panda3d bam "$possible_archive_file" > /dev/null 2>&1 || true;
+                ../orthrus panda3d multifile -x "$possible_archive_file" "$extracted_dir" > /dev/null 2>&1 || true;
+                ../orthrus jsystem rarc -x "$possible_archive_file" "$extracted_dir" > /dev/null 2>&1 || true;
+                ../orthrus godot pck -x "$possible_archive_file" "$extracted_dir" > /dev/null 2>&1 || true;
                 cp -f "$dec_file" "$possible_archive_file" 2>/dev/null || true;
                 ../dtk rarc extract "$possible_archive_file" -o "$extracted_dir" > /dev/null 2>&1 || true;
                 ../dtk u8 extract "$possible_archive_file" -o "$extracted_dir" > /dev/null 2>&1 || true;

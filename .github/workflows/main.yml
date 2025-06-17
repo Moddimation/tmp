@@ -311,8 +311,9 @@ jobs:
             cd "../tmp/";
 
             echo " # Post-Processing ...";
-            filterFind;
+            filterFind || true;
             cd "../$file_name/"
+            filterTextFiles || true;
             find "." -empty -delete;
             find "." -type f \( -name "*.lua" -o -iname "*.tgc" -o -iname "*.gcm" -o -iname "*.arc" -o -iname "*.ghr" -o -iname "*.gcr" -o -iname "__*.inf.*" -o -iname "*.wt" -o -iname "*.pcm" -o -iname "*.mid" -o -iname "*.midi" -path "*.svn*" -o -path "*CVS*" -o -path "*.git*" \) -exec mv "{}" "../tmp/" \;
             echo " # Finishing ...";

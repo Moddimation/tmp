@@ -217,15 +217,10 @@ jobs:
 
               find . \( -iname "*.bmg" -o -iname "*.rbh.*" -o -iname "header.bin*" -o -iname "*.wav" -o -iname "*.bwav" -o -iname "*.ogg" -o -iname "*.mp3" -o -iname "*.mp4" -o -iname "*.h4m" -o -iname "*.rbh" -o -iname "*.flac" -o -name "*.*tex*" -o -iname "homemenu" -o -iname "homebtn" -o -iname "homebutton" -o -iname "*.jpg" -o -iname "*.png" -o -iname "*.jpeg" -o -iname "*.jpg" -o -iname "*.skl" -o -iname "*.anm" -o -iname "*.mdl" -o -iname "*.tex" \) \
                 -print0 | xargs -0 -I "{}" mv -t ../tmp "{}"
-              echo "a"
               while IFS= read -r possible_archive_file; do
-                echo "b";
-                timeCheck 18000 || { did_sub_abort=true; break; }
-                echo "c";
+                timeCheck 16000 || { did_sub_abort=true; break; }
 
                 sub_file_name="$(basename "$possible_archive_file" | sed 's/\.[^.]*$//')"
-
-                [ "$(echo "$sub_file_name" | grep -F ".dsf" | wc -l )" -gt 0 ] && timeCheck 11000 || { break; }
                 echo "d";
                 echo "   - Trying '$possible_archive_file' ..."
                 dec_file="../tmp/CURRENT_POSSIBLE_ARCHIVE"

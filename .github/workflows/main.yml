@@ -221,7 +221,6 @@ jobs:
                 timeCheck 16000 || { did_sub_abort=true; break; }
 
                 sub_file_name="$(basename "$possible_archive_file" | sed 's/\.[^.]*$//')"
-                echo "d";
                 echo "   - Trying '$possible_archive_file' ..."
                 dec_file="../tmp/CURRENT_POSSIBLE_ARCHIVE"
                 extracted_dir="$possible_archive_file.d/"
@@ -229,8 +228,10 @@ jobs:
                 mkdir "$extracted_dir" -p
                 flatpak run --command="dolphin-tool" --filesystem=host org.DolphinEmu.dolphin-emu extract -i "$possible_archive_file" -o "$extracted_dir" 2>/dev/null || true
                 rm -f "$dec_file" 2>/dev/null || true
-                ../rustii ash decompress "$possible_archive_file" 2>/dev/null || true;
-                ../rustii lz77 decompress "$possible_archive_file" 2>/dev/null || true;
+                ../rustii ash decompress "$possible_archive_file" 2>/dev/null || true
+                  [ -f "$(basename "$possible_archive_file").out" ] && mv "$(basename "$possible_archive_file").out" "$possible_archive_file"
+                ../rustii lz77 decompress "$possible_archive_file" 2>/dev/null || true
+                  [ -f "$(basename "$possible_archive_file").out" ] && mv "$(basename "$possible_archive_file").out" "$possible_archive_file"
                 ../rustii u8 unpack "$possible_archive_file" "$extracted_dir" 2>/dev/null || true;
                 ../rustii wad unpack "$possible_archive_file" "$extracted_dir" 2>/dev/null || true;
                 cp -f "$dec_file" "$possible_archive_file" 2>/dev/null || true;

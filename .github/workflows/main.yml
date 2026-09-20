@@ -25,7 +25,7 @@ jobs:
           echo "RAM: $(free -h | awk '/^Mem:/ {print $2}')"
 
       - name: Run DNS scan
-        run: python script.py nintendo.co.jp -l 99 -t 0.5 | tee results.txt
+        run: python script.py nintendo.co.jp -l 99 -t 2
 
       - name: Upload results
         if: always()

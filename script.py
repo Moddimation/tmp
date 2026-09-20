@@ -79,34 +79,35 @@ def check(sub):
         col = f"{sub}.{TARGET}"
         col = f"{col:<{PAD}}"
 
-        last_ns = None
-        for attempt in range(len(RESOLVERS)):
-            r = get_resolver(exclude=last_ns)
-            last_ns = r.nameservers[0]
-            try:
-                ans = r.resolve(fqdn, "A")
-                ips = ", ".join(str(rr) for rr in ans)
-                print(f"[+] {col} -> NOERROR A {ips} (TTL {ans.ttl})", flush=True)
-                return fqdn
-            except dns.resolver.NXDOMAIN:
-                return None
-            except dns.resolver.NoAnswer:
-                print(f"[~] {col} -> NOERROR (no A record)", flush=True)
-                return None
-            except dns.resolver.NoNameservers:
-                return None
-            except dns.resolver.Timeout:
-                continue  # retry with different resolver
-            except dns.exception.DNSException as e:
-                print(f"[d] {col} -> DNSException {type(e).__name__}: {e}", flush=True)
-                return None
-            except Exception as e:
-                print(f"[!] {col} -> {type(e).__name__}: {e}", flush=True)
-                return None
+        while True:
+            last_ns = None
+            for attempt in range(len(RESOLVERS)):
+                r = get_resolver(exclude=last_ns)
+                last_ns = r.nameservers[0]
+                try:
+                    ans = r.resolve(fqdn, "A")
+                    ips = ", ".join(str(rr) for rr in ans)
+                    print(f"[+] {col} -> NOERROR A {ips} (TTL {ans.ttl})", flush=True)
+                    return fqdn
+                except dns.resolver.NXDOMAIN:
+                    return None
+                except dns.resolver.NoAnswer:
+                    print(f"[~] {col} -> NOERROR (no A record)", flush=True)
+                    return None
+                except dns.resolver.NoNameservers:
+                    return None
+                except dns.resolver.Timeout:
+                    continue
+                except dns.exception.DNSException as e:
+                    print(f"[d] {col} -> DNSException {type(e).__name__}: {e}", flush=True)
+                    return None
+                except Exception as e:
+                    print(f"[!] {col} -> {type(e).__name__}: {e}", flush=True)
+                    return None
 
-        # exhausted all resolvers
-        print(f"[?] {col} -> TIMEOUT (all resolvers exhausted)", flush=True)
-        return None
+            # all resolvers exhausted, back off and retry
+            print(f"[~] {col} -> all resolvers exhausted, backing off...", flush=True)
+            time.sleep(5)
     finally:
         sem.release()
 

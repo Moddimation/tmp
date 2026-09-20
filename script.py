@@ -85,6 +85,9 @@ def get_resolver(exclude=None):
     return res
 
 def to_fqdn(sub):
+    # Reject anything that would create empty labels
+    if ".." in sub or sub.startswith(".") or sub.endswith("."):
+        return None
     if sub.isascii():
         return f"{sub}.{TARGET}"
     try:

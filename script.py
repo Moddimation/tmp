@@ -55,7 +55,7 @@ def global_backoff():
         go.clear()
         dns.resolver.reset_default_resolver()
         dns.resolver.get_default_resolver().cache = dns.resolver.LRUCache()
-        time.sleep(2)
+        time.sleep(5)
         go.set()
 
 # ── helpers ────────────────────────────────────────────────────────────────────
@@ -95,36 +95,38 @@ def check(sub):
             return None
         col = f"{sub}.{TARGET}"
         col = f"{col:<{PAD}}"
+        global_backoff()
+        go.wait()
 
-        while True:
-            go.wait()
+        last_ns = None
+        timed_out = 0
+        for attempt in range(len(RESOLVERS)):
+            r = get_resolver(exclude=last_ns)
+            last_ns = r.nameservers[0]
+            try:
+                ans = r.resolve(fqdn, "A")
+                ips = ", ".join(str(rr) for rr in ans)
+                print(f"[+] {col} -> NOERROR A {ips} (TTL {ans.ttl})", flush=True)
+                return fqdn
+            except dns.resolver.NXDOMAIN:
+                return None
+            except dns.resolver.NoAnswer:
+                print(f"[~] {col} -> NOERROR (no A record)", flush=True)
+                return None
+            except dns.resolver.NoNameservers:
+                return None
+            except dns.resolver.Timeout:
+                timed_out += 1
+                continue
+            except dns.exception.DNSException as e:
+                print(f"[d] {col} -> DNSException {type(e).__name__}: {e}", flush=True)
+                return None
+            except Exception as e:
+                print(f"[!] {col} -> {type(e).__name__}: {e}", flush=True)
+                return None
 
-            last_ns = None
-            for attempt in range(len(RESOLVERS)):
-                r = get_resolver(exclude=last_ns)
-                last_ns = r.nameservers[0]
-                try:
-                    ans = r.resolve(fqdn, "A")
-                    ips = ", ".join(str(rr) for rr in ans)
-                    print(f"[+] {col} -> NOERROR A {ips} (TTL {ans.ttl})", flush=True)
-                    return fqdn
-                except dns.resolver.NXDOMAIN:
-                    return None
-                except dns.resolver.NoAnswer:
-                    print(f"[~] {col} -> NOERROR (no A record)", flush=True)
-                    return None
-                except dns.resolver.NoNameservers:
-                    return None
-                except dns.resolver.Timeout:
-                    continue
-                except dns.exception.DNSException as e:
-                    print(f"[d] {col} -> DNSException {type(e).__name__}: {e}", flush=True)
-                    return None
-                except Exception as e:
-                    print(f"[!] {col} -> {type(e).__name__}: {e}", flush=True)
-                    return None
-
-            global_backoff()
+        # all resolvers timed out → treat as "nothing useful, move on"
+        return None
     finally:
         sem.release()
 

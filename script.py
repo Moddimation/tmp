@@ -1,6 +1,7 @@
 import itertools
 import sys
 import os
+import random
 import argparse
 import encodings.idna
 import dns.resolver
@@ -13,6 +14,8 @@ HIRAGANA_CHARSET = [chr(c) for c in range(0x3041, 0x3097)]
 KATAKANA_CHARSET = [chr(c) for c in range(0x30A1, 0x30F7)]
 KANJI_CHARSET    = [chr(c) for c in range(0x4E00, 0xA000)]
 
+RESOLVERS = ["8.8.8.8", "8.8.4.4", "1.1.1.1", "1.0.0.1", "9.9.9.9", "149.112.112.112"]
+
 # ── default threads: cores * 10, min 10, fallback if cpu_count returns None ───
 _cores          = os.cpu_count() or 2
 DEFAULT_THREADS = max(_cores * 10, 10)
@@ -22,7 +25,7 @@ parser = argparse.ArgumentParser(description="DNS subdomain bruteforcer")
 parser.add_argument("domain",                                        help="target domain")
 parser.add_argument("-l", "--length",   type=int,   default=3,       help="max subdomain length (default 3)")
 parser.add_argument("-p", "--procs",    type=int,   default=DEFAULT_THREADS, help=f"thread count (default {DEFAULT_THREADS}, derived from {_cores} cores)")
-parser.add_argument("-t", "--timeout",  type=float, default=1.0,     help="DNS timeout in seconds (default 1.0)")
+parser.add_argument("-t", "--timeout",  type=float, default=0.2,     help="DNS timeout in seconds (default 0.2)")
 parser.add_argument("-j", "--japanese", action="store_true",         help="use hiragana+katakana charset")
 parser.add_argument("-k", "--kanji",    action="store_true",         help="add kanji to charset (enormous search space)")
 parser.add_argument("-r", "--resume",   type=str,   default=None,    help="resume from this prefix")
@@ -39,14 +42,16 @@ if not CHARSET:   CHARSET  = list(ASCII_CHARSET)
 RESUME  = args.resume.lower() if args.resume and not (args.japanese or args.kanji) else args.resume
 PAD     = 20 + len(TARGET)
 
-# ── resolver ───────────────────────────────────────────────────────────────────
-r = dns.resolver.Resolver()
-r.timeout  = TIMEOUT
-r.lifetime = TIMEOUT
-
 # ── helpers ────────────────────────────────────────────────────────────────────
 sem      = Semaphore(THREADS * 2)
 last_sub = None
+
+def get_resolver():
+    res = dns.resolver.Resolver()
+    res.nameservers = [random.choice(RESOLVERS)]
+    res.timeout     = TIMEOUT
+    res.lifetime    = TIMEOUT
+    return res
 
 def to_fqdn(sub):
     if sub.isascii():
@@ -72,6 +77,7 @@ def check(sub):
             return None
         col = f"{sub}.{TARGET}"
         col = f"{col:<{PAD}}"
+        r = get_resolver()
         try:
             ans = r.resolve(fqdn, "A")
             ips = ", ".join(str(rr) for rr in ans)
@@ -113,18 +119,19 @@ def gen_subs():
             yield s
 
 # ── main ───────────────────────────────────────────────────────────────────────
-print(f"[*] Target  : {TARGET}")
-print(f"[*] Length  : 1-{MAX_LEN}")
-print(f"[*] Threads : {THREADS} (from {_cores} cores)")
-print(f"[*] Timeout : {TIMEOUT}s")
+print(f"[*] Target    : {TARGET}")
+print(f"[*] Length    : 1-{MAX_LEN}")
+print(f"[*] Threads   : {THREADS} (from {_cores} cores)")
+print(f"[*] Timeout   : {TIMEOUT}s")
+print(f"[*] Resolvers : {', '.join(RESOLVERS)}")
 charset_desc = "+".join(filter(None, [
     "hiragana+katakana" if args.japanese else "",
     "kanji"             if args.kanji    else "",
     ""                  if (args.japanese or args.kanji) else "ASCII"
 ]))
-print(f"[*] Charset : {charset_desc} ({len(CHARSET)} chars)")
+print(f"[*] Charset   : {charset_desc} ({len(CHARSET)} chars)")
 if args.kanji and MAX_LEN > 1:
-    print(f"[!] Warning : kanji at length {MAX_LEN} = {len(KANJI_CHARSET)**MAX_LEN:,} combinations")
+    print(f"[!] Warning   : kanji at length {MAX_LEN} = {len(KANJI_CHARSET)**MAX_LEN:,} combinations")
 if RESUME:
     print(f"[*] Resuming from: {RESUME}")
 print()

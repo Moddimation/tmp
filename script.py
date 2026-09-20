@@ -2,11 +2,12 @@ import itertools
 import sys
 import os
 import random
+import time
 import argparse
 import encodings.idna
 import dns.resolver
 from concurrent.futures import ThreadPoolExecutor
-from threading import Semaphore
+from threading import Semaphore, Event, Lock
 
 # ── charset definitions ────────────────────────────────────────────────────────
 ASCII_CHARSET    = "abcdefghijklmnopqrstuvwxyz0123456789-_"
@@ -16,7 +17,6 @@ KANJI_CHARSET    = [chr(c) for c in range(0x4E00, 0xA000)]
 
 RESOLVERS = ["8.8.8.8", "8.8.4.4", "1.1.1.1", "1.0.0.1", "9.9.9.9", "149.112.112.112"]
 
-# ── default threads: cores * 10, min 10, fallback if cpu_count returns None ───
 _cores          = os.cpu_count() or 2
 DEFAULT_THREADS = max(_cores * 10, 10)
 
@@ -25,7 +25,7 @@ parser = argparse.ArgumentParser(description="DNS subdomain bruteforcer")
 parser.add_argument("domain",                                        help="target domain")
 parser.add_argument("-l", "--length",   type=int,   default=3,       help="max subdomain length (default 3)")
 parser.add_argument("-p", "--procs",    type=int,   default=DEFAULT_THREADS, help=f"thread count (default {DEFAULT_THREADS}, derived from {_cores} cores)")
-parser.add_argument("-t", "--timeout",  type=float, default=0.5,     help="DNS timeout in seconds (default 0.5)")
+parser.add_argument("-t", "--timeout",  type=float, default=2.0,     help="DNS timeout in seconds (default 2.0)")
 parser.add_argument("-j", "--japanese", action="store_true",         help="use hiragana+katakana charset")
 parser.add_argument("-k", "--kanji",    action="store_true",         help="add kanji to charset (enormous search space)")
 parser.add_argument("-r", "--resume",   type=str,   default=None,    help="resume from this prefix")
@@ -42,6 +42,24 @@ if not CHARSET:   CHARSET  = list(ASCII_CHARSET)
 RESUME  = args.resume.lower() if args.resume and not (args.japanese or args.kanji) else args.resume
 PAD     = 20 + len(TARGET)
 
+# ── global pause mechanism ─────────────────────────────────────────────────────
+go         = Event()
+go.set()
+pause_lock = Lock()
+
+def global_backoff():
+    with pause_lock:
+        if not go.is_set():
+            go.wait()
+            return
+        go.clear()
+        print(f"\n[~] All resolvers exhausted — resetting connections and pausing 5s...", flush=True)
+        dns.resolver.reset_default_resolver()
+        dns.resolver.get_default_resolver().cache = dns.resolver.LRUCache()
+        time.sleep(5)
+        print(f"[~] Resuming...\n", flush=True)
+        go.set()
+
 # ── helpers ────────────────────────────────────────────────────────────────────
 sem      = Semaphore(THREADS * 2)
 last_sub = None
@@ -52,6 +70,7 @@ def get_resolver(exclude=None):
     res.nameservers = [random.choice(pool)]
     res.timeout     = TIMEOUT
     res.lifetime    = TIMEOUT
+    res.cache       = None  # no caching per-resolver, fresh every time
     return res
 
 def to_fqdn(sub):
@@ -80,6 +99,8 @@ def check(sub):
         col = f"{col:<{PAD}}"
 
         while True:
+            go.wait()
+
             last_ns = None
             for attempt in range(len(RESOLVERS)):
                 r = get_resolver(exclude=last_ns)
@@ -105,9 +126,7 @@ def check(sub):
                     print(f"[!] {col} -> {type(e).__name__}: {e}", flush=True)
                     return None
 
-            # all resolvers exhausted, back off and retry
-            print(f"[~] {col} -> all resolvers exhausted, backing off...", flush=True)
-            time.sleep(5)
+            global_backoff()
     finally:
         sem.release()
 
@@ -134,7 +153,7 @@ def gen_subs():
 print(f"[*] Target    : {TARGET}")
 print(f"[*] Length    : 1-{MAX_LEN}")
 print(f"[*] Threads   : {THREADS} (from {_cores} cores)")
-print(f"[*] Timeout   : {TIMEOUT}s (retries across {len(RESOLVERS)} resolvers)")
+print(f"[*] Timeout   : {TIMEOUT}s (retries across {len(RESOLVERS)} resolvers, global 5s backoff)")
 print(f"[*] Resolvers : {', '.join(RESOLVERS)}")
 charset_desc = "+".join(filter(None, [
     "hiragana+katakana" if args.japanese else "",

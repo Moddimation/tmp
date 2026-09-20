@@ -81,8 +81,12 @@ def check(sub):
             pass
         except dns.resolver.NoAnswer:
             print(f"[~] {col} -> NOERROR (no A record)", flush=True)
+        except dns.resolver.NoNameservers as e:
+            print(f"[x] {col} -> SERVFAIL/REFUSED: {e}", flush=True)
         except dns.resolver.Timeout:
             print(f"[?] {col} -> TIMEOUT", flush=True)
+        except dns.exception.DNSException as e:
+            print(f"[d] {col} -> DNSException {type(e).__name__}: {e}", flush=True)
         except Exception as e:
             print(f"[!] {col} -> {type(e).__name__}: {e}", flush=True)
         return None

@@ -2,7 +2,7 @@ name: DNS Subdomain Scan - nintendo.co.jp
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches: [main] 
 
 jobs:
   scan:

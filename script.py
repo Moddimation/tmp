@@ -25,7 +25,7 @@ parser = argparse.ArgumentParser(description="DNS subdomain bruteforcer")
 parser.add_argument("domain",                                        help="target domain")
 parser.add_argument("-l", "--length",   type=int,   default=3,       help="max subdomain length (default 3)")
 parser.add_argument("-p", "--procs",    type=int,   default=DEFAULT_THREADS, help=f"thread count (default {DEFAULT_THREADS}, derived from {_cores} cores)")
-parser.add_argument("-t", "--timeout",  type=float, default=0.2,     help="DNS timeout in seconds (default 0.2)")
+parser.add_argument("-t", "--timeout",  type=float, default=0.5,     help="DNS timeout in seconds (default 0.5)")
 parser.add_argument("-j", "--japanese", action="store_true",         help="use hiragana+katakana charset")
 parser.add_argument("-k", "--kanji",    action="store_true",         help="add kanji to charset (enormous search space)")
 parser.add_argument("-r", "--resume",   type=str,   default=None,    help="resume from this prefix")
@@ -46,9 +46,10 @@ PAD     = 20 + len(TARGET)
 sem      = Semaphore(THREADS * 2)
 last_sub = None
 
-def get_resolver():
+def get_resolver(exclude=None):
+    pool = [r for r in RESOLVERS if r != exclude] or RESOLVERS
     res = dns.resolver.Resolver()
-    res.nameservers = [random.choice(RESOLVERS)]
+    res.nameservers = [random.choice(pool)]
     res.timeout     = TIMEOUT
     res.lifetime    = TIMEOUT
     return res
@@ -77,24 +78,34 @@ def check(sub):
             return None
         col = f"{sub}.{TARGET}"
         col = f"{col:<{PAD}}"
-        r = get_resolver()
-        try:
-            ans = r.resolve(fqdn, "A")
-            ips = ", ".join(str(rr) for rr in ans)
-            print(f"[+] {col} -> NOERROR A {ips} (TTL {ans.ttl})", flush=True)
-            return fqdn
-        except dns.resolver.NXDOMAIN:
-            pass
-        except dns.resolver.NoAnswer:
-            print(f"[~] {col} -> NOERROR (no A record)", flush=True)
-        except dns.resolver.NoNameservers as e:
-            print(f"[x] {col} -> SERVFAIL/REFUSED: {e}", flush=True)
-        except dns.resolver.Timeout:
-            print(f"[?] {col} -> TIMEOUT", flush=True)
-        except dns.exception.DNSException as e:
-            print(f"[d] {col} -> DNSException {type(e).__name__}: {e}", flush=True)
-        except Exception as e:
-            print(f"[!] {col} -> {type(e).__name__}: {e}", flush=True)
+
+        last_ns = None
+        for attempt in range(len(RESOLVERS)):
+            r = get_resolver(exclude=last_ns)
+            last_ns = r.nameservers[0]
+            try:
+                ans = r.resolve(fqdn, "A")
+                ips = ", ".join(str(rr) for rr in ans)
+                print(f"[+] {col} -> NOERROR A {ips} (TTL {ans.ttl})", flush=True)
+                return fqdn
+            except dns.resolver.NXDOMAIN:
+                return None
+            except dns.resolver.NoAnswer:
+                print(f"[~] {col} -> NOERROR (no A record)", flush=True)
+                return None
+            except dns.resolver.NoNameservers:
+                return None
+            except dns.resolver.Timeout:
+                continue  # retry with different resolver
+            except dns.exception.DNSException as e:
+                print(f"[d] {col} -> DNSException {type(e).__name__}: {e}", flush=True)
+                return None
+            except Exception as e:
+                print(f"[!] {col} -> {type(e).__name__}: {e}", flush=True)
+                return None
+
+        # exhausted all resolvers
+        print(f"[?] {col} -> TIMEOUT (all resolvers exhausted)", flush=True)
         return None
     finally:
         sem.release()
@@ -122,7 +133,7 @@ def gen_subs():
 print(f"[*] Target    : {TARGET}")
 print(f"[*] Length    : 1-{MAX_LEN}")
 print(f"[*] Threads   : {THREADS} (from {_cores} cores)")
-print(f"[*] Timeout   : {TIMEOUT}s")
+print(f"[*] Timeout   : {TIMEOUT}s (retries across {len(RESOLVERS)} resolvers)")
 print(f"[*] Resolvers : {', '.join(RESOLVERS)}")
 charset_desc = "+".join(filter(None, [
     "hiragana+katakana" if args.japanese else "",

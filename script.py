@@ -55,7 +55,7 @@ def global_backoff():
         go.clear()
         dns.resolver.reset_default_resolver()
         dns.resolver.get_default_resolver().cache = dns.resolver.LRUCache()
-        time.sleep(5)
+        time.sleep(1.2)
         go.set()
 
 # ── helpers ────────────────────────────────────────────────────────────────────

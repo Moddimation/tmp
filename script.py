@@ -10,7 +10,7 @@ from concurrent.futures import ThreadPoolExecutor
 from threading import Semaphore, Event, Lock
 
 # ── charset definitions ────────────────────────────────────────────────────────
-ASCII_CHARSET    = "abcdefghijklmnopqrstuvwxyz0123456789-_"
+ASCII_CHARSET    = "abcdefghijklmnopqrstuvwxyz0123456789-_."
 HIRAGANA_CHARSET = [chr(c) for c in range(0x3041, 0x3097)]
 KATAKANA_CHARSET = [chr(c) for c in range(0x30A1, 0x30F7)]
 KANJI_CHARSET    = [chr(c) for c in range(0x4E00, 0xA000)]
@@ -55,7 +55,20 @@ def global_backoff():
         go.clear()
         dns.resolver.reset_default_resolver()
         dns.resolver.get_default_resolver().cache = dns.resolver.LRUCache()
-        time.sleep(1.2)
+        time.sleep(0.5)
+        go.set()
+
+def block_backoff():
+    """Stronger pause when we detect rate-limiting / blocking via timeouts."""
+    with pause_lock:
+        if not go.is_set():
+            go.wait()
+            return
+        go.clear()
+        print("[!] Detected sustained timeouts — backing off 3s (likely rate-limited)", flush=True)
+        dns.resolver.reset_default_resolver()
+        dns.resolver.get_default_resolver().cache = dns.resolver.LRUCache()
+        time.sleep(3.0)
         go.set()
 
 # ── helpers ────────────────────────────────────────────────────────────────────
@@ -99,7 +112,6 @@ def check(sub):
         go.wait()
 
         last_ns = None
-        timed_out = 0
         for attempt in range(len(RESOLVERS)):
             r = get_resolver(exclude=last_ns)
             last_ns = r.nameservers[0]
@@ -116,7 +128,6 @@ def check(sub):
             except dns.resolver.NoNameservers:
                 return None
             except dns.resolver.Timeout:
-                timed_out += 1
                 continue
             except dns.exception.DNSException as e:
                 print(f"[d] {col} -> DNSException {type(e).__name__}: {e}", flush=True)
@@ -125,7 +136,9 @@ def check(sub):
                 print(f"[!] {col} -> {type(e).__name__}: {e}", flush=True)
                 return None
 
-        # all resolvers timed out → treat as "nothing useful, move on"
+        # All resolvers timed out → treat as rate-limit / block signal
+        print(f"[t] {col} -> all resolvers timed out (likely blocked)", flush=True)
+        block_backoff()
         return None
     finally:
         sem.release()
@@ -153,7 +166,7 @@ def gen_subs():
 print(f"[*] Target    : {TARGET}")
 print(f"[*] Length    : 1-{MAX_LEN}")
 print(f"[*] Threads   : {THREADS} (from {_cores} cores)")
-print(f"[*] Timeout   : {TIMEOUT}s (retries across {len(RESOLVERS)} resolvers, global 5s backoff)")
+print(f"[*] Timeout   : {TIMEOUT}s (retries across {len(RESOLVERS)} resolvers, global 0.5s backoff)")
 print(f"[*] Resolvers : {', '.join(RESOLVERS)}")
 charset_desc = "+".join(filter(None, [
     "hiragana+katakana" if args.japanese else "",

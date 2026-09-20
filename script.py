@@ -53,10 +53,10 @@ def global_backoff():
             go.wait()
             return
         go.clear()
-        print(f"\n[~] All resolvers exhausted — resetting connections and pausing 5s...", flush=True)
+        print(f"\n[~] All resolvers exhausted — resetting connections and pausing 15s...", flush=True)
         dns.resolver.reset_default_resolver()
         dns.resolver.get_default_resolver().cache = dns.resolver.LRUCache()
-        time.sleep(5)
+        time.sleep(15)
         print(f"[~] Resuming...\n", flush=True)
         go.set()
 
